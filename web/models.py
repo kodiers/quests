@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from durationfield.db.models.fields.duration import DurationField
+
 # Create your models here.
 
 class QuestsUsers(models.Model):
@@ -121,13 +123,166 @@ class Organizers(models.Model):
         verbose_name_plural = "Organizers"
 
 
-class Commands(models.Model):
+class Teams(models.Model):
     """
-    Model for players commands
+    Model for players teams
     """
-    # TODO: complete this model
     title = models.CharField(max_length=255, verbose_name="Title")
-    players = models.ManyToManyField(Players)
+    players = models.ManyToManyField(User)
+    points = models.IntegerField(verbose_name="Total points", default=0)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Team"
+        verbose_name_plural = "Teams"
+
+
+class Messages(models.Model):
+    """
+    Model for user messages
+    """
+    text = models.TextField(verbose_name="Text")
+    from_user = models.ForeignKey(User, verbose_name="From", related_name='from_user')
+    to_user = models.ForeignKey(User, verbose_name="To", related_name='to_user')
+    date = models.DateTimeField(verbose_name="Date")
+
+    def __str__(self):
+        return self.from_user.username + " to " + self.to_user.username
+
+    class Meta:
+        verbose_name = "Message"
+        verbose_name_plural = "Messages"
+        ordering = ('date',)
+
+
+class EventsPlaces(models.Model):
+    """
+    Store events and tasks places
+    """
+    country = models.CharField(max_length=255, null=True, blank=True, verbose_name="Country")
+    city = models.CharField(max_length=255, null=True, blank=True, verbose_name="City")
+    street = models.TextField(verbose_name="Street", null=True, blank=True)
+    lat = models.FloatField(verbose_name="Latitude", null=True, blank=True)
+    lon = models.FloatField(verbose_name="Longtitude", null=True, blank=True)
+    map_link = models.TextField(verbose_name="Link to map", null=True, blank=True)
+
+    class Meta:
+        verbose_name = "Event and task place"
+        verbose_name_plural = "Event and task places"
+
+
+class Events(models.Model):
+    """
+    Model for events.
+    If is_team == True, then the this events for teams only.
+    If completed == True, then this event is finished
+    """
+    title = models.TextField(verbose_name="Title")
+    description = models.TextField(verbose_name="Description")
+    map_link = models.TextField(verbose_name="Link to map", null=True, blank=True)
+    place = models.ForeignKey(EventsPlaces, verbose_name="Place", null=True, blank=True)
+    is_team = models.BooleanField(default=False, verbose_name="Team only")
+    price = models.FloatField(verbose_name="Price", default=0.0)
+    max_players = models.IntegerField(verbose_name="Limit players", null=True, blank=True)
+    start_date = models.DateTimeField(verbose_name="Start date")
+    end_date = models.DateTimeField(verbose_name="End date")
+    registered_players = models.ManyToManyField(User, verbose_name="Regitered users", related_name="regitered_players")
+    registered_teams = models.ManyToManyField(Teams, verbose_name="Registered teams")
+    organizer = models.ForeignKey(User, verbose_name="Organizer", related_name="organizer")
+    completed = models.BooleanField(default=False, verbose_name="Finished")
+    duration = DurationField(verbose_name="Duration", null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Event"
+        verbose_name_plural = "Events"
+        ordering = ('start_date',)
+
+
+class Tasks(models.Model):
+    """
+    Model for event's tasks
+    """
+    title = models.TextField(verbose_name="Title")
+    description = models.TextField(verbose_name="Description")
+    map_link = models.TextField(verbose_name="Link to map", null=True, blank=True)
+    place = models.ForeignKey(EventsPlaces, verbose_name="Place", null=True, blank=True)
+    score = models.IntegerField(verbose_name="Score", default=0)
+    answer = models.TextField(null=True, verbose_name="Answer")
+    event = models.ForeignKey(Events, verbose_name="Event")
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Task"
+        verbose_name_plural = "Tasks"
+
+
+class Hints(models.Model):
+    """
+    Model for task's hint
+    """
+    text = models.TextField(verbose_name="Text")
+    price = models.FloatField(verbose_name="Price", default=0.0)
+    task = models.OneToOneField(Tasks)
+
+    def __str__(self):
+        return self.task.title
+
+    class Meta:
+        verbose_name_plural = "Hints"
+        verbose_name = "Hint"
+
+
+class EventStatistics(models.Model):
+    """
+    Model for store event's statistic
+    """
+    event = models.ForeignKey(Events, verbose_name="Event")
+    team = models.ForeignKey(Teams, verbose_name="Team", null=True, blank=True)
+    player = models.ForeignKey(User, verbose_name="Player", null=True, blank=True)
+    score = models.IntegerField(verbose_name="Score", null=True, blank=True)
+    time = DurationField(verbose_name="Executed time", null=True, blank=True)
+
+    def __str__(self):
+        if self.team != None:
+            return self.team.title + ":" + self.event.title
+        else:
+            return self.player.username + ":" + self.event.title
+
+    class Meta:
+        verbose_name = "Event statistic"
+        verbose_name_plural = "Events statistics"
+        ordering = ('time',)
+
+
+class TaskStatistics(models.Model):
+    """
+    Model for store task's statistic.
+    """
+    task = models.ForeignKey(Tasks, verbose_name="Task")
+    team = models.ForeignKey(Teams, verbose_name="Team", null=True, blank=True)
+    player = models.ForeignKey(User, verbose_name="Player", null=True, blank=True)
+    score = models.IntegerField(verbose_name="Score", null=True, blank=True)
+    time = DurationField(verbose_name="Executed time", null=True, blank=True)
+    used_hints = models.IntegerField(default=0, verbose_name="Count of used hints")
+
+    def __str__(self):
+        if self.team != None:
+            return self.team.title + ":" + self.task.title
+        else:
+            return self.player.username + ":" + self.task.title
+
+    class Meta:
+        verbose_name = "Event statistic"
+        verbose_name_plural = "Events statistics"
+        ordering = ('time',)
+
 
 
 
