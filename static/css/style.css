@@ -1,0 +1,8 @@
+.error {
+    color: #ff0000;
+    font-style: italic;
+}
+.form_table {
+    border-spacing: 1px;
+    border-collapse: separate;
+}

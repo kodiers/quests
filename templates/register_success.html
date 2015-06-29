@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}
+    You suggessfully registered!
+{% endblock %}
+{% block content %}
+    <script>
+        function redirect() {
+            onLoad = setTimeout('window.location.href="/"', 5000);
+        }
+    </script>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <script>redirect();</script>
+                <h1>Welcome {{ user.username }}!</h1>
+                <p>{{ message }}</p>
+                <p>You will be redirected in 5 seconds or click <a href="{% url 'index' %}">here</a> </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

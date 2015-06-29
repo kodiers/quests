@@ -96,3 +96,8 @@ MEDIA_ROOT = (
 )
 
 MEDIA_URL = 'http://127.0.0.1:8000/media/'
+
+# EMAIL BACKEND (for developing process)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_HOST_USER = 'test@test.ru'
