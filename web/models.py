@@ -113,7 +113,7 @@ class Organizers(models.Model):
     """
     user = models.OneToOneField(User)
     description = models.TextField(verbose_name="Description", null=True, blank=True)
-    tariff = models.ForeignKey(Tariffs, verbose_name="Tariff")
+    tariff = models.ForeignKey(Tariffs, verbose_name="Tariff", null=True, blank=True)
 
     def __str__(self):
         return self.user.username
@@ -188,11 +188,21 @@ class Events(models.Model):
     max_players = models.IntegerField(verbose_name="Limit players", null=True, blank=True)
     start_date = models.DateTimeField(verbose_name="Start date")
     end_date = models.DateTimeField(verbose_name="End date")
-    registered_players = models.ManyToManyField(User, verbose_name="Regitered users", related_name="regitered_players")
-    registered_teams = models.ManyToManyField(Teams, verbose_name="Registered teams")
+    registered_players = models.ManyToManyField(User, verbose_name="Regitered users",
+                                                related_name="regitered_players", null=True,
+                                                blank=True)
+    registered_teams = models.ManyToManyField(Teams, verbose_name="Registered teams", null=True,
+                                              blank=True)
     organizer = models.ForeignKey(User, verbose_name="Organizer", related_name="organizer")
     completed = models.BooleanField(default=False, verbose_name="Finished")
     duration = DurationField(verbose_name="Duration", null=True, blank=True)
+    image = models.ImageField(upload_to='images', blank=True, null=True, verbose_name="Image")
+
+    def image_tag(self):
+        return u'<img src="%s" height=75 width=75 />' % (self.image.url)
+
+    image_tag.short_description = "Current image"
+    image_tag.allow_tags = True
 
     def __str__(self):
         return self.title
@@ -279,8 +289,8 @@ class TaskStatistics(models.Model):
             return self.player.username + ":" + self.task.title
 
     class Meta:
-        verbose_name = "Event statistic"
-        verbose_name_plural = "Events statistics"
+        verbose_name = "Task statistic"
+        verbose_name_plural = "Tasks statistics"
         ordering = ('time',)
 
 
