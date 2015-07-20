@@ -23,6 +23,7 @@ FORM_FIELDS_ERROR = _("Error in forms fields. Try again!")
 
 # Create your views here.
 
+
 def index(request):
     """
     Return index page. With events, players and organizers.
@@ -41,7 +42,7 @@ def index(request):
 
 def registration(request):
     """
-    Register new user
+    Register new user. Create user, organizer or players objects in database. Send confirmation email.
     :param request: HttpRequest
     :return: HttpResponse
     """
@@ -100,15 +101,14 @@ def registration(request):
     else:
         error = ""
     form = UserRegistrationForm()
-    return render_to_response('register.html', {'form': form, 'error': error},
-                                  context_instance=RequestContext(request))
+    return render_to_response('register.html', {'form': form, 'error': error}, context_instance=RequestContext(request))
 
 
 def restore_password(request):
     """
-    Restore password view
-    :param request:
-    :return:
+    Restore password view. Send restored password to email.
+    :param request: HttpRequest
+    :return: HttpResponse
     """
     success = False
     if request.method == 'POST':
@@ -144,11 +144,11 @@ def restore_password(request):
 
 def login_view(request):
     """
-    Login view
-    :param request:
-    :return:
+    Login view. If login successful redirect to index page or to 'next' parameter in GET request.
+    :param request: HttpRequest
+    :return: HttpResponse
     """
-    #TODO: complete debugging
+    # TODO: complete debugging
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
@@ -177,12 +177,13 @@ def login_view(request):
 
 def logout_view(request):
     """
-    Logout view (handler)
-    :param request:
-    :return:
+    Logout view (handler). After logout redirect to index page.
+    :param request: HttpRequest
+    :return: HttpResponse
     """
     logout(request)
     return redirect('/')
+
 
 @login_required()
 def show_player_profile(request):
