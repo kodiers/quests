@@ -19,6 +19,7 @@ from quests.settings import EMAIL_HOST_USER
 
 from web.functions import create_password_str
 
+FORM_FIELDS_ERROR = _("Error in forms fields. Try again!")
 
 # Create your views here.
 
@@ -31,9 +32,10 @@ def index(request):
     today = datetime.date.today()
     nearest_events = Events.objects.filter(start_date__gte=today).order_by('start_date')[:3]
     best_players = Players.objects.filter(points__gt=0).order_by('-points')[:3]
-    #TODO: get best organizers
+    best_organizers = Organizers.objects.filter(show_on_main_page=True)[:3]
     return render_to_response('index.html', {'nearest_events': nearest_events,
-                                             'best_players': best_players},
+                                             'best_players': best_players,
+                                             'best_organizers': best_organizers},
                               context_instance=RequestContext(request))
 
 
@@ -57,6 +59,21 @@ def registration(request):
                                                         form.cleaned_data['email'],
                                                         form.cleaned_data['password1'])
                     new_user.save()
+                    if 'is_organizer' in request.POST:
+                       new_organizer = QuestsUsers()
+                       new_organizer.user = new_user
+                       new_organizer.is_organizer = True
+                       new_organizer.save()
+                       orgzr = Organizers()
+                       orgzr.user = new_user
+                       orgzr.save()
+                    else:
+                       new_player = QuestsUsers()
+                       new_player.user = new_user
+                       new_player.save()
+                       player = Players()
+                       player.user = new_user
+                       player.save()
                     email_subject = "Registration complete!"
                     email_message = """Hello! You was registered on site OUR_SITE. \n
                     Your login {login} \n Your password {password} \n Your email {email} \n
@@ -70,21 +87,6 @@ def registration(request):
                         error = _("Error sending confirmation email")
                 except:
                     error = _("Error creating new user")
-                if 'is_organizer' in request.POST:
-                    new_organizer = QuestsUsers()
-                    new_organizer.user = new_user
-                    new_organizer.is_organizer = True
-                    new_organizer.save()
-                    orgzr = Organizers()
-                    orgzr.user = new_user
-                    orgzr.save()
-                else:
-                    new_player = QuestsUsers()
-                    new_player.user = new_user
-                    new_player.save()
-                    player = Players()
-                    player.user = new_user
-                    player.save()
                 auth_user = authenticate(username=new_user.username,
                                      password=form.cleaned_data['password1'])
                 login(request, auth_user)
@@ -94,7 +96,7 @@ def registration(request):
             else:
                 error = _("Password and confirm password doesn't match")
         else:
-            error = _("Error in forms fields. Try again!")
+            error = FORM_FIELDS_ERROR
     else:
         error = ""
     form = UserRegistrationForm()
@@ -131,7 +133,7 @@ def restore_password(request):
             except ObjectDoesNotExist:
                 error = _("User with this email not found")
         else:
-            error = _("Error in forms fields. Try again!")
+            error = FORM_FIELDS_ERROR
     else:
         error = ""
     form = RestorePasswordForm()
@@ -139,6 +141,48 @@ def restore_password(request):
                                                         'success': success},
                               context_instance=RequestContext(request))
 
+
+def login_view(request):
+    """
+    Login view
+    :param request:
+    :return:
+    """
+    #TODO: complete debugging
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect(request.POST.get('next', '/'))
+                else:
+                    error = _("User is not active!")
+            else:
+                error = _("Incorrect username or password!")
+        else:
+            error = FORM_FIELDS_ERROR
+    error = ""
+    next_url = '/'
+    if 'next' in request.GET:
+        if request.GET['next'] != '':
+            next_url = request.GET['next']
+    form = AuthenticationForm()
+    return render_to_response('login.html', {'form': form, 'error':error, 'next_url': next_url},
+                              context_instance=RequestContext(request))
+
+
+def logout_view(request):
+    """
+    Logout view (handler)
+    :param request:
+    :return:
+    """
+    logout(request)
+    return redirect('/')
 
 @login_required()
 def show_player_profile(request):

@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+import datetime
+
 from durationfield.db.models.fields.duration import DurationField
 
 # Create your models here.
@@ -114,9 +116,26 @@ class Organizers(models.Model):
     user = models.OneToOneField(User)
     description = models.TextField(verbose_name="Description", null=True, blank=True)
     tariff = models.ForeignKey(Tariffs, verbose_name="Tariff", null=True, blank=True)
+    show_on_main_page = models.BooleanField(default=False, verbose_name="Best organizer (show on main page)") # If tru => show on main page
 
     def __str__(self):
         return self.user.username
+
+    def get_three_future_events(self):
+        """
+        Get three future events for organizer. Calling in template.
+        """
+        today = datetime.date.today()
+        events = Events.objects.filter(organizer=self.user).filter(start_date__gte=today).order_by('start_date')[:3]
+        return events
+
+    def get_future_events(self):
+        """
+        Get all future events for organizer. Calling in template.
+        """
+        today = datetime.date.today()
+        events = Events.objects.filter(organizer=self.user).filter(start_date__gte=today).order_by('start_date')
+        return events
 
     class Meta:
         verbose_name = "Organizer"
