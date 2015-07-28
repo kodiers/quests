@@ -27,3 +27,11 @@ body {
     max-width: 200px;
     max-height: 200px;
 }
+.free_event {
+    color: blue;
+    font-style: italic;
+    font-weight: bold;
+}
+.text_on_1_line {
+    display: inline;
+}

@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load tags %}
+{% block title %}
+    {{ object.title }}. Create your own quest!
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-header">
+                    <h1>{{ object.title }}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2">
+                <p>Start date: {{ object.start_date }}</p>
+            </div>
+            <div class="col-xs-2">
+                <p>Place: {{ object.place.city }}</p>
+            </div>
+            <div class="col-xs-2">
+                <p>Organizer: {{ object.organizer.username }}</p>
+            </div>
+            <div class="col-xs-2">
+                {% if object.price != 0.0 %}
+                    <p>Price: {{ object.price }}</p>
+                {% else %}
+                    <p class="free_event">FREE</p>
+                {% endif %}
+            </div>
+            <div class="col-xs-2">
+                {% if object.is_team %}
+                    <p>TEAM GAME</p>
+                {% endif %}
+            </div>
+            <div class="col-xs-2">
+                <a href="#" class="btn btn-primary">Join!</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p>{{ object.description }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                {% for photo in object.event_photos.all %}
+                    <img src="{{ photo.image.url }}" class="img-rounded index_avatar" alt="{{ photo.title }}">
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Tasks</h2>
+            </div>
+        </div>
+        <div class="row">
+            {% for task in object.get_event_tasks %}
+                <div class="col-xs-12">
+                    <h3 class="text_on_1_line">{{ task.title }}</h3>
+                    <span>Score: {{ task.score }}</span>
+                    <span>Time: {{ task.score }}</span>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Registered players</h2>
+            </div>
+        </div>
+        <div class="row">
+            {% if object.is_team == False %}
+                <div class="col-xs-12">
+                    {% for player in object.registered_players.all %}
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <h3 class="text_on_1_line">{{ player.username }}</h3>
+                                <span>Score: {{ player.username|get_player_score }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% elif object.is_team %}
+                <div class="col-xs-12">
+                    {% for team in object.registered_teams.all %}
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h3>{{ team.title }}</h3>
+                            </div>
+                        </div>
+                        {% for player in team.players %}
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <h4>{{ player.user.username }}</h4>
+                                    <p>Score: {{ player.user.username|get_player_score }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

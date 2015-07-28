@@ -192,6 +192,32 @@ class EventsPlaces(models.Model):
         verbose_name_plural = "Event and task places"
 
 
+class EventsPhotos(models.Model):
+    """
+    Model for events photos.
+    """
+    title = models.TextField(verbose_name="Title", null=True, blank=True)
+    description = models.TextField(verbose_name="Descrition", null=True, blank=True)
+    date = models.DateField(verbose_name="Date", null=True, blank=True)
+    image = models.ImageField(upload_to='images')
+
+    def image_tag(self):
+        return u'<img src="%s" height=75 width=75 />' % (self.image.url)
+
+    image_tag.short_description = "Current image"
+    image_tag.allow_tags = True
+
+    def __str__(self):
+        if self.title:
+            return self.title
+        else:
+            return "Image"
+
+    class Meta:
+        verbose_name = "Event photo"
+        verbose_name_plural = "Event photos"
+
+
 class Events(models.Model):
     """
     Model for events.
@@ -207,7 +233,7 @@ class Events(models.Model):
     max_players = models.IntegerField(verbose_name="Limit players", null=True, blank=True)
     start_date = models.DateTimeField(verbose_name="Start date")
     end_date = models.DateTimeField(verbose_name="End date")
-    registered_players = models.ManyToManyField(User, verbose_name="Regitered users",
+    registered_players = models.ManyToManyField(User, verbose_name="Registered users",
                                                 related_name="regitered_players", null=True,
                                                 blank=True)
     registered_teams = models.ManyToManyField(Teams, verbose_name="Registered teams", null=True,
@@ -216,6 +242,7 @@ class Events(models.Model):
     completed = models.BooleanField(default=False, verbose_name="Finished")
     duration = DurationField(verbose_name="Duration", null=True, blank=True)
     image = models.ImageField(upload_to='images', blank=True, null=True, verbose_name="Image")
+    event_photos = models.ManyToManyField(EventsPhotos, verbose_name="Event photos", null=True, blank=True)
 
     def image_tag(self):
         return u'<img src="%s" height=75 width=75 />' % (self.image.url)
@@ -225,6 +252,19 @@ class Events(models.Model):
 
     def __str__(self):
         return self.title
+
+    # def get_event_photos(self):
+    #     """
+    #     Return list of event photos
+    #     """
+    #     photos =
+
+    def get_event_tasks(self):
+        """
+        Return list of tasks in event
+        """
+        tasks = Tasks.objects.filter(event=self).order_by('pk')
+        return tasks
 
     class Meta:
         verbose_name = "Event"

@@ -8,6 +8,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 
+from django.views.generic import ListView, DetailView
+
 from django.utils.translation import ugettext as _
 
 from django.core.mail import send_mail
@@ -183,6 +185,14 @@ def logout_view(request):
     """
     logout(request)
     return redirect('/')
+
+
+class EventView(DetailView):
+    """
+    Show events detail
+    """
+    model = Events
+    template_name = 'event.html'
 
 
 @login_required()
