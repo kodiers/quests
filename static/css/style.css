@@ -27,6 +27,10 @@ body {
     max-width: 200px;
     max-height: 200px;
 }
+.small_avatar {
+    max-width: 50px;
+    max-height: 50px;
+}
 .free_event {
     color: blue;
     font-style: italic;
@@ -34,4 +38,10 @@ body {
 }
 .text_on_1_line {
     display: inline;
+}
+.btn_width_200 {
+    width: 200px;
+}
+.text_center {
+    text-align: center;
 }

@@ -16,3 +16,21 @@ def get_player_score(username):
     player = Players.objects.get(user=user)
     return player.points
 
+
+@register.filter()
+def check_user_in_registered_team(username, event_pk):
+    """
+    Check^ uf user in team, that are already registered to event.
+    :param username: username
+    :param event_pk: pk of event
+    :return: Boolean
+    """
+    event = Events.objects.get(pk=event_pk)
+    user = User.objects.get(username=username)
+    registered = False
+    for team in event.registered_teams.all():
+        if user in team.players.all():
+            registered = True
+    return registered
+
+

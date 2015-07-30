@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load tags %}
+{% block title %}
+    Join event {{ object.title }}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4">
+                {% if user.questsusers.image.url != None %}
+                    <img src="{{ user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
+                {% else %}
+                    <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
+                {% endif %}
+                <a href="#" class="btn btn-default">Message count</a>
+            </div>
+            <div class="col-xs-8">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h1 class="page-header">You want to join event: {{ object.title }}</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p>Start date: {{ object.start_date }}</p>
+                    </div>
+                    <div class="col-xs-3">
+                        <p>Place</p>
+                        <ul>
+                            <li>Country: {{ object.place.country }}</li>
+                            <li>City: {{ object.place.city }}</li>
+                            <li>Street: {{ object.place.street }}</li>
+                            <li>Latitude: {{ object.place.lat }}</li>
+                            <li>Longtitude: {{ object.place.lon }}</li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-3">
+                        <p>Organizer: {{ object.organizer.username }}</p>
+                    </div>
+                    <div class="col-xs-3">
+                        {% if object.price != 0.0 %}
+                            <p>Price: {{ object.price }}</p>
+                        {% else %}
+                            <p class="free_event">FREE</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <p>{{ object.description }}</p>
+                    </div>
+                    <div class="col-xs-4">
+                        {{ object.place.map_link|safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% if object.is_team %}
+                <div class="col-xs-12">
+                    <h2>Registered teams</h2>
+                        {% if user_registered %}
+                            <p>You are in team, that registered</p>
+                        {% else %}
+                            <a href="{% url 'create_and_register_team' object.pk %}" class="btn btn-primary">
+                                Create team and join!
+                            </a>
+                            <form action="{% url 'join_as_team' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" value="{{ object.pk }}" name="event_pk">
+                                <input type="submit" value="Join as team!" class="btn btn-primary">
+                            </form>
+                        {% endif %}
+                    {% for team in object.registered_teams.all %}
+                        <h3>{{ team.title }}</h3>
+                        {% if user_registered == False %}
+                            <form action="{% url 'join_team' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" value="{{ team.pk }}" name="team_pk">
+                                <input type="submit" value="Join team!" class="btn btn-primary">
+                            </form>
+{#                            <a href="#" class="btn btn-primary">Join team!</a>#}
+                        {% endif %}
+                        <p>Team players:</p>
+                        {% for player in team.players.all %}
+                            <p>{{ player.username }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="col-xs-12 text_center">
+                    {% if user_registered %}
+                        <p>You are already joined this event!</p>
+                    {% else %}
+                        <form method="post" action="{% url 'join_as_player' %}">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{ object.pk }}" name="event_pk">
+                            <input type="submit" value="Join event!" class="btn btn-primary btn_width_200">
+                        </form>
+                    {% endif %}
+                    <h2>Registered players</h2>
+                    {% for player in object.registered_players.all %}
+                        <h4 class="text_on_1_line">{{ player.username }}</h4>
+                        {% if player.questsusers.image.url != None %}
+                            <img src="{{ player.questsusers.image.url }}" class="img-rounded small_avatar">
+                        {% else %}
+                            <img src="{% static 'images/default-user-avatar.png' %}" class="img-rounded small_avatar">
+                        {% endif %}
+                        <a href="#" class="btn btn-primary">Write message</a>
+                        <br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -20,3 +20,10 @@ class RestorePasswordForm(forms.Form):
     Restore password form
     """
     email = forms.EmailField(label="Email", max_length=128)
+
+
+class CreateTeamForm(forms.Form):
+    """
+    Create team form
+    """
+    title = forms.CharField(label="Title", max_length=128)

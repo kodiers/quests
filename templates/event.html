@@ -36,7 +36,15 @@
                 {% endif %}
             </div>
             <div class="col-xs-2">
-                <a href="#" class="btn btn-primary">Join!</a>
+                {% if user.is_authenticated %}
+                    {% if user in object.registered_players.all or user.username|check_user_in_registered_team:object.pk %}
+                        <p>You are already joined this event</p>
+                    {% else %}
+                        <a href="{% url 'confirm_join' object.pk %}" class="btn btn-primary">Join!</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-primary">Login to join!</a>
+                {% endif %}
             </div>
         </div>
         <div class="row">
@@ -67,7 +75,11 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <h2>Registered players</h2>
+                {% if object.is_team == False %}
+                    <h2>Registered players</h2>
+                {% else %}
+                    <h2>Registered teams</h2>
+                {% endif %}
             </div>
         </div>
         <div class="row">
@@ -90,11 +102,11 @@
                                 <h3>{{ team.title }}</h3>
                             </div>
                         </div>
-                        {% for player in team.players %}
+                        {% for player in team.players.all %}
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <h4>{{ player.user.username }}</h4>
-                                    <p>Score: {{ player.user.username|get_player_score }}</p>
+                                    <h4>{{ player.username }}</h4>
+                                    <p>Score: {{ player.username|get_player_score }}</p>
                                 </div>
                             </div>
                         {% endfor %}

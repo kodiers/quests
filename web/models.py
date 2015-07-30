@@ -147,7 +147,8 @@ class Teams(models.Model):
     Model for players teams
     """
     title = models.CharField(max_length=255, verbose_name="Title")
-    players = models.ManyToManyField(User)
+    creator = models.OneToOneField(User, null=True, blank=True, verbose_name='Creator')
+    players = models.ManyToManyField(User, related_name='team_players', verbose_name='Players')
     points = models.IntegerField(verbose_name="Total points", default=0)
 
     def __str__(self):
