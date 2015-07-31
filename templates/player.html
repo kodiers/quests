@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load tags %}
+{% block title %}
+    {{ object.user.username }} Get your own quest!
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4">
+                <h1 class="page-header">{{ object.user.username }}</h1>
+                {% if object.user.questsusers.image.url != None %}
+                    <img src="{{ object.user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
+                {% else %}
+                    <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
+                {% endif %}
+            </div>
+            <div class="col-xs-8">
+                {% for photo in object.user.photos_set.all %}
+                    {% if photo.image.url != None %}
+                        <img src="{{ photo.image.url }}" class="img-rounded index_avatar">
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2">
+                <a href="#" class="btn btn-primary">Отправить сообщение</a>
+            </div>
+            <div class="col-xs-2">
+                <p>Score: {{ object.points }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4">
+                {% if object.show_personal_info %}
+                    <h2>Personal info:</h2>
+                    <p>Date of birth: {{ object.date_of_birth|date:'d M Y' }}</p>
+                    <p>Sex: {{ object.get_sex_display }}</p>
+                    <p>Country: {{ object.user.contacts.country }}</p>
+                    <p>City: {{ object.user.contacts.city }}</p>
+                    <p>Street: {{ object.user.contacts.street }}</p>
+                    <p>Phone: {{ object.user.contacts.phone }}</p>
+                    <p>Skype: {{ object.user.contacts.skype }}</p>
+                    <p>Web-site: {{ object.user.contacts.site }}</p>
+                {% endif %}
+            </div>
+            <div class="col-xs-8">
+                <h2>About:</h2>
+                <p>{{ object.description }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Future events:</h2>
+                {% for event in object.get_future_events %}
+                    <p>{{ event.title }}</p>
+                    <p>{{ event.start_date }}</p>
+                    <p>{{ event.organizer }}</p>
+                    <p>{{ event.place.city }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Completed events:</h2>
+                {% for event in object.get_last_events %}
+                    <p>{{ event.title }}</p>
+                    <p>{{ event.end_date }}</p>
+                    <p>{{ event.organizer }}</p>
+                    <p>{{ event.place.city }}</p>
+                    <p>{{ object.user.username|get_score_for_event_by_user:event }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

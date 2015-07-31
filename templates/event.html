@@ -54,7 +54,7 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                {% for photo in object.event_photos.all %}
+                {% for photo in object.get_event_photos %}
                     <img src="{{ photo.image.url }}" class="img-rounded index_avatar" alt="{{ photo.title }}">
                 {% endfor %}
             </div>

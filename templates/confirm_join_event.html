@@ -66,7 +66,7 @@
                             <a href="{% url 'create_and_register_team' object.pk %}" class="btn btn-primary">
                                 Create team and join!
                             </a>
-                            <form action="{% url 'join_as_team' %}" method="post">
+                            <form action="{% url 'join_event' 'team' %}" method="post">
                                 {% csrf_token %}
                                 <input type="hidden" value="{{ object.pk }}" name="event_pk">
                                 <input type="submit" value="Join as team!" class="btn btn-primary">
@@ -80,7 +80,6 @@
                                 <input type="hidden" value="{{ team.pk }}" name="team_pk">
                                 <input type="submit" value="Join team!" class="btn btn-primary">
                             </form>
-{#                            <a href="#" class="btn btn-primary">Join team!</a>#}
                         {% endif %}
                         <p>Team players:</p>
                         {% for player in team.players.all %}
@@ -93,7 +92,7 @@
                     {% if user_registered %}
                         <p>You are already joined this event!</p>
                     {% else %}
-                        <form method="post" action="{% url 'join_as_player' %}">
+                        <form method="post" action="{% url 'join_event' 'player' %}">
                             {% csrf_token %}
                             <input type="hidden" value="{{ object.pk }}" name="event_pk">
                             <input type="submit" value="Join event!" class="btn btn-primary btn_width_200">

@@ -2,7 +2,8 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
 from web.views import registration, index, restore_password, logout_view, login_view, EventView, confirm_join_event, \
-    join_event_as_player, join_as_team, create_team, join_team
+    create_team, join_team, join_event, PlayerView
+    #join_event_as_player, join_as_team
 
 from quests.settings import MEDIA_ROOT
 
@@ -13,9 +14,9 @@ urlpatterns = patterns('',
 
     url(r'^$', index, name='index'),
     url(r'^event/(?P<pk>\d+)/$', EventView.as_view(), name='event'),
+    url(r'^player/(?P<pk>\d+)/$', PlayerView.as_view(), name='player'),
     url(r'^confirm_join/(?P<pk>\d+)/$', confirm_join_event, name='confirm_join'),
-    url(r'^join_as_player/$', join_event_as_player, name='join_as_player'),
-    url(r'^join_as_team/$', join_as_team, name='join_as_team'),
+    url(r'^join/(?P<flag>\w+)/$', join_event, name='join_event'),
     url(r'^create_team/$', create_team, name='create_team'),
     url(r'^join_team', join_team, name='join_team'),
     url(r'^create_team/(?P<event_pk>\d+)/$', create_team, name='create_and_register_team'),

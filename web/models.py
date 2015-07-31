@@ -34,7 +34,7 @@ class Contacts(models.Model):
     """
     Model for user and organisator contacts
     """
-    user = models.ForeignKey(User)
+    user = models.OneToOneField(User)
     country = models.CharField(max_length=255, null=True, blank=True, verbose_name="Country")
     city = models.CharField(max_length=255, null=True, blank=True, verbose_name="City")
     street = models.TextField(verbose_name="Street", null=True, blank=True)
@@ -66,9 +66,42 @@ class Players(models.Model):
     date_of_birth = models.DateField(null=True, blank=True, verbose_name="Date of birth")
     points = models.IntegerField(default=0, verbose_name="Points")
     rating = models.IntegerField(default=0, verbose_name="Place (rating)")
+    show_personal_info = models.BooleanField(default=False, verbose_name="Show personal info")
 
     def __str__(self):
         return self.user.username
+
+    def get_future_events(self):
+        """
+        Return all events, there user registered.
+        """
+        today = datetime.date.today()
+        events = []
+        all_events = Events.objects.filter(start_date__gte=today).order_by('start_date')
+        user_teams = Teams.objects.filter(players=self.user)
+        for event in all_events:
+            if self.user in event.registered_players.all():
+                events.append(event)
+            for team in user_teams:
+                if team in event.registered_teams.all():
+                    events.append(event)
+        return events
+
+    def get_last_events(self):
+        """
+        Return all events, there user was registered and that completed
+        """
+        today = datetime.date.today()
+        events = []
+        all_events = Events.objects.filter(start_date__lt=today).filter(completed=True).order_by('start_date')
+        user_teams = Teams.objects.filter(players=self.user)
+        for event in all_events:
+            if self.user in event.registered_players.all():
+                events.append(event)
+            for team in user_teams:
+                if team in event.registered_teams.all():
+                    events.append(event)
+        return events
 
     class Meta:
         verbose_name = "Player"
@@ -193,32 +226,6 @@ class EventsPlaces(models.Model):
         verbose_name_plural = "Event and task places"
 
 
-class EventsPhotos(models.Model):
-    """
-    Model for events photos.
-    """
-    title = models.TextField(verbose_name="Title", null=True, blank=True)
-    description = models.TextField(verbose_name="Descrition", null=True, blank=True)
-    date = models.DateField(verbose_name="Date", null=True, blank=True)
-    image = models.ImageField(upload_to='images')
-
-    def image_tag(self):
-        return u'<img src="%s" height=75 width=75 />' % (self.image.url)
-
-    image_tag.short_description = "Current image"
-    image_tag.allow_tags = True
-
-    def __str__(self):
-        if self.title:
-            return self.title
-        else:
-            return "Image"
-
-    class Meta:
-        verbose_name = "Event photo"
-        verbose_name_plural = "Event photos"
-
-
 class Events(models.Model):
     """
     Model for events.
@@ -234,16 +241,14 @@ class Events(models.Model):
     max_players = models.IntegerField(verbose_name="Limit players", null=True, blank=True)
     start_date = models.DateTimeField(verbose_name="Start date")
     end_date = models.DateTimeField(verbose_name="End date")
-    registered_players = models.ManyToManyField(User, verbose_name="Registered users",
-                                                related_name="regitered_players", null=True,
+    registered_players = models.ManyToManyField(User, verbose_name="Registered users", related_name="regitered_players",
                                                 blank=True)
-    registered_teams = models.ManyToManyField(Teams, verbose_name="Registered teams", null=True,
-                                              blank=True)
+    registered_teams = models.ManyToManyField(Teams, verbose_name="Registered teams", blank=True)
     organizer = models.ForeignKey(User, verbose_name="Organizer", related_name="organizer")
     completed = models.BooleanField(default=False, verbose_name="Finished")
     duration = DurationField(verbose_name="Duration", null=True, blank=True)
     image = models.ImageField(upload_to='images', blank=True, null=True, verbose_name="Image")
-    event_photos = models.ManyToManyField(EventsPhotos, verbose_name="Event photos", null=True, blank=True)
+    # event_photos = models.ManyToManyField(EventsPhotos, verbose_name="Event photos")
 
     def image_tag(self):
         return u'<img src="%s" height=75 width=75 />' % (self.image.url)
@@ -254,11 +259,12 @@ class Events(models.Model):
     def __str__(self):
         return self.title
 
-    # def get_event_photos(self):
-    #     """
-    #     Return list of event photos
-    #     """
-    #     photos =
+    def get_event_photos(self):
+        """
+        Return list of event photos
+        """
+        photos = Photos.objects.filter(event=self).order_by('date')
+        return photos
 
     def get_event_tasks(self):
         """
@@ -309,13 +315,40 @@ class Hints(models.Model):
         verbose_name = "Hint"
 
 
+class Photos(models.Model):
+    """
+    Model for photos.
+    """
+    title = models.TextField(verbose_name="Title", null=True, blank=True)
+    description = models.TextField(verbose_name="Descrition", null=True, blank=True)
+    date = models.DateField(verbose_name="Date", null=True, blank=True)
+    event = models.ForeignKey(Events, null=True, blank=True, verbose_name="Event")
+    user = models.ForeignKey(User, null=True, blank=True, verbose_name="User")
+    image = models.ImageField(upload_to='images')
+
+    def image_tag(self):
+        return u'<img src="%s" height=75 width=75 />' % (self.image.url)
+
+    image_tag.short_description = "Current image"
+    image_tag.allow_tags = True
+
+    def __str__(self):
+        if self.title:
+            return self.title
+        else:
+            return "Image"
+
+    class Meta:
+        verbose_name = "Photo"
+        verbose_name_plural = "Photos"
+
 class EventStatistics(models.Model):
     """
     Model for store event's statistic
     """
     event = models.ForeignKey(Events, verbose_name="Event")
-    team = models.ForeignKey(Teams, verbose_name="Team", null=True, blank=True)
-    player = models.ForeignKey(User, verbose_name="Player", null=True, blank=True)
+    team = models.OneToOneField(Teams, verbose_name="Team", null=True, blank=True)
+    player = models.OneToOneField(User, verbose_name="Player", null=True, blank=True)
     score = models.IntegerField(verbose_name="Score", null=True, blank=True)
     time = DurationField(verbose_name="Executed time", null=True, blank=True)
 

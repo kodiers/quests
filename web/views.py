@@ -217,49 +217,33 @@ def confirm_join_event(request, pk):
 
 
 @login_required()
-def join_event_as_player(request):
+def join_event(request, flag):
     """
-    Add user to event.registered_players field.
-    :param request: HttpRequest
-    :return: HttpResponse
-    """
-    if request.method == 'POST':
-        if 'event_pk' in request.POST:
-            event = get_object_or_404(Events, pk=request.POST['event_pk'])
-            event.registered_players.add(request.user)
-            event.save()
-            error = _('You was successfully registered to event!')
-        else:
-            error = REQUEST_PARAMETRS_ERROR
-    else:
-        error = REQUEST_TYPE_ERROR
-    if event is None:
-        event = ''
-    return render_to_response('join_event.html', {'object': event, 'error': error},
-                              context_instance=RequestContext(request))
 
-
-@login_required()
-def join_as_team(request):
+    :param request:
+    :param flag:
+    :return:
     """
-    Add team of user to event.registered_teams field.
-    :param request: HttpRequest
-    :return: HttpResponse
-    """
-    error = ''
     event = None
+    error = ''
     if request.method == 'POST':
         if 'event_pk' in request.POST:
             event = get_object_or_404(Events, pk=request.POST['event_pk'])
-            try:
-                team = Teams.objects.get(creator=request.user)
-                if team in event.registered_teams.all():
-                    error = _('Your team are already registered in this event!')
-                else:
-                    event.registered_teams.add(team)
-                    error = _('You team was registered to event %s' % event.title)
-            except ObjectDoesNotExist:
-                error = _('You are not creator of any team!')
+            if flag == 'player':
+                event.registered_players.add(request.user)
+                error = _('You was successfully registered to event!')
+            elif flag == 'team':
+                try:
+                    team = Teams.objects.get(creator=request.user)
+                    if team in event.registered_teams.all():
+                        error = _('Your team are already registered in this event!')
+                    else:
+                        event.registered_teams.add(team)
+                        error = _('You team was registered to event %s' % event.title)
+                except ObjectDoesNotExist:
+                    pass
+            else:
+                error = REQUEST_PARAMETRS_ERROR
         else:
             error = REQUEST_PARAMETRS_ERROR
     else:
@@ -333,11 +317,10 @@ def join_team(request):
     return render_to_response('join_event.html', {'error': error}, context_instance=RequestContext(request))
 
 
-@login_required()
-def show_player_profile(request):
+class PlayerView(DetailView):
     """
+    Show player detail info for other users.
+    """
+    model = Players
+    template_name = 'player.html'
 
-    :param request:
-    :return:
-    """
-    pass

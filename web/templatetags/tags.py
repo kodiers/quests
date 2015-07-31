@@ -1,7 +1,7 @@
 __author__ = 'kodiers'
 from django import template
 from django.contrib.auth.models import User
-from web.models import Organizers, Events, QuestsUsers, Players
+from web.models import Organizers, Events, QuestsUsers, Players, EventStatistics
 
 register = template.Library()
 
@@ -33,4 +33,17 @@ def check_user_in_registered_team(username, event_pk):
             registered = True
     return registered
 
+
+@register.filter()
+def get_score_for_event_by_user(username, event):
+    """
+    Return EventStatistics object for event for user:
+    :param username: username of user
+    :param event: event object
+    :return: List of event statistics objects
+    """
+    user = User.objects.get(username=username)
+    player = Players.objects.get(user=user)
+    stat = EventStatistics.objects.filter(event=event).get(player=user)
+    return stat.score
 
