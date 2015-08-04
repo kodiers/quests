@@ -16,6 +16,7 @@
                 {% endif %}
             </div>
             <div class="col-xs-8">
+                <h2>Photo:</h2>
                 {% for photo in object.user.photos_set.all %}
                     {% if photo.image.url != None %}
                         <img src="{{ photo.image.url }}" class="img-rounded index_avatar">
@@ -25,7 +26,7 @@
         </div>
         <div class="row">
             <div class="col-xs-2">
-                <a href="#" class="btn btn-primary">Отправить сообщение</a>
+                <a href="#" class="btn btn-primary">Send message</a>
             </div>
             <div class="col-xs-2">
                 <p>Score: {{ object.points }}</p>
@@ -54,10 +55,10 @@
             <div class="col-xs-12">
                 <h2>Future events:</h2>
                 {% for event in object.get_future_events %}
-                    <p>{{ event.title }}</p>
-                    <p>{{ event.start_date }}</p>
-                    <p>{{ event.organizer }}</p>
-                    <p>{{ event.place.city }}</p>
+                    <p class="text_on_1_line">{{ event.title }}</p>
+                    <p class="text_on_1_line">{{ event.start_date }}</p>
+                    <p class="text_on_1_line">{{ event.organizer }}</p>
+                    <p class="text_on_1_line">{{ event.place.city }}</p>
                 {% endfor %}
             </div>
         </div>
@@ -65,11 +66,11 @@
             <div class="col-xs-12">
                 <h2>Completed events:</h2>
                 {% for event in object.get_last_events %}
-                    <p>{{ event.title }}</p>
-                    <p>{{ event.end_date }}</p>
-                    <p>{{ event.organizer }}</p>
-                    <p>{{ event.place.city }}</p>
-                    <p>{{ object.user.username|get_score_for_event_by_user:event }}</p>
+                    <p class="text_on_1_line">{{ event.title }}</p>
+                    <p class="text_on_1_line">{{ event.end_date }}</p>
+                    <p class="text_on_1_line">{{ event.organizer }}</p>
+                    <p class="text_on_1_line">{{ event.place.city }}</p>
+                    <p class="text_on_1_line">{{ object.user.username|get_score_for_event_by_user:event }}</p>
                 {% endfor %}
             </div>
         </div>

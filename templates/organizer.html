@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load tags %}
+{% block title %}
+    {{ object.user.username }} Get your own quest!
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4">
+                <h1 class="page-header">{{ object.user.username }}</h1>
+                {% if object.user.questsusers.image.url != None %}
+                    <img src="{{ object.user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
+                {% else %}
+                    <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
+                {% endif %}
+                <a href="#" class="btn btn-primary">Send message</a>
+                <p>City: {{ object.user.contacts.city }}</p>
+                <p>Street: {{ object.user.contacts.street }}</p>
+                <p>Phone: {{ object.user.contacts.phone }}</p>
+                <p>Skype: {{ object.user.contacts.skype }}</p>
+                <p>Web-site: {{ object.user.contacts.site }}</p>
+            </div>
+            <div class="col-xs-8">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h2>About:</h2>
+                        {{ object.description }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h2>Photo:</h2>
+                        {% for photo in object.user.photos_set.all %}
+                            {% if photo.image.url != None %}
+                                <img src="{{ photo.image.url }}" class="img-rounded index_avatar">
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Events today</h2>
+                {% for event in object.get_current_events %}
+                    <h3>{{ event.title }}</h3>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Future events:</h2>
+                {% for event in object.get_future_events %}
+                    <p class="text_on_1_line">Title: {{ event.title }}</p>
+                    <p class="text_on_1_line">Date: {{ event.start_date }}</p>
+                    <p class="text_on_1_line">
+                        Cost:
+                        {% if event.price == 0.0 %}
+                            <span class="free_event"> Free</span>
+                        {% else %}
+                            {{ event.price }}
+                        {% endif %}
+                    </p>
+                    {% if user.is_authenticated %}
+                        {% if user in object.registered_players.all or user.username|check_user_in_registered_team:object.pk %}
+                            <p class="text_on_1_line">You are already joined this event</p>
+                        {% else %}
+                            <a href="{% url 'confirm_join' event.pk %}" class="btn btn-primary">Join!</a>
+                        {% endif %}
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-primary">Login to join!</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Completed events:</h2>
+                {% for event in object.get_completed_events %}
+                    <p class="text_on_1_line">Title: {{ event.title }}</p>
+                    <p class="text_on_1_line">End date: {{ event.end_date }}</p>
+                    <p class="text_on_1_line">Winner: {{ event.get_event_winner }}</p>
+                    <p class="text_on_1_line">Max score: {{ event.get_event_score }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

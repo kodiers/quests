@@ -1,5 +1,7 @@
 import datetime
 
+from django.http import Http404
+
 from django.shortcuts import render, render_to_response, redirect, get_list_or_404, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
@@ -323,4 +325,34 @@ class PlayerView(DetailView):
     """
     model = Players
     template_name = 'player.html'
+
+
+class OrganizerView(DetailView):
+    """
+    Show organizer details for other users.
+    """
+    model = Organizers
+    template_name = 'organizer.html'
+
+
+@login_required()
+def show_my_profile(request, pk):
+    """
+
+    :param request:
+    :param pk:
+    :return:
+    """
+    # TODO: complete profile view
+    if Organizers.objects.get(user=request.user).exists():
+        return redirect('/profile')
+    elif Players.objects.get(user=request.user).exists():
+        pass
+    else:
+        return Http404("User doesn't exist")
+    if request.user.pk != pk:
+        return redirect('/player/%s' % pk )
+    if request.method == 'POST':
+        pass
+
 

@@ -21,7 +21,7 @@
                 <p>Place: {{ object.place.city }}</p>
             </div>
             <div class="col-xs-2">
-                <p>Organizer: {{ object.organizer.username }}</p>
+                <p>Organizer: <a href="{% url 'organizer' object.organizer.username|get_organizer_by_username %}"> {{ object.organizer.username }}</a></p>
             </div>
             <div class="col-xs-2">
                 {% if object.price != 0.0 %}

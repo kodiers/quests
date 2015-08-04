@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Max
 from django.contrib.auth.models import User
 
 import datetime
@@ -125,7 +126,6 @@ class Tariffs(models.Model):
         ordering = ('price', )
 
 
-
 class TariffsFeature(models.Model):
     """
     Models for tarifs features
@@ -168,6 +168,22 @@ class Organizers(models.Model):
         """
         today = datetime.date.today()
         events = Events.objects.filter(organizer=self.user).filter(start_date__gte=today).order_by('start_date')
+        return events
+
+    def get_current_events(self):
+        """
+        Get current events for this organizer. Calling in template.
+        """
+        today = datetime.date.today()
+        events = Events.objects.filter(organizer=self.user).filter(start_date=today).order_by('pk')
+        return events
+
+    def get_completed_events(self):
+        """
+        Get completed events for this organizer. Calling in template
+        """
+        today = datetime.date.today()
+        events = Events.objects.filter(organizer=self.user).filter(start_date__lt=today).filter(completed=True).order_by('start_date')
         return events
 
     class Meta:
@@ -273,6 +289,27 @@ class Events(models.Model):
         tasks = Tasks.objects.filter(event=self).order_by('pk')
         return tasks
 
+    def get_event_winner(self):
+        """
+        Return username (if user is winner) or team.title if event for team only. Calling in template.
+        """
+        statistics = EventStatistics.objects.filter(event=self).aggregate(Max('score'))
+        eventstat = EventStatistics.objects.filter(event=self).get(score=statistics['score__max'])
+        if self.is_team:
+            team = eventstat.team.title
+            return team
+        else:
+            username = eventstat.player.username
+            return username
+
+    def get_event_score(self):
+        """
+        Return max score for event. Calling in template.
+        """
+        statistics = EventStatistics.objects.filter(event=self).aggregate(Max('score'))
+        return statistics['score__max']
+
+
     class Meta:
         verbose_name = "Event"
         verbose_name_plural = "Events"
@@ -357,6 +394,13 @@ class EventStatistics(models.Model):
             return self.team.title + ":" + self.event.title
         else:
             return self.player.username + ":" + self.event.title
+
+    # def get_winner(self):
+    #     """
+    #     Get winner in event.
+    #     """
+    #     if self.event.is_team:
+
 
     class Meta:
         verbose_name = "Event statistic"

@@ -47,3 +47,15 @@ def get_score_for_event_by_user(username, event):
     stat = EventStatistics.objects.filter(event=event).get(player=user)
     return stat.score
 
+
+@register.filter()
+def get_organizer_by_username(username):
+    """
+    Get organizer by username and retur organizer pk.
+    :param username: username of user
+    :return: organizer.pk
+    """
+    user = User.objects.get(username=username)
+    organizer = Organizers.objects.get(user=user)
+    return organizer.pk
+

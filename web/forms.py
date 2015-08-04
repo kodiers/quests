@@ -27,3 +27,9 @@ class CreateTeamForm(forms.Form):
     Create team form
     """
     title = forms.CharField(label="Title", max_length=128)
+
+
+class PlayerProfileForm(forms.Form):
+    """
+    Change player profile form
+    """

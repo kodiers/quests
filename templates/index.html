@@ -102,7 +102,7 @@
                 {% if best_organizers %}
                     {% for organizer in best_organizers %}
                         <div class="col-xs-4">
-                            <a href="#">
+                            <a href="{% url 'organizer' organizer.pk %}">
                                 {% if organizer.user.questsusers.image.url != None %}
                                     <img src="{{ organizer.user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
                                 {% else %}
