@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load tags %}
+{% block title %}
+    {{ object.username }} | Get your own quest!
+{% endblock %}
+{% block content %}
+    <script src="{% static 'js/calendar.js' %}"></script>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4">
+                <h1 class="page-header">{{ object.username }}</h1>
+                {% if object.questsusers.image.url != None %}
+                    <img src="{{ object.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
+                {% else %}
+                    <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
+                {% endif %}
+                <form action="." method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <p>Change avatar:</p>
+                        <input id="id_avatar" name="avatar" type="file">
+                    <h2>Change personal info:</h2>
+
+                        {{ form.email.label }}:
+                        {{ form.email|add_class_to_formfield:"form-control" }}
+
+                        {{ form.description.label }}:
+                        {{ form.description|add_class_to_formfield:"form-control" }}
+                    
+                    <p>
+                        {{ form.date_of_birth.label }}:
+                        {{ form.date_of_birth|add_class_to_formfield:"form-control" }}
+                    </p>
+                    <p>
+                        {{ form.sex.label }}:
+                        {{ form.sex|add_class_to_formfield:"form-control" }}
+                    </p>
+                    <p>
+                        {{ form.country.label }}:
+                        {{ form.country|add_class_to_formfield:"form-control" }}
+                    </p>
+                    <p>
+                        {{ form.city.label }}:
+                        {{ form.city|add_class_to_formfield:"form-control" }}
+                    </p>
+                    <p>
+                        {{ form.street.label }}:
+                        {{ form.street|add_class_to_formfield:"form-control" }}
+                    </p>
+                    <p>
+                        {{ form.phone.label }}:
+                        {{ form.phone|add_class_to_formfield:"form-control" }}
+                    </p>
+                    <p>
+                        {{ form.skype.label }}:
+                        {{ form.skype|add_class_to_formfield:"form-control" }}
+                    </p>
+                    <p>
+                        {{ form.site.label }}:
+                        {{ form.site|add_class_to_formfield:"form-control" }}
+                    </p>
+                    <input type="submit" value="Save!">
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

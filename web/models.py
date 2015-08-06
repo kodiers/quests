@@ -39,9 +39,9 @@ class Contacts(models.Model):
     country = models.CharField(max_length=255, null=True, blank=True, verbose_name="Country")
     city = models.CharField(max_length=255, null=True, blank=True, verbose_name="City")
     street = models.TextField(verbose_name="Street", null=True, blank=True)
-    phone = models.TextField(verbose_name="Phone number", null=True, blank=True)
+    phone = models.CharField(verbose_name="Phone number", null=True, blank=True, max_length=128)
     skype = models.CharField(max_length=255, null=True, blank=True, verbose_name="Skype")
-    site = models.TextField(verbose_name="Web site", null=True, blank=True)
+    site = models.CharField(verbose_name="Web site", null=True, blank=True, max_length=128)
 
     def __str__(self):
         return self.user.username
@@ -149,7 +149,7 @@ class Organizers(models.Model):
     user = models.OneToOneField(User)
     description = models.TextField(verbose_name="Description", null=True, blank=True)
     tariff = models.ForeignKey(Tariffs, verbose_name="Tariff", null=True, blank=True)
-    show_on_main_page = models.BooleanField(default=False, verbose_name="Best organizer (show on main page)") # If tru => show on main page
+    show_on_main_page = models.BooleanField(default=False, verbose_name="Best organizer (show on main page)") # If true => show on main page
 
     def __str__(self):
         return self.user.username

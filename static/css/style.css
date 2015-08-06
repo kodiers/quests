@@ -45,3 +45,10 @@ body {
 .text_center {
     text-align: center;
 }
+.form_align {
+    text-align: justify;
+}
+.profile_form {
+    text-align: justify;
+    color: black;
+}

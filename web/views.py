@@ -10,14 +10,14 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, UpdateView
 
 from django.utils.translation import ugettext as _
 
 from django.core.mail import send_mail
 
 from web.models import QuestsUsers, Players, Organizers, Contacts, Events, Teams
-from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm
+from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm, PlayerProfileForm
 
 from quests.settings import EMAIL_HOST_USER
 
@@ -344,15 +344,46 @@ def show_my_profile(request, pk):
     :return:
     """
     # TODO: complete profile view
-    if Organizers.objects.get(user=request.user).exists():
-        return redirect('/profile')
-    elif Players.objects.get(user=request.user).exists():
-        pass
-    else:
-        return Http404("User doesn't exist")
-    if request.user.pk != pk:
-        return redirect('/player/%s' % pk )
+    message = ''
+    user = User.objects.get(pk=pk)
     if request.method == 'POST':
-        pass
-
+        form = PlayerProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            # form.save()
+            user.email = form.cleaned_data['email']
+            if 'avatar' in request.FILES:
+                user.questsusers.image = form.cleaned_data['avatar']
+            user.players.description = form.cleaned_data['description']
+            user.players.date_of_birth = form.cleaned_data['date_of_birth']
+            user.players.sex = form.cleaned_data['sex']
+            if not Contacts.objects.filter(user=user).exists():
+                user_contacts = Contacts()
+                user_contacts.user = user
+                user_contacts.save()
+            user.contacts.country = form.cleaned_data['country']
+            user.contacts.city = form.cleaned_data['city']
+            user.contacts.street = form.cleaned_data['street']
+            user.contacts.phone = form.cleaned_data['phone']
+            user.contacts.skype = form.cleaned_data['skype']
+            user.contacts.site = form.cleaned_data['site']
+            user.questsusers.save()
+            user.players.save()
+            user.contacts.save()
+            user.save()
+            message = _("Your profile updated successfully!")
+            # return redirect('/')
+    intial_formdata = {'avatar': user.questsusers.image, 'description': user.players.description,
+                       'date_of_birth': user.players.date_of_birth, 'sex': user.players.sex,
+                       'country': '', 'city': '', 'street': '', 'phone':'', 'skype': '', 'site': '',
+                       'email': user.email}
+    if Contacts.objects.filter(user=user).exists():
+        intial_formdata['country'] = user.contacts.country
+        intial_formdata['city'] = user.contacts.city
+        intial_formdata['street'] = user.contacts.street
+        intial_formdata['phone'] = user.contacts.phone
+        intial_formdata['skype'] = user.contacts.skype
+        intial_formdata['site'] = user.contacts.site
+    form = PlayerProfileForm(request.POST or None, initial=intial_formdata)
+    return render_to_response('player_profile.html', {'form': form, 'object': user, 'message': message},
+                              context_instance=RequestContext(request))
 

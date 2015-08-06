@@ -59,3 +59,22 @@ def get_organizer_by_username(username):
     organizer = Organizers.objects.get(user=user)
     return organizer.pk
 
+
+@register.filter()
+def add_class_to_formfield(field, css):
+    """
+    """
+    return field.as_widget(attrs={"class": css})
+
+# @register.filter()
+# def if_user_is_organizer(username):
+#     """
+#     Check, then user if organizer. If yes => return true.
+#     :param username: username of user
+#     :return: Boolean
+#     """
+#     user = User.objects.get(username=username)
+#     if Organizers.objects.filter(user=user).exists():
+#         return True
+#     else:
+#         return False
