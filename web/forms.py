@@ -3,6 +3,8 @@ __author__ = 'kodiers'
 from django import forms
 from django.contrib.admin.widgets import AdminDateWidget
 
+from web.models import Events
+
 
 class UserRegistrationForm(forms.Form):
     """
@@ -47,13 +49,24 @@ class PlayerProfileForm(forms.Form):
     country = forms.CharField(max_length=255, required=False, label="Country")
     city = forms.CharField(max_length=255, required=False, label="City")
     street = forms.CharField(required=False, label="Street", widget=forms.Textarea(attrs={'rows': 1}))
-    phone = forms.RegexField(regex=r'^\+?1?\d{9, 15}$', required=False, label='Phone number',
-                             error_message=("""
-                             Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.
-                             """))
+    phone = forms.CharField(required=False, label='Phone number', max_length=15)
+    # phone = forms.RegexField(regex=r'^\+?1?\d{9, 15}$', required=False, label='Phone number',
+    #                          error_message=("""
+    #                          Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.
+    #                          """))
     skype = forms.CharField(max_length=255, label="Skype", required=False)
     site = forms.CharField(label="Web site", required=False)
     email = forms.EmailField(label="Email")
 
+
+class CreateEventForm(forms.ModelForm):
+    """
+
+    """
+    class Meta:
+        model = Events
+        fields = ['title', 'description', 'map_link', 'is_team', 'start_date', 'end_date', 'duration', 'image',
+                  'organizer']
+        widgets = {'organizer':forms.HiddenInput()}
 
 

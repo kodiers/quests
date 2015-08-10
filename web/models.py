@@ -104,6 +104,34 @@ class Players(models.Model):
                     events.append(event)
         return events
 
+    def get_current_event(self):
+        """
+        Return all events, whcih started today for current player.
+        """
+        today = datetime.date.today()
+        events = []
+        all_events = Events.objects.filter(start_date=today).filter(completed=False).order_by('start_date')
+        user_teams = Teams.objects.filter(players=self.user)
+        for event in all_events:
+            if self.user in event.registered_players.all():
+                events.append(event)
+            for team in user_teams:
+                if team in event.registered_teams.all():
+                    events.append(event)
+        return events
+
+    def get_user_teams(self):
+        """
+        Return all teams for current user.
+        """
+        return Teams.objects.filter(players=self.user)
+
+    def get_user_photos(self):
+        """
+        Return all photos for current user.
+        """
+        return Photos.objects.filter(user=self.user).order_by('date')
+
     class Meta:
         verbose_name = "Player"
         verbose_name_plural = "Players"

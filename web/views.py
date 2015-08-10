@@ -17,7 +17,7 @@ from django.utils.translation import ugettext as _
 from django.core.mail import send_mail
 
 from web.models import QuestsUsers, Players, Organizers, Contacts, Events, Teams
-from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm, PlayerProfileForm
+from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm, PlayerProfileForm, CreateEventForm
 
 from quests.settings import EMAIL_HOST_USER
 
@@ -338,18 +338,18 @@ class OrganizerView(DetailView):
 @login_required()
 def show_my_profile(request, pk):
     """
-
-    :param request:
-    :param pk:
-    :return:
+    Show and edit user (player) profile.
+    :param request: HttpRequest
+    :param pk: pk (id) of user
+    :return: HttpResponse
     """
-    # TODO: complete profile view
     message = ''
+    error = ''
     user = User.objects.get(pk=pk)
     if request.method == 'POST':
         form = PlayerProfileForm(request.POST, request.FILES)
         if form.is_valid():
-            # form.save()
+            # Change players and user properties
             user.email = form.cleaned_data['email']
             if 'avatar' in request.FILES:
                 user.questsusers.image = form.cleaned_data['avatar']
@@ -357,6 +357,7 @@ def show_my_profile(request, pk):
             user.players.date_of_birth = form.cleaned_data['date_of_birth']
             user.players.sex = form.cleaned_data['sex']
             if not Contacts.objects.filter(user=user).exists():
+                # Create contacts for user if not exists
                 user_contacts = Contacts()
                 user_contacts.user = user
                 user_contacts.save()
@@ -371,12 +372,15 @@ def show_my_profile(request, pk):
             user.contacts.save()
             user.save()
             message = _("Your profile updated successfully!")
-            # return redirect('/')
+        else:
+            error = FORM_FIELDS_ERROR
+    # Initialize form fields dictionary
     intial_formdata = {'avatar': user.questsusers.image, 'description': user.players.description,
                        'date_of_birth': user.players.date_of_birth, 'sex': user.players.sex,
                        'country': '', 'city': '', 'street': '', 'phone':'', 'skype': '', 'site': '',
                        'email': user.email}
     if Contacts.objects.filter(user=user).exists():
+        # Load contacts in form field for user if exists
         intial_formdata['country'] = user.contacts.country
         intial_formdata['city'] = user.contacts.city
         intial_formdata['street'] = user.contacts.street
@@ -384,6 +388,23 @@ def show_my_profile(request, pk):
         intial_formdata['skype'] = user.contacts.skype
         intial_formdata['site'] = user.contacts.site
     form = PlayerProfileForm(request.POST or None, initial=intial_formdata)
-    return render_to_response('player_profile.html', {'form': form, 'object': user, 'message': message},
+    return render_to_response('player_profile.html', {'form': form, 'object': user, 'message': message, 'error': error},
                               context_instance=RequestContext(request))
+
+
+@login_required()
+def create_event(request):
+    """
+
+    :param request:
+    :return:
+    """
+    # TODO: Recreate to ajax
+    if request.method == 'POST':
+        form = CreateEventForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+    else:
+        form = CreateEventForm(initial={'organizer':request.user})
+    return render_to_response('create_event.html', {'form': form}, context_instance=RequestContext(request))
 

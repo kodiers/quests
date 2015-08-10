@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load tags %}
+{% block title %}
+    Create event! Get your own quest
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <form action="." method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.title.label }}
+                    {{ form.title|add_class_to_formfield:'form-control' }}
+                    {{ form.description.label }}
+                    {{ form.description|add_class_to_formfield:'form-control' }}
+                    {{ form.map_link.label }}
+                    {{ form.map_link|add_class_to_formfield:'form-control' }}
+                    {{ form.is_team.label }}
+                    {{ form.is_team|add_class_to_formfield:'form-control' }}
+                    {{ form.start_date.label }}
+                    {{ form.start_date|add_class_to_formfield:'form-control' }}
+                    {{ form.end_date.label }}
+                    {{ form.end_date|add_class_to_formfield:'form-control' }}
+                    {{ form.duration.label }}
+                    {{ form.duration|add_class_to_formfield:'form-control' }}
+                    {{ form.image.label }}
+                    {{ form.image|add_class_to_formfield:'form-control' }}
+                    {{ form.organizer.label }}
+                    {{ form.organizer|add_class_to_formfield:'form-control' }}
+                    <input type="submit" value="Save" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <a href="#" class="btn btn-primary">Add task</a>
+                <h2>Tasks</h2>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

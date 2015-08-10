@@ -8,6 +8,18 @@
     <script src="{% static 'js/calendar.js' %}"></script>
     <div class="container">
         <div class="row">
+            <div class="col-xs-12">
+                {% if error %}
+                    <p class="error">{{ error }}</p>
+                {% endif %}
+                {% if message %}
+                    <p class="message">{{ message }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
             <div class="col-xs-4">
                 <h1 class="page-header">{{ object.username }}</h1>
                 {% if object.questsusers.image.url != None %}
@@ -15,6 +27,7 @@
                 {% else %}
                     <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
                 {% endif %}
+                <a href="#" class="btn btn-primary">Send message</a>
                 <form action="." method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <p>Change avatar:</p>
@@ -61,6 +74,64 @@
                     </p>
                     <input type="submit" value="Save!">
                 </form>
+            </div>
+            <div class="col-xs-8">
+                <div class="row">
+                    <div class="col-xs-2">
+                        <a href="{% url 'create_event' %}" class="btn btn-default">Create event</a>
+                    </div>
+                    <div class="col-xs-2">
+                        <a href="{% url 'create_team' %}" class="btn btn-primary">Create team</a>
+                    </div>
+                    <div class="col-xs-8">
+                        <h2>Today events</h2>
+                        {% for event in object.players.get_current_event %}
+                            <a href="#">{{ event.title }} {{ event.start_date|date:'d m Y H i' }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <h3>My score:</h3>
+                        {{ object.players.points }}
+                        <h3>Rating</h3>
+                        {{ object.players.rating }}
+                    </div>
+                    <div class="col-xs-8">
+                        <h2>My teams:</h2>
+                        {% for team in object.players.get_user_teams %}
+                            {{ team.title }} {{ team.points }}
+                            {% if team.creator == object %}
+                                <a href="#">Delete team</a>
+                            {% else %}
+                                <a href="#">Leave team</a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h2>My photos</h2>
+                        {% for photo in object.players.get_user_photos %}
+                            <img src="{{ photo.image.url }}" class="img-rounded">
+                        {% endfor %}
+                        <a href="#" class="btn btn-primary">Add photo</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h2>Future events</h2>
+                        {% for event in object.players.get_future_events %}
+                            {{ event.title }} {{ event.description|truncatewords:10 }} {{ event.start_date }} <a href="#">Unregister</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <h2>Completed events</h2>
+                    {% for event in object.players.get_last_events %}
+                        {{ event.title }} {{ event.description|truncatewords:10 }} {{ event.end_date }} {{ object.username|get_score_for_event_by_user:event }} <a href="#">Add photo</a>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
