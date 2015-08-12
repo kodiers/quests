@@ -355,6 +355,7 @@ class Tasks(models.Model):
     score = models.IntegerField(verbose_name="Score", default=0)
     answer = models.TextField(null=True, verbose_name="Answer")
     event = models.ForeignKey(Events, verbose_name="Event")
+    time = models.CharField(verbose_name="Time for task", null=True, blank=True, max_length=64)
 
     def __str__(self):
         return self.title

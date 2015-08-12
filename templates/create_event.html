@@ -4,7 +4,24 @@
 {% block title %}
     Create event! Get your own quest
 {% endblock %}
+{% block scripts %}
+    <script src="{% static 'js/jquery.cookie.js' %}"></script>
+{% endblock %}
 {% block content %}
+    <div class="container">
+        <div class="row">
+            <div class=" col-xs-12">
+                <div id="id_error">
+                    {% if error %}
+                        <p class="error"> {{ error }} </p>
+                    {% endif %}
+                </div>
+                {% if event %}
+                    <p class="message">You can now add or edit tasks</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
@@ -26,7 +43,6 @@
                     {{ form.duration|add_class_to_formfield:'form-control' }}
                     {{ form.image.label }}
                     {{ form.image|add_class_to_formfield:'form-control' }}
-                    {{ form.organizer.label }}
                     {{ form.organizer|add_class_to_formfield:'form-control' }}
                     <input type="submit" value="Save" class="btn btn-primary">
                 </form>
@@ -34,10 +50,75 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <a href="#" class="btn btn-primary">Add task</a>
+                <!-- Add task modal -->
+                <!-- add task modal call button -->
+                <button class="btn btn-primary" data-toggle="modal" data-target="#addTaskModal">
+                    Add task
+                </button>
+                <!-- add task modal window -->
+                <div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                                <h4 class="modal-title">Add task</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div id="modal_error"></div>
+                                <!-- create task form -->
+                                <form method="post" id="id_addTaskForm">
+                                    {% csrf_token %}
+                                    <label for="id_taskTitle">Title</label>
+                                    <input type="text" name="taskTitle" placeholder="Enter task title" class="form-control" id="id_taskTitle">
+                                    <label for="id_taskDescription">Description</label>
+                                    <textarea class="form-control" id="id_taskDescription" name="taskDescription" placeholder="Enter description for task"></textarea>
+                                    <label for="id_mapLink">Link to map</label>
+                                    <input type="url" name="mapLink" class="form-control" id="id_mapLink">
+                                    <label for="id_taskTime">Time for task</label>
+                                    <input type="time" class="form-control" name="taskTime" id="id_taskTime">
+                                    <label for="id_taskScore">Score:</label>
+                                    <input type="number" class="form-control" name="taskScore" id="id_taskScore">
+                                    <label for="id_taskAnswer">Answer:</label>
+                                    <input type="text" class="form-control" name="taskAnswer" id="id_taskAnswer">
+                                    <input type="hidden" name="taskEvent" id="id_taskEvent" value="{{ event.pk }}">
+                                    <hr>
+                                    <h4>Task place:</h4>
+                                    <label for="id_taskCountry">Country</label>
+                                    <input type="text" name="taskCountry" class="form-control" id="id_taskCountry">
+                                    <label for="id_taskCity">City</label>
+                                    <input type="text" name="taskCity" class="form-control" id="id_taskCity">
+                                    <label for="id_taskStreet">Street</label>
+                                    <input type="text" name="taskStreet" class="form-control" id="id_taskStreet">
+                                    <label for="id_taskLon">Longtitude</label>
+                                    <input type="text" name="taskLon" class="form-control" id="id_taskLon">
+                                    <label for="id_taskLat">Latitude</label>
+                                    <input type="text" name="taskLat" class="form-control" id="id_taskLat">
+                                    <hr>
+                                    <h4>Task hint:</h4>
+                                    <label for="id_taskHint">Task hint:</label>
+                                    <textarea class="form-control" id="id_taskHint" name="taskHint" placeholder="Enter hint"></textarea>
+                                    <input type="SUBMIT" value="Create!" class="btn btn-primary">
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" id="id_closeButton">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <h2>Tasks</h2>
-
+                {% if event %}
+                    <div id="id_taskList">
+                    {% for task in event.get_event_tasks %}
+                        <p>Task: {{ task.title }} Score: {{ task.score }} Answer: {{ task.answer }} Time: {{ task.time }} Hint: {{ task.hints.text }}</p>
+                    {% endfor %}
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
+
+    <script src="{% static 'js/add_task.js' %}"></script>
 {% endblock %}

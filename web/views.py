@@ -1,6 +1,7 @@
 import datetime
+import json
 
-from django.http import Http404
+from django.http import Http404, HttpResponse
 
 from django.shortcuts import render, render_to_response, redirect, get_list_or_404, get_object_or_404
 from django.template import RequestContext
@@ -16,7 +17,7 @@ from django.utils.translation import ugettext as _
 
 from django.core.mail import send_mail
 
-from web.models import QuestsUsers, Players, Organizers, Contacts, Events, Teams
+from web.models import QuestsUsers, Players, Organizers, Contacts, Events, Teams, Tasks, Hints, EventsPlaces
 from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm, PlayerProfileForm, CreateEventForm
 
 from quests.settings import EMAIL_HOST_USER
@@ -393,18 +394,96 @@ def show_my_profile(request, pk):
 
 
 @login_required()
-def create_event(request):
+def create_event(request, pk=None):
     """
-
-    :param request:
-    :return:
+    Create new event.
+    If pk != none edit event with pk.
+    :param request: HttpRequest
+    :return: HttpResponse
     """
     # TODO: Recreate to ajax
-    if request.method == 'POST':
-        form = CreateEventForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
+    error = ''
+    if pk is not None:
+        event = get_object_or_404(Events, pk=pk)
+        # Check that user want edit created by self
+        if event.organizer != request.user:
+            error = _("You are not creator of this event")
+            return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
     else:
-        form = CreateEventForm(initial={'organizer':request.user})
-    return render_to_response('create_event.html', {'form': form}, context_instance=RequestContext(request))
+        event = None
+    if request.method == 'POST':
+        form = CreateEventForm(request.POST, request.FILES, instance=event)
+        if form.is_valid():
+            event = form.save()
+            return redirect('/create_event/' + str(event.pk) + '/')
+        else:
+            error = FORM_FIELDS_ERROR
+    else:
+        form = CreateEventForm(initial={'organizer':request.user}, instance=event)
+    return render_to_response('create_event.html', {'form': form, 'event': event, 'error': error},
+                              context_instance=RequestContext(request))
+
+
+@login_required()
+def add_task(request):
+    """
+    Add task to event through AJAX request.
+    :param request: HttpRequest (from AJAX function add_task())
+    :return: HttpResponse - if success return json else retuen error page
+    """
+    # TODO: add edit view
+    error = ''
+    if request.method == 'POST':
+        if request.POST['event']:
+            event = Events.objects.get(pk=request.POST['event'])
+            new_task = Tasks()
+            new_task.event = event
+            new_place = EventsPlaces()
+            # Filling task properties
+            if request.POST['title']:
+                new_task.title = request.POST['title']
+            if request.POST['description']:
+                new_task.description = request.POST['description']
+            if request.POST['map_link']:
+                new_task.map_link = request.POST['map_link']
+            if request.POST['score']:
+                new_task.score = request.POST['score']
+            if request.POST['answer']:
+                new_task.answer = request.POST['answer']
+            if request.POST['time']:
+                new_task.time = request.POST['time']
+            # Filing EventPlace properties
+            if request.POST['country']:
+                new_place.country = request.POST['country']
+            if request.POST['city']:
+                new_place.city = request.POST['city']
+            if request.POST['street']:
+                new_place.street = request.POST['street']
+            if request.POST['lon']:
+                new_place.lon = request.POST['lon']
+            if request.POST['lat']:
+                new_place.lat = request.POST['lat']
+            new_place.save()
+            new_task.place = new_place
+            new_task.save()
+            # Create hint for the task
+            hint = ''
+            if request.POST['hint']:
+                hint = Hints()
+                hint.task = new_task
+                hint.text = request.POST['hint']
+                hint.save()
+            json_answer = { 'title': new_task.title, 'description': new_task.description, 'maplink': new_task.map_link,
+                            'score': new_task.score, 'answer': new_task.answer, 'time': new_task.time,
+                            'event': new_task.event.pk }
+            if hint != '':
+                json_answer['hint'] = hint.text
+            else:
+                json_answer['hint'] = 'None'
+            return HttpResponse(json.dumps(json_answer), content_type="application/json")
+        else:
+            error = _('Event undefined!')
+    else:
+        error = REQUEST_TYPE_ERROR
+        return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
 
