@@ -6,6 +6,7 @@
 {% endblock %}
 {% block scripts %}
     <script src="{% static 'js/jquery.cookie.js' %}"></script>
+    <script src="{% static 'js/delete_task.js' %}"></script>
 {% endblock %}
 {% block content %}
     <div class="container">
@@ -108,11 +109,99 @@
                         </div>
                     </div>
                 </div>
+                <!-- End create task modal -->
                 <h2>Tasks</h2>
+                <!-- Task list -->
                 {% if event %}
                     <div id="id_taskList">
                     {% for task in event.get_event_tasks %}
-                        <p>Task: {{ task.title }} Score: {{ task.score }} Answer: {{ task.answer }} Time: {{ task.time }} Hint: {{ task.hints.text }}</p>
+                        <div id="task{{ task.pk }}">
+                            Task: {{ task.title }} Score: {{ task.score }} Answer: {{ task.answer }} Time: {{ task.time }} Hint: {{ task.hints.text }}
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#editTaskModal{{ task.pk }}">
+                                Edit
+                            </button>
+                            <!-- modal for edit task -->
+                            <div class="modal fade" id="editTaskModal{{ task.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                &times;
+                                            </button>
+                                            <h4 class="modal-title">Edit task {{ task.title }}</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" id="id_editTaskForm{{ task.pk }}">
+                                                {% csrf_token %}
+                                                <label for="id_editTaskTitle{{ task.pk }}">Title</label>
+                                                <input type="text" name="editTaskTitle" class="form-control" id="id_editTaskTitle{{ task.pk }}" value="{{ task.title }}">
+                                                <label for="id_editTaskDescription{{ task.pk }}">Description</label>
+                                                <textarea class="form-control" id="id_editTaskDescription{{ task.pk }}" name="editTaskDescription">{{ task.description }}</textarea>
+                                                <label for="id_editMapLink{{ task.pk }}">Link to map</label>
+                                                <input type="url" name="editMapLink" class="form-control" id="id_editMapLink{{ task.pk }}" value="{{ task.map_link }}">
+                                                <label for="id_editTaskTime{{ task.pk }}">Time for task</label>
+                                                <input type="time" class="form-control" name="editTaskTime" id="id_editTaskTime{{ task.pk }}ime" value="{{ task.time }}">
+                                                <label for="id_editTaskScore{{ task.pk }}">Score:</label>
+                                                <input type="number" class="form-control" name="editTaskScore" id="id_editTaskScore{{ task.pk }}" value="{{ task.score }}">
+                                                <label for="id_editTaskAnswer{{ task.pk }}">Answer:</label>
+                                                <input type="text" class="form-control" name="editTaskAnswer" id="id_editTaskAnswer{{ task.pk }}" value="{{ task.answer }}">
+                                                <hr>
+                                                <h4>Task place:</h4>
+                                                <label for="id_editTaskCountry{{ task.pk }}">Country</label>
+                                                <input type="text" name="editTaskCountry" class="form-control" id="id_editTaskCountry{{ task.pk }}" value="{{ task.place.country }}">
+                                                <label for="id_editTaskCity{{ task.pk }}">City</label>
+                                                <input type="text" name="editTaskCity" class="form-control" id="id_editTaskCity{{ task.pk }}" value="{{ task.place.city }}">
+                                                <label for="id_editTaskStreet{{ task.pk }}">Street</label>
+                                                <input type="text" name="editTaskStreet" class="form-control" id="id_editTaskCity{{ task.pk }}" value="{{ task.place.city }}">
+                                                <label for="id_editTaskLon{{ task.pk }}">Longtitude</label>
+                                                <input type="text" name="editTaskLon" class="form-control" id="id_editTaskLon{{ task.pk }}" value="{{ task.place.lon }}">
+                                                <label for="id_editTaskLat{{ task.pk }}">Latitude</label>
+                                                <input type="text" name="editTaskLat" class="form-control" id="id_editTaskLat{{ task.pk }}" value="{{ task.place.lat }}">
+                                                <input type="hidden" name="editTaskPlacePk" id="id_editTaskPlacePk{{ task.pk }}" value="{{ task.place.pk }}">
+                                                <hr>
+                                                <h4>Task hint:</h4>
+                                                <label for="id_editTaskHint{{ task.pk }}">Task hint:</label>
+                                                <textarea class="form-control" id="id_editTaskHint{{ task.pk }}" name="editTaskHint">{{ task.hints.text }}</textarea>
+                                                <input type="hidden" value="{{ task.hints.pk }}" name="editTaskHintPk" id="id_editTaskHintPk{{ task.pk }}">
+                                                <input type="SUBMIT" value="Create!" class="btn btn-primary">
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="id_editCloseButton{{ task.pk }}">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End modal for edit task -->
+                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteTaskModal{{ task.pk }}">
+                                Delete
+                            </button>
+                            <!-- Modal for delete task -->
+                            <div class="modal fade" id="deleteTaskModal{{ task.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                &times;
+                                            </button>
+                                            <h4 class="modal-title">Delete task {{ task.title }}</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4> Are you sure? </h4>
+                                            <form method="post" id="id_deleteTaskForm{{ task.pk }}">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="task_id" value="{{ task.pk }}" id="delTaskID{{ task.pk }}">
+                                                <input type="submit" value="Delete" class="btn btn-danger" onclick="prevent_refresh({{ task.pk}})">
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="id_delcloseButton{{ task.pk }}">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End delete modal -->
+                        </div>
                     {% endfor %}
                     </div>
                 {% endif %}
@@ -121,4 +210,5 @@
     </div>
 
     <script src="{% static 'js/add_task.js' %}"></script>
+
 {% endblock %}

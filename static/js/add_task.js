@@ -72,8 +72,6 @@ function add_task () {
 
         success: function(response) {
             // add new task to tasklist without page refresh
-            var html_string = '<p>Task: ' + response.title + ' Score: ' + response.score + ' Answer: ' + response.answer + ' Time: ' + response.time + ' Hint: ' + response.hint + '</p>';
-            tasklist.append(html_string);
 
             //Clear modal form
             $('.modal').on('hidden.bs.modal', function () {
@@ -81,6 +79,8 @@ function add_task () {
             });
             // Close modal
             document.getElementById('id_closeButton').click();
+            // Reload page to show changes
+            location.reload();
         },
         error: function(xhr, errmsg, err) {
             $('#id_error').html("<p class='error'>" + errmsg + "</p>")

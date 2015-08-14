@@ -475,7 +475,7 @@ def add_task(request):
                 hint.save()
             json_answer = { 'title': new_task.title, 'description': new_task.description, 'maplink': new_task.map_link,
                             'score': new_task.score, 'answer': new_task.answer, 'time': new_task.time,
-                            'event': new_task.event.pk }
+                            'event': new_task.event.pk, 'task_pk': new_task.pk }
             if hint != '':
                 json_answer['hint'] = hint.text
             else:
@@ -485,5 +485,36 @@ def add_task(request):
             error = _('Event undefined!')
     else:
         error = REQUEST_TYPE_ERROR
-        return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
+    return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
 
+
+@login_required()
+def delete_task(request):
+    """
+    Delete task view. Accept post request from AJAX function.
+    :param request: HttpRequest (from AJAX function delete_task())
+    :return: HttpResponse - if success return json else return error page
+    """
+    error = ''
+    if request.method == 'POST':
+        if request.POST['pk']:
+            task = Tasks.objects.get(pk=request.POST['pk'])
+            task.delete()
+            answer = {'code': 1}
+            return HttpResponse(json.dumps(answer), content_type="application/json")
+        else:
+            error = _('Error deleting task!')
+    else:
+        error = REQUEST_TYPE_ERROR
+    return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
+
+
+@login_required()
+def edit_task(request):
+    """
+
+    :param request:
+    :return:
+    """
+    # TODO: create view to AJAX edit_task function
+    pass
