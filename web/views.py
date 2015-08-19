@@ -434,41 +434,47 @@ def add_task(request):
     # TODO: add edit view
     error = ''
     if request.method == 'POST':
-        if request.POST['event']:
+        if 'event' in request.POST and request.POST['event']:
             event = Events.objects.get(pk=request.POST['event'])
             new_task = Tasks()
             new_task.event = event
             new_place = EventsPlaces()
             # Filling task properties
-            if request.POST['title']:
+            if 'title' in request.POST and request.POST['title']:
                 new_task.title = request.POST['title']
-            if request.POST['description']:
+            if 'description' in request.POST and request.POST['description']:
                 new_task.description = request.POST['description']
-            if request.POST['map_link']:
+            if 'map_link' in request.POST and request.POST['map_link']:
                 new_task.map_link = request.POST['map_link']
-            if request.POST['score']:
+            if 'score' in request.POST and request.POST['score']:
                 new_task.score = request.POST['score']
-            if request.POST['answer']:
+            if 'answer' in request.POST and request.POST['answer']:
                 new_task.answer = request.POST['answer']
-            if request.POST['time']:
+            if 'time' in request.POST and request.POST['time']:
                 new_task.time = request.POST['time']
             # Filing EventPlace properties
-            if request.POST['country']:
+            if 'country' in request.POST and request.POST['country']:
                 new_place.country = request.POST['country']
-            if request.POST['city']:
+            if 'city' in request.POST and request.POST['city']:
                 new_place.city = request.POST['city']
-            if request.POST['street']:
+            if 'street' in request.POST and request.POST['street']:
                 new_place.street = request.POST['street']
-            if request.POST['lon']:
-                new_place.lon = request.POST['lon']
-            if request.POST['lat']:
-                new_place.lat = request.POST['lat']
+            if 'lon' in request.POST:
+                if request.POST['lon'] == '' or request.POST['lon'] == 'None':
+                    new_place.lon = 0.0
+                else:
+                    new_place.lon = float(request.POST['lon'])
+            if 'lat' in request.POST:
+                if request.POST['lat'] == '' or request.POST['lat'] == 'None':
+                    new_place.lat = 0.0
+                else:
+                    new_place.lat = float(request.POST['lat'])
             new_place.save()
             new_task.place = new_place
             new_task.save()
             # Create hint for the task
             hint = ''
-            if request.POST['hint']:
+            if 'hint' in request.POST and request.POST['hint']:
                 hint = Hints()
                 hint.task = new_task
                 hint.text = request.POST['hint']
@@ -497,7 +503,7 @@ def delete_task(request):
     """
     error = ''
     if request.method == 'POST':
-        if request.POST['pk']:
+        if 'pk' in request.POST and request.POST['pk'] != '':
             task = Tasks.objects.get(pk=request.POST['pk'])
             task.delete()
             answer = {'code': 1}
@@ -517,4 +523,65 @@ def edit_task(request):
     :return:
     """
     # TODO: create view to AJAX edit_task function
-    pass
+    error = ''
+    if request.method == 'POST':
+        if 'pk' in request.POST and request.POST['pk']:
+            task = get_object_or_404(Tasks, pk=request.POST['pk'])
+        else:
+            error = REQUEST_PARAMETRS_ERROR
+            return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
+        if 'title' in request.POST and request.POST['title']:
+            task.title = request.POST['title']
+        if 'description' in request.POST and request.POST['description']:
+            task.description = request.POST['description']
+        if 'map_link' in request.POST and request.POST['map_link']:
+            task.map_link = request.POST['map_link']
+        if 'score' in request.POST and request.POST['score']:
+            task.score = request.POST['score']
+        if 'answer' in request.POST and request.POST['answer']:
+            task.answer = request.POST['answer']
+        if 'time' in request.POST and request.POST['time']:
+            task.time = request.POST['time']
+        task.save()
+        # Filing EventPlace properties
+        if 'placepk' in request.POST and request.POST['placepk']:
+            place = EventsPlaces.objects.get(pk=request.POST['placepk'])
+            if 'country' in request.POST and request.POST['country']:
+                place.country = request.POST['country']
+            if 'city' in request.POST and request.POST['city']:
+                place.city = request.POST['city']
+            if 'street' in request.POST and request.POST['street']:
+                place.street = request.POST['street']
+            if 'lon' in request.POST:
+                if request.POST['lon'] == 'None' or request.POST['lon'] == '':
+                    place.lon = 0.0
+                else:
+                    place.lon = float(request.POST['lon'])
+            if 'lat' in request.POST:
+                if request.POST['lat'] == 'None' or request.POST['lat'] == '':
+                    place.lat = 0.0
+                else:
+                    place.lat = float(request.POST['lat'])
+            place.save()
+        hint = None
+        json_answer = { 'title': task.title, 'description': task.description, 'maplink': task.map_link,
+                            'score': task.score, 'answer': task.answer, 'time': task.time,
+                            'event': task.event.pk, 'task_pk': task.pk }
+        if 'hintpk' in request.POST and request.POST['hintpk']:
+            hint = Hints.objects.get(pk=request.POST['hintpk'])
+            if request.POST['hint']:
+                hint.text = request.POST['hint']
+                hint.save()
+                json_answer['hint'] = hint.text
+        elif 'hint' in request.POST and request.POST['hint']:
+            hint = Hints()
+            hint.text = request.POST['hint']
+            hint.task = task
+            hint.save()
+            json_answer['hint'] = hint.text
+        else:
+            json_answer['hint'] = 'None'
+        return HttpResponse(json.dumps(json_answer), content_type="application/json")
+    else:
+        error = REQUEST_TYPE_ERROR
+        return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))

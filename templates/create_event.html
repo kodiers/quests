@@ -7,6 +7,7 @@
 {% block scripts %}
     <script src="{% static 'js/jquery.cookie.js' %}"></script>
     <script src="{% static 'js/delete_task.js' %}"></script>
+    <script src="{% static 'js/edit_task.js' %}"></script>
 {% endblock %}
 {% block content %}
     <div class="container">
@@ -51,6 +52,7 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
+            {% if event %}
                 <!-- Add task modal -->
                 <!-- add task modal call button -->
                 <button class="btn btn-primary" data-toggle="modal" data-target="#addTaskModal">
@@ -112,7 +114,6 @@
                 <!-- End create task modal -->
                 <h2>Tasks</h2>
                 <!-- Task list -->
-                {% if event %}
                     <div id="id_taskList">
                     {% for task in event.get_event_tasks %}
                         <div id="task{{ task.pk }}">
@@ -140,7 +141,7 @@
                                                 <label for="id_editMapLink{{ task.pk }}">Link to map</label>
                                                 <input type="url" name="editMapLink" class="form-control" id="id_editMapLink{{ task.pk }}" value="{{ task.map_link }}">
                                                 <label for="id_editTaskTime{{ task.pk }}">Time for task</label>
-                                                <input type="time" class="form-control" name="editTaskTime" id="id_editTaskTime{{ task.pk }}ime" value="{{ task.time }}">
+                                                <input type="time" class="form-control" name="editTaskTime" id="id_editTaskTime{{ task.pk }}" value="{{ task.time }}">
                                                 <label for="id_editTaskScore{{ task.pk }}">Score:</label>
                                                 <input type="number" class="form-control" name="editTaskScore" id="id_editTaskScore{{ task.pk }}" value="{{ task.score }}">
                                                 <label for="id_editTaskAnswer{{ task.pk }}">Answer:</label>
@@ -152,7 +153,7 @@
                                                 <label for="id_editTaskCity{{ task.pk }}">City</label>
                                                 <input type="text" name="editTaskCity" class="form-control" id="id_editTaskCity{{ task.pk }}" value="{{ task.place.city }}">
                                                 <label for="id_editTaskStreet{{ task.pk }}">Street</label>
-                                                <input type="text" name="editTaskStreet" class="form-control" id="id_editTaskCity{{ task.pk }}" value="{{ task.place.city }}">
+                                                <input type="text" name="editTaskStreet" class="form-control" id="id_editTaskStreet{{ task.pk }}" value="{{ task.place.city }}">
                                                 <label for="id_editTaskLon{{ task.pk }}">Longtitude</label>
                                                 <input type="text" name="editTaskLon" class="form-control" id="id_editTaskLon{{ task.pk }}" value="{{ task.place.lon }}">
                                                 <label for="id_editTaskLat{{ task.pk }}">Latitude</label>
@@ -163,7 +164,7 @@
                                                 <label for="id_editTaskHint{{ task.pk }}">Task hint:</label>
                                                 <textarea class="form-control" id="id_editTaskHint{{ task.pk }}" name="editTaskHint">{{ task.hints.text }}</textarea>
                                                 <input type="hidden" value="{{ task.hints.pk }}" name="editTaskHintPk" id="id_editTaskHintPk{{ task.pk }}">
-                                                <input type="SUBMIT" value="Create!" class="btn btn-primary">
+                                                <input type="SUBMIT" value="Save!" class="btn btn-primary" onclick="edit_prevent_refresh({{ task.pk }})">
                                             </form>
                                         </div>
                                         <div class="modal-footer">

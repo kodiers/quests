@@ -26,6 +26,12 @@ class QuestsUsers(models.Model):
     def __str__(self):
         return self.user.username
 
+    def get_user_events(self):
+        """
+        """
+        events = Events.objects.filter(organizer=self.user).order_by('start_date')
+        return events
+
     class Meta:
         verbose_name_plural = "Quests users"
         verbose_name = "Quest user"
@@ -353,7 +359,7 @@ class Tasks(models.Model):
     map_link = models.TextField(verbose_name="Link to map", null=True, blank=True)
     place = models.ForeignKey(EventsPlaces, verbose_name="Place", null=True, blank=True)
     score = models.IntegerField(verbose_name="Score", default=0)
-    answer = models.TextField(null=True, verbose_name="Answer")
+    answer = models.TextField(null=True, verbose_name="Answer", blank=True)
     event = models.ForeignKey(Events, verbose_name="Event")
     time = models.CharField(verbose_name="Time for task", null=True, blank=True, max_length=64)
 

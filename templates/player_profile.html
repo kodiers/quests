@@ -99,7 +99,7 @@
                         <h3>Rating</h3>
                         {{ object.players.rating }}
                     </div>
-                    <div class="col-xs-8">
+                    <div class="col-xs-4">
                         <h2>My teams:</h2>
                         {% for team in object.players.get_user_teams %}
                             {{ team.title }} {{ team.points }}
@@ -108,6 +108,13 @@
                             {% else %}
                                 <a href="#">Leave team</a>
                             {% endif %}
+                            <br>
+                        {% endfor %}
+                    </div>
+                    <div class="col-xs-4">
+                        <h2>My events</h2>
+                        {% for event in object.questsusers.get_user_events %}
+                            <p><a href="{% url 'edit_event' event.pk %}"> {{ event.title }}</a></p>
                         {% endfor %}
                     </div>
                 </div>
@@ -128,11 +135,13 @@
                         {% endfor %}
                     </div>
                 </div>
-                <div class="col-xs-12">
-                    <h2>Completed events</h2>
-                    {% for event in object.players.get_last_events %}
-                        {{ event.title }} {{ event.description|truncatewords:10 }} {{ event.end_date }} {{ object.username|get_score_for_event_by_user:event }} <a href="#">Add photo</a>
-                    {% endfor %}
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h2>Completed events</h2>
+                        {% for event in object.players.get_last_events %}
+                            {{ event.title }} {{ event.description|truncatewords:10 }} {{ event.end_date }} {{ object.username|get_score_for_event_by_user:event }} <a href="#">Add photo</a>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>

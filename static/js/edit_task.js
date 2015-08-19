@@ -1,6 +1,17 @@
 /**
  * Created by kodiers on 14/08/15.
  */
+function edit_prevent_refresh(task_pk) {
+
+    var form_id = '#id_editTaskForm' + task_pk;
+
+    $(form_id).on('submit', function (event) {
+        // Prevent form refresh
+        event.preventDefault();
+        // Edit task
+        edit_task(task_pk);
+    })
+}
 
 function edit_task (task_pk) {
     // Send AJAX POST request to edit_task endpoint
@@ -26,6 +37,8 @@ function edit_task (task_pk) {
     var taskHint = $('#id_editTaskHint' + task_pk).val();
     var taskHintPk = $('#id_editTaskHintPk' + task_pk).val();
 
+    console.log(taskStreet);
+
     //var tasklist = $('#id_taskList');
 
     //Send post request
@@ -34,6 +47,7 @@ function edit_task (task_pk) {
         url: "/edit_task/",
         type: "post",
         data: {
+            pk: task_pk,
             title: taskTitle,
             description: taskDescription,
             map_link: taskMaplink,
@@ -53,7 +67,7 @@ function edit_task (task_pk) {
         },
 
         success: function(response) {
-            // add new task to tasklist without page refresh
+            // edit task to tasklist without page refresh
 
             //Clear modal form
             $('.modal').on('hidden.bs.modal', function () {
