@@ -66,6 +66,31 @@ def add_class_to_formfield(field, css):
     """
     return field.as_widget(attrs={"class": css})
 
+
+@register.filter()
+def get_player_by_username(username):
+    """
+    Get player by username and return player pk.
+    :param username: username of user
+    :return: player.pk
+    """
+    user = User.objects.get(username=username)
+    player = Players.objects.get(user=user)
+    return player.pk
+
+
+@register.filter()
+def get_user_team_by_event(username, event_id):
+    """
+    """
+    user = User.objects.get(username=username)
+    event = Events.objects.get(pk=event_id)
+    if event.is_team:
+        for team in event.registered_teams.all():
+            if user in team.players.all():
+                return team.title
+
+
 # @register.filter()
 # def if_user_is_organizer(username):
 #     """

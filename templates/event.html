@@ -21,7 +21,13 @@
                 <p>Place: {{ object.place.city }}</p>
             </div>
             <div class="col-xs-2">
-                <p>Organizer: <a href="{% url 'organizer' object.organizer.username|get_organizer_by_username %}"> {{ object.organizer.username }}</a></p>
+                <p>Organizer:
+                    {% if object.organizer.questsusers.is_organizer %}
+                        <a href="{% url 'organizer' object.organizer.username|get_organizer_by_username %}"> {{ object.organizer.username }}</a>
+                    {% else %}
+                        <a href="{% url 'player' object.organizer.username|get_player_by_username %}">{{ object.organizer.username }}</a>
+                    {% endif %}
+                </p>
             </div>
             <div class="col-xs-2">
                 {% if object.price != 0.0 %}

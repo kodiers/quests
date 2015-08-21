@@ -5,7 +5,12 @@
     {{ object.username }} | Get your own quest!
 {% endblock %}
 {% block scripts %}
+    <script src="{% static 'js/jquery.cookie.js' %}"></script>
     <script src="{% static 'js/calendar.js' %}"></script>
+    <script src="{% static 'js/delete_event.js' %}"></script>
+    <script src="{% static 'js/delete_team.js' %}"></script>
+    <script src="{% static 'js/leave_team.js' %}"></script>
+    <script src="{% static 'js/unregister_user.js' %}"></script>
 {% endblock %}
 {% block content %}
     <div class="container">
@@ -102,19 +107,106 @@
                     <div class="col-xs-4">
                         <h2>My teams:</h2>
                         {% for team in object.players.get_user_teams %}
-                            {{ team.title }} {{ team.points }}
-                            {% if team.creator == object %}
-                                <a href="#">Delete team</a>
-                            {% else %}
-                                <a href="#">Leave team</a>
-                            {% endif %}
-                            <br>
+                            <div id='team{{ team.pk }}'>{{ team.title }} {{ team.points }}
+                                {% if team.creator == object %}
+                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteTeamModal{{ team.pk }}">
+                                        Delete team
+                                    </button>
+                                    <!-- Modal for delete team -->
+                                    <div class="modal fade" id="deleteTeamModal{{ team.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                        &times;
+                                                    </button>
+                                                    <h4 class="modal-title">Delete team {{ team.title }}</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h4> Are you sure? </h4>
+                                                    <form method="post" id="id_deleteTeamForm{{ team.pk }}">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="team_id" value="{{ team.pk }}" id="delTeamID{{ team.pk }}">
+                                                        <input type="submit" value="Delete" class="btn btn-danger" onclick="prevent_refresh_team_delete({{ team.pk}})">
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal" id="id_delTeamCloseButton{{ team.pk }}">
+                                                        Close
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End delete modal -->
+                                {% else %}
+                                    <button class="btn btn-primary" data-toggle="modal" data-target="#leaveTeamModal{{ team.pk }}">
+                                        Leave team
+                                    </button>
+                                    <!-- Modal for leave team -->
+                                    <div class="modal fade" id="leaveTeamModal{{ team.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                        &times;
+                                                    </button>
+                                                    <h4 class="modal-title">Leave team {{ team.title }}</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h4> Are you sure? </h4>
+                                                    <form method="post" id="id_leaveTeamForm{{ team.pk }}">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="team_id" value="{{ team.pk }}" id="leaveTeamID{{ team.pk }}">
+                                                        <input type="submit" value="Leave" class="btn btn-primary" onclick="prevent_refresh_team_leave({{ team.pk}})">
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal" id="id_leaveTeamCloseButton{{ team.pk }}">
+                                                        Close
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End leave modal -->
+                                {% endif %}
+                            </div>
                         {% endfor %}
                     </div>
                     <div class="col-xs-4">
                         <h2>My events</h2>
                         {% for event in object.questsusers.get_user_events %}
-                            <p><a href="{% url 'edit_event' event.pk %}"> {{ event.title }}</a></p>
+                            <div id="event{{ event.pk }}"><a href="{% url 'edit_event' event.pk %}"> {{ event.title }}</a>
+                                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteEventModal{{ event.pk }}">
+                                    Delete
+                                </button>
+                            </div>
+                            <!-- Modal for delete event -->
+                            <div class="modal fade" id="deleteEventModal{{ event.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                &times;
+                                            </button>
+                                            <h4 class="modal-title">Delete event {{ event.title }}</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4> Are you sure? </h4>
+                                            <form method="post" id="id_deleteEventForm{{ event.pk }}">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="event_id" value="{{ event.pk }}" id="delEventID{{ event.pk }}">
+                                                <input type="submit" value="Delete" class="btn btn-danger" onclick="prevent_refresh_delete({{ event.pk }})">
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="id_delEventCloseButton{{ event.pk }}">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End delete modal -->
                         {% endfor %}
                     </div>
                 </div>
@@ -131,7 +223,44 @@
                     <div class="col-xs-12">
                         <h2>Future events</h2>
                         {% for event in object.players.get_future_events %}
-                            {{ event.title }} {{ event.description|truncatewords:10 }} {{ event.start_date }} <a href="#">Unregister</a>
+                            <div id="reg_event{{ event.pk }}">
+                                <a href="{% url 'event' event.pk %}">{{ event.title }} </a> {{ event.description|truncatewords:10 }} {{ event.start_date }}
+                                {% if event.is_team %}
+                                    <span class="message">
+                                        For unregister event you should leave {{ object.username|get_user_team_by_event:event.pk }}
+                                    </span>
+                                {% else %}
+                                    <button class="btn btn-primary" data-toggle="modal" data-target="#unregisterModal{{ event.pk }}">
+                                        Unregister
+                                    </button>
+                                    <!-- Modal for unregister event -->
+                                    <div class="modal fade" id="unregisterModal{{ event.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                        &times;
+                                                    </button>
+                                                    <h4 class="modal-title">Unregister event {{ event.title }}</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h4> Are you sure? </h4>
+                                                    <form method="post" id="id_unregisterForm{{ event.pk }}">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="event_id" value="{{ event.pk }}" id="unregisterEventID{{ event.pk }}">
+                                                        <input type="submit" value="Unregister" class="btn btn-primary" onclick="prevent_refresh_unregister({{ event.pk}})">
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal" id="id_unregisterCloseButton{{ event.pk }}">
+                                                        Close
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
                         {% endfor %}
                     </div>
                 </div>

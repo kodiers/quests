@@ -298,6 +298,7 @@ class Events(models.Model):
     completed = models.BooleanField(default=False, verbose_name="Finished")
     duration = DurationField(verbose_name="Duration", null=True, blank=True)
     image = models.ImageField(upload_to='images', blank=True, null=True, verbose_name="Image")
+    started = models.BooleanField(verbose_name="Started", default=False)
     # event_photos = models.ManyToManyField(EventsPhotos, verbose_name="Event photos")
 
     def image_tag(self):

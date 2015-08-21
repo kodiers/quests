@@ -61,7 +61,7 @@ class PlayerProfileForm(forms.Form):
 
 class CreateEventForm(forms.ModelForm):
     """
-
+    Model Form for create event.
     """
     class Meta:
         model = Events

@@ -3,7 +3,7 @@ from django.contrib import admin
 
 from web.views import registration, index, restore_password, logout_view, login_view, EventView, confirm_join_event, \
     create_team, join_team, join_event, PlayerView, OrganizerView, show_my_profile, create_event, add_task, delete_task, \
-    edit_task
+    edit_task, delete_event, delete_team, leave_team, unregister_event
     #join_event_as_player, join_as_team
 
 from quests.settings import MEDIA_ROOT
@@ -20,14 +20,18 @@ urlpatterns = patterns('',
     url(r'^my_profile/(?P<pk>\d+)/$', show_my_profile, name='player_profile'),
     url(r'^confirm_join/(?P<pk>\d+)/$', confirm_join_event, name='confirm_join'),
     url(r'^join/(?P<flag>\w+)/$', join_event, name='join_event'),
+    url(r'^unregister_event/$', unregister_event, name='unregister_event'),
     url(r'^create_team/$', create_team, name='create_team'),
     url(r'^create_event/$', create_event, name='create_event'),
     url(r'^create_event/(?P<pk>\d+)/$', create_event, name='edit_event'),
     url(r'^add_task/$', add_task, name='add_task'),
     url(r'^delete_task/$', delete_task, name='delete_task'),
     url(r'^edit_task/$', edit_task, name='edit_task'),
+    url(r'^delete_event/$', delete_event, name='delete_event'),
     url(r'^join_team', join_team, name='join_team'),
     url(r'^create_team/(?P<event_pk>\d+)/$', create_team, name='create_and_register_team'),
+    url(r'^delete_team/$', delete_team, name='delete_team'),
+    url(r'^leave_team/$', leave_team, name='leave_team'),
     url(r'^register/$', registration, name='register'),
     url(r'^restore/$', restore_password, name='restore'),
     url(r'^login/$', login_view, name='login'),

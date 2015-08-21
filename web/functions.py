@@ -2,6 +2,12 @@ __author__ = 'kodiers'
 
 import random
 
+
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+
+from web.constants import *
+
 def create_password_str():
     """
     This function generate 8-length random password from numbers and letters
@@ -11,3 +17,22 @@ def create_password_str():
     password_list = random.sample(sym_list, 8)
     password = ''.join(password_list)
     return password
+
+
+def json_wrapper(func):
+    """
+    Decorator for json endpoints (like delete task/evemt)
+    :param func: function to decorate
+    :return: function object
+    """
+    def decorated_func(request, *args, **kwargs):
+        error = ""
+        if request.method == 'POST':
+            if 'pk' in request.POST and request.POST['pk']:
+                return func(request, *args, **kwargs)
+            else:
+                error = REQUEST_PARAMETRS_ERROR
+        else:
+            error = REQUEST_TYPE_ERROR
+        return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
+    return decorated_func

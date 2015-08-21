@@ -22,11 +22,9 @@ from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm,
 
 from quests.settings import EMAIL_HOST_USER
 
-from web.functions import create_password_str
+from web.functions import create_password_str, json_wrapper
 
-FORM_FIELDS_ERROR = _("Error in forms fields. Try again!")
-REQUEST_PARAMETRS_ERROR = _('Incorrect request parameters!')
-REQUEST_TYPE_ERROR = _('Incorrect request!')
+from web.constants import *
 
 # Create your views here.
 
@@ -495,32 +493,24 @@ def add_task(request):
 
 
 @login_required()
+@json_wrapper
 def delete_task(request):
     """
     Delete task view. Accept post request from AJAX function.
     :param request: HttpRequest (from AJAX function delete_task())
     :return: HttpResponse - if success return json else return error page
     """
-    error = ''
-    if request.method == 'POST':
-        if 'pk' in request.POST and request.POST['pk'] != '':
-            task = Tasks.objects.get(pk=request.POST['pk'])
-            task.delete()
-            answer = {'code': 1}
-            return HttpResponse(json.dumps(answer), content_type="application/json")
-        else:
-            error = _('Error deleting task!')
-    else:
-        error = REQUEST_TYPE_ERROR
-    return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
+    task = Tasks.objects.get(pk=request.POST['pk'])
+    task.delete()
+    return HttpResponse(json.dumps(SIMPLE_JSON_ANSWER), content_type="application/json")
 
 
 @login_required()
 def edit_task(request):
     """
-
-    :param request:
-    :return:
+    Edit task view. Accept post request from AJAX function.
+    :param request: HttpRequest (from AJAX function edit_task())
+    :return: HttpResponse - if success return json else return error page
     """
     # TODO: create view to AJAX edit_task function
     error = ''
@@ -585,3 +575,72 @@ def edit_task(request):
     else:
         error = REQUEST_TYPE_ERROR
         return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
+
+
+@login_required()
+@json_wrapper
+def delete_event(request):
+    """
+    Delete event view. Accept post request from AJAX function.
+    :param request: HttpRequest (from AJAX function delete_event())
+    :return: HttpResponse - if success return json else return error page
+    """
+    event = Events.objects.get(pk=request.POST['pk'])
+    if request.user == event.organizer:
+        event.delete()
+    return HttpResponse(json.dumps(SIMPLE_JSON_ANSWER), content_type="application/json")
+
+
+@login_required()
+@json_wrapper
+def delete_team(request):
+    """
+    Delete team view. Accept post request from AJAX function.
+    :param request: HttpRequest (from AJAX function delete_team())
+    :return: HttpResponse - if success return json else return error page
+    """
+    team = Teams.objects.get(pk=request.POST['pk'])
+    if request.user == team.creator:
+        team.delete()
+    return HttpResponse(json.dumps(SIMPLE_JSON_ANSWER), content_type="application/json")
+
+
+@login_required()
+@json_wrapper
+def leave_team(request):
+    """
+    Leave team view. Accept post request from AJAX function.
+    :param request: HttpRequest (from AJAX function leave_team())
+    :return: HttpResponse - if success return json else return error page
+    """
+    team = Teams.objects.get(pk=request.POST['pk'])
+    team.players.remove(request.user)
+    return HttpResponse(json.dumps(SIMPLE_JSON_ANSWER), content_type="application/json")
+
+
+@login_required()
+@json_wrapper
+def unregister_event(request):
+    """
+    Unregister event view. Accept post request from AJAX function.
+    :param request: HttpRequest (from AJAX function unregister_event())
+    :return: HttpResponse - if success return json else return error page
+    """
+    event = Events.objects.get(pk=request.POST['pk'])
+    event.registered_players.remove(request.user)
+    return HttpResponse(json.dumps(SIMPLE_JSON_ANSWER), content_type="application/json")
+
+
+@login_required()
+def upload_photos(request):
+    """
+
+    :param request:
+    :return:
+    """
+    # TODO: create ajax request(script) for upload photos and completed the view
+    pass
+
+
+
+
