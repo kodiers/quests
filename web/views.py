@@ -1,5 +1,6 @@
 import datetime
 import json
+import os
 
 from django.http import Http404, HttpResponse
 
@@ -17,7 +18,7 @@ from django.utils.translation import ugettext as _
 
 from django.core.mail import send_mail
 
-from web.models import QuestsUsers, Players, Organizers, Contacts, Events, Teams, Tasks, Hints, EventsPlaces
+from web.models import QuestsUsers, Players, Organizers, Contacts, Events, Teams, Tasks, Hints, EventsPlaces, Photos
 from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm, PlayerProfileForm, CreateEventForm
 
 from quests.settings import EMAIL_HOST_USER
@@ -25,6 +26,7 @@ from quests.settings import EMAIL_HOST_USER
 from web.functions import create_password_str, json_wrapper
 
 from web.constants import *
+
 
 # Create your views here.
 
@@ -634,12 +636,53 @@ def unregister_event(request):
 @login_required()
 def upload_photos(request):
     """
-
-    :param request:
-    :return:
+    Upload photo AJAX endpoint. Accept post request from AJAX function.
+    :param request: HttpRequest (from AJAX function upload())
+    :return: HttpResponse - if success return json else return error page
     """
     # TODO: create ajax request(script) for upload photos and completed the view
-    pass
+    error = ''
+    if request.method == 'POST':
+        if 'photo' in request.FILES:
+            photo = Photos()
+            image = request.FILES['photo']
+            photo.user = request.user
+            photo.image = image
+            if 'title' in request.POST and request.POST['title']:
+                photo.title = request.POST['title']
+            if 'description' in request.POST and request.POST['description']:
+                photo.description = request.POST['description']
+            if 'date' in request.POST and request.POST['date']:
+                photo.date = request.POST['date']
+            if 'event' in request.POST and request.POST['event']:
+                event = Events.objects.get(pk=request.POST['event'])
+                photo.event = event
+            photo.save()
+            return HttpResponse(json.dumps(SIMPLE_JSON_ANSWER), content_type="application/json")
+        else:
+            error = REQUEST_PARAMETRS_ERROR
+    else:
+        error = REQUEST_TYPE_ERROR
+    return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
+
+
+@login_required()
+@json_wrapper
+def delete_photo(request):
+    """
+    Delete photo view. Accept post request from AJAX function .
+    :param request: HttpRequest (from AJAX function delete_photo())
+    :return: HttpResponse - if success return json else return error page
+    """
+    photo = Photos.objects.get(pk=request.POST['pk'])
+    if photo.user == request.user:
+        photo.delete()
+        return HttpResponse(json.dumps(SIMPLE_JSON_ANSWER), content_type="application/json")
+    else:
+        error = _("You are not owner of photo")
+        return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
+
+
 
 
 
