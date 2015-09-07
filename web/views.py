@@ -15,10 +15,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import ListView, DetailView, UpdateView
 
 from django.utils.translation import ugettext as _
+from django.utils.timezone import utc
 
 from django.core.mail import send_mail
 
-from web.models import QuestsUsers, Players, Organizers, Contacts, Events, Teams, Tasks, Hints, EventsPlaces, Photos
+from web.models import QuestsUsers, Players, Organizers, Contacts, Events, Teams, Tasks, Hints, EventsPlaces, Photos, \
+    TaskStatistics, EventStatistics
 from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm, PlayerProfileForm, CreateEventForm
 
 from quests.settings import EMAIL_HOST_USER
@@ -431,7 +433,6 @@ def add_task(request):
     :param request: HttpRequest (from AJAX function add_task())
     :return: HttpResponse - if success return json else retuen error page
     """
-    # TODO: add edit view
     error = ''
     if request.method == 'POST':
         if 'event' in request.POST and request.POST['event']:
@@ -681,6 +682,170 @@ def delete_photo(request):
     else:
         error = _("You are not owner of photo")
         return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
+
+
+@login_required()
+def play_event(request, pk):
+    """
+
+    :param request:
+    :param pk:
+    :return:
+    """
+    error = ''
+    event = Events.objects.get(pk=pk)
+    user_teams = request.user.players.get_user_teams()
+    user_registered = False
+    user_team = None
+    if not event.started:
+        error = _("Event is not started!")
+        return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
+    if event.is_team:
+        for team in user_teams:
+            if team in event.registered_teams.all():
+                user_team = team
+                user_registered = True
+    else:
+        if request.user in event.registered_players.all():
+            user_registered = True
+    if not user_registered:
+        error = _("You are not registered to this event")
+        return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
+    tasks = event.get_event_tasks()
+    eventstat = EventStatistics.objects.filter(event=event).filter(player=request.user).filter(completed=False)
+    if not eventstat:
+        eventstat = EventStatistics()
+        eventstat.event = event
+        eventstat.team = user_team
+        eventstat.player = request.user
+        eventstat.start_time = datetime.datetime.now()
+        eventstat.save()
+    return render_to_response('play_event.html', {'event': event, 'tasks': tasks, 'user_team': user_team, 'eventstat': eventstat},
+                              context_instance=RequestContext(request))
+
+
+@login_required()
+@json_wrapper
+def start_task(request):
+    """
+    Start task. Accept post request from AJAX function.
+    :param request: HttpRequest (from AJAX function start_task())
+    :return: HttpResponse - if success return json else return error page
+    """
+    now = datetime.datetime.now()
+    error = ''
+    task = Tasks.objects.get(pk=request.POST['pk'])
+    # user_teams = None
+    task_completed = False
+    registered_team = None
+    if task.event.is_team:
+        user_teams = request.user.players.get_user_teams()
+        for team in user_teams:
+            if team in task.event.registered_teams.all():
+                registered_team = team
+                taskstat = TaskStatistics.objects.filter(task=task).filter(team=registered_team).filter(completed=True)
+                if taskstat:
+                    error = _("Your team member answered for this task")
+                    task_completed = True
+    else:
+        taskstat = TaskStatistics.objects.filter(task=task).filter(player=request.user).filter(completed=True)
+        if taskstat:
+            error = _("You are answered for this task")
+            task_completed = True
+    if not task_completed:
+        taskstat = TaskStatistics.objects.filter(task=task).filter(player=request.user).filter(started=True)
+        if not taskstat:
+            taskstat = TaskStatistics()
+            taskstat.task = task
+            taskstat.start_time = now
+            taskstat.player = request.user
+            taskstat.started = True
+            if task.event.is_team:
+                taskstat = registered_team
+            taskstat.save()
+        return HttpResponse(json.dumps(SIMPLE_JSON_ANSWER), content_type="application/json")
+    else:
+        return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
+
+
+@login_required()
+@json_wrapper
+def task_answer(request):
+    """
+
+    :param request:
+    :return:
+    """
+    error = ''
+    user = request.user
+    now = datetime.datetime.utcnow().replace(tzinfo=utc)
+    task = Tasks.objects.get(pk=request.POST['pk'])
+    taskstat = TaskStatistics.objects.filter(task=task).filter(player=request.user).get(started=True)
+    correct_time = False
+    if taskstat:
+        if taskstat.completed:
+            error = _("You are answered for this task")
+        else:
+            answer = request.POST['answer']
+            if task.answer == answer:
+                #
+                correct_time =True
+                if task.time is not None:
+                    task_fact_duraction = abs(now - taskstat.start_time)
+                    taskstat.time = task_fact_duraction.seconds // 60
+                    if taskstat.time <= int(task.time):
+                        correct_time = True
+                    else:
+                        correct_time = False
+            if correct_time:
+                taskstat.answered = True
+                taskstat.score = task.score
+                user.players.points += task.score
+                if task.event.is_team:
+                    team = taskstat.team
+                    team.points += task.score
+            taskstat.end_time = now
+            taskstat.completed = True
+            taskstat.save()
+            return HttpResponse(json.dumps(SIMPLE_JSON_ANSWER), content_type="application/json")
+    else:
+        error = _("This task isn't started")
+    return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
+
+
+@login_required()
+@json_wrapper
+def complete_event(request):
+    """
+
+    :param request:
+    :return:
+    """
+    eventstat = EventStatistics.objects.get(pk=request.POST['pk'])
+    user_team = None
+    if request.user == eventstat.player:
+        event = eventstat.event
+        tasks = Tasks.objects.filter(event=event)
+        task_count = tasks.count()
+        taskstat_count = 0
+        for task in tasks:
+            taskstat = TaskStatistics.objects.filter(player=request.user).filter(completed=True).filter(task=task).get(answered=True)
+            if taskstat:
+                taskstat_count += 1
+        if task_count == taskstat_count:
+            if event.is_team:
+                user_teams = request.user.players.get_user_teams()
+                for team in user_teams:
+                    if team in event.registered_teams.all():
+                        user_team = team
+            eventstat.completed = True
+            eventstat.end_time = datetime.datetime.now()
+            event_fact_duration = abs(datetime.datetime.now() - eventstat.start_time)
+            eventstat.time
+
+
+
+
 
 
 

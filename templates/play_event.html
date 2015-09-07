@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load tags %}
+{% block title %}
+    Playing event {{ event.title }} | Get your own quest
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'js/jquery.cookie.js' %}"></script>
+    <script src="{% static 'js/start_task.js' %}"></script>
+    <script src="{% static 'js/send_answer.js' %}"></script>
+    <script src="{% static 'js/comlete_event.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4">
+                <h2>{{ user.username }}</h2>
+                {% if user.questsusers.image.url != None %}
+                    <img src="{{ user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
+                {% else %}
+                    <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
+                {% endif %}
+                <a href="#" class="btn btn-primary">Send message</a>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        {% if event.is_team %}
+                            <h2>Registered teams</h2>
+                            {% for team in event.registered_teams.all %}
+                                {{ team.title }} {{ team.points }}
+                            {% endfor %}
+                            {% if user_team %}
+                                <h2>Your team</h2>
+                                {{ user_team.title }} {{ user_team.points }}
+                                <h3>Team members</h3>
+                                {% for player in user_team.players.all %}
+                                    {{ player.username }} {{ player.score }}
+                                {% endfor %}
+                            {% endif %}
+                        {% else %}
+                            <h2>Registered players</h2>
+                            {% for player in event.registered_players.all %}
+                                {{ player.username }} {{ player.score }}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-8">
+                <h1 class="page-header">{{ event.title }}</h1>
+                {% if eventstat.completed == False %}
+                    <p>If you done all tasks press complete event button</p>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#completeEvent">
+                        Complete event
+                    </button>
+                    <!-- Complete event modal -->
+                    <div class="modal fade" id="completeEvent" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                        &times;
+                                    </button>
+                                    <h4>Complete event {{ event.title }}?</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" id="completeEventForm">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="{{ eventstat.pk }}" name="event_pk" id="event">
+                                        <input type="submit" value="Complete" onclick="prevent_refresh_complete({{ eventstat.pk }})">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end modal -->
+                {% endif %}
+                <p>Duration: {{ event.duration }}</p>
+                <p>{{ event.description }}</p>
+                {% if event.map_link != None %}
+                    {{ event.map_link|safe }}
+                {% endif %}
+                {% for task in tasks %}
+                    {% get_taskstat_for_task username=user.username task_id=task.pk as taskstat %}
+                    {% if taskstat.completed %}
+                        Completed
+                        {{ task.title }} {{ task.score }} {{ task.time }} {{ taskstat.score }} {{ taskstat.time }}
+                    {% else %}
+                        Not completed
+                        <button onclick="start_task({{ task.pk }})" class="btn btn-primary">{{ task.title }}</button>
+                        <!-- Play task modal -->
+                        <div class="modal fade" id="playTask{{ task.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                            &times;
+                                        </button>
+                                        <h4>{{ task.title }}</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>{{ task.description }}</p>
+                                        {% if task.time not in None %}
+                                            {{ task.time }}
+                                        {% endif %}
+                                        <p>Score: {{ task.score }}</p>
+                                        <a href="#">Hint</a>
+                                        <form method="post" id="answerForm{{ task.pk }}">
+                                            {% csrf_token %}
+                                            <input type="hidden" value="{{ task.pk }}" name="task_id" id="id_task{{ task.pk }}">
+                                            <label for="id_answer{{ task.pk }}">Answer</label>
+                                            <input type="text" class="form-control" name="answer" id="id_answer{{ task.pk }}">
+                                            <input type="SUBMIT" value="Ok" onclick="prevent_refresh_answer({{ task.pk }})" class="btn btn-primary">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <a href="#">{{ task.title }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

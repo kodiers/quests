@@ -96,7 +96,7 @@
                     <div class="col-xs-8">
                         <h2>Today events</h2>
                         {% for event in object.players.get_current_event %}
-                            <a href="#">{{ event.title }} {{ event.start_date|date:'d m Y H i' }}</a>
+                            <a href="{% url 'play_event' event.pk %}">{{ event.title }} {{ event.start_date|date:'d m Y H i' }}</a>
                         {% endfor %}
                     </div>
                 </div>

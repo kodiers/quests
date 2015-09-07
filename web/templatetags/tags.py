@@ -1,7 +1,7 @@
 __author__ = 'kodiers'
 from django import template
 from django.contrib.auth.models import User
-from web.models import Organizers, Events, QuestsUsers, Players, EventStatistics
+from web.models import Organizers, Events, QuestsUsers, Players, EventStatistics, Tasks, TaskStatistics
 
 register = template.Library()
 
@@ -89,6 +89,33 @@ def get_user_team_by_event(username, event_id):
         for team in event.registered_teams.all():
             if user in team.players.all():
                 return team.title
+
+
+@register.assignment_tag()
+def get_taskstat_for_task(username, task_id):
+    """
+    """
+    # username = context['user']
+    global task_stat
+    task = Tasks.objects.get(pk=task_id)
+    user = User.objects.get(username=username)
+    user_team = None
+    if task.event.is_team:
+        for team in task.event.registered_teams.all():
+            if user in team.players.all():
+                user_team = team
+        if user_team:
+            try:
+                task_stat = TaskStatistics.objects.filter(task=task).get(team=user_team)
+            except TaskStatistics.DoesNotExist:
+                task_stat = None
+    else:
+        try:
+           task_stat = TaskStatistics.objects.filter(task=task).get(player=user)
+        except TaskStatistics.DoesNotExist:
+            task_stat = None
+    return task_stat
+
 
 
 # @register.filter()

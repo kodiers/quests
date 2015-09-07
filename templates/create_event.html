@@ -80,7 +80,7 @@
                                     <textarea class="form-control" id="id_taskDescription" name="taskDescription" placeholder="Enter description for task"></textarea>
                                     <label for="id_mapLink">Link to map</label>
                                     <input type="url" name="mapLink" class="form-control" id="id_mapLink">
-                                    <label for="id_taskTime">Time for task</label>
+                                    <label for="id_taskTime">Time for task (minutes):</label>
                                     <input type="time" class="form-control" name="taskTime" id="id_taskTime">
                                     <label for="id_taskScore">Score:</label>
                                     <input type="number" class="form-control" name="taskScore" id="id_taskScore">
@@ -141,7 +141,7 @@
                                                 <textarea class="form-control" id="id_editTaskDescription{{ task.pk }}" name="editTaskDescription">{{ task.description }}</textarea>
                                                 <label for="id_editMapLink{{ task.pk }}">Link to map</label>
                                                 <input type="url" name="editMapLink" class="form-control" id="id_editMapLink{{ task.pk }}" value="{{ task.map_link }}">
-                                                <label for="id_editTaskTime{{ task.pk }}">Time for task</label>
+                                                <label for="id_editTaskTime{{ task.pk }}">Time for task (minutes):</label>
                                                 <input type="time" class="form-control" name="editTaskTime" id="id_editTaskTime{{ task.pk }}" value="{{ task.time }}">
                                                 <label for="id_editTaskScore{{ task.pk }}">Score:</label>
                                                 <input type="number" class="form-control" name="editTaskScore" id="id_editTaskScore{{ task.pk }}" value="{{ task.score }}">

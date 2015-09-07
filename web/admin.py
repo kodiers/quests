@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 from web.models import QuestsUsers, Contacts, Players, Tariffs, TariffsFeature, Organizers, Teams
 from web.models import Messages, EventsPlaces, Events, Tasks, Hints, Photos
-from web.models import EventStatistics, TaskStatistics
+from web.models import EventStatistics, TaskStatistics, TodayEvents, EventsWinners
 
 # Register your models here.
 class QuestsUserInline(admin.StackedInline):
@@ -46,3 +46,5 @@ admin.site.register(Hints)
 admin.site.register(EventStatistics)
 admin.site.register(TaskStatistics)
 admin.site.register(Photos)
+admin.site.register(TodayEvents)
+admin.site.register(EventsWinners)

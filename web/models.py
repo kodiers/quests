@@ -116,7 +116,7 @@ class Players(models.Model):
         """
         today = datetime.date.today()
         events = []
-        all_events = Events.objects.filter(start_date=today).filter(completed=False).order_by('start_date')
+        all_events = Events.objects.filter(completed=False).filter(started=True).order_by('start_date')
         user_teams = Teams.objects.filter(players=self.user)
         for event in all_events:
             if self.user in event.registered_players.all():
@@ -424,6 +424,9 @@ class EventStatistics(models.Model):
     player = models.OneToOneField(User, verbose_name="Player", null=True, blank=True)
     score = models.IntegerField(verbose_name="Score", null=True, blank=True)
     time = DurationField(verbose_name="Executed time", null=True, blank=True)
+    start_time = models.DateTimeField(verbose_name="Start time", null=True, blank=True)
+    end_time = models.DateTimeField(verbose_name="End time", null=True, blank=True)
+    completed = models.BooleanField(verbose_name="Completed for user/team", default=False)
 
     def __str__(self):
         if self.team != None:
@@ -452,8 +455,13 @@ class TaskStatistics(models.Model):
     team = models.ForeignKey(Teams, verbose_name="Team", null=True, blank=True)
     player = models.ForeignKey(User, verbose_name="Player", null=True, blank=True)
     score = models.IntegerField(verbose_name="Score", null=True, blank=True)
-    time = DurationField(verbose_name="Executed time", null=True, blank=True)
+    time = models.IntegerField(verbose_name="Executed time", null=True, blank=True)
+    start_time = models.DateTimeField(verbose_name="Start time", null=True, blank=True)
+    end_time = models.DateTimeField(verbose_name="End time", null=True, blank=True)
     used_hints = models.IntegerField(default=0, verbose_name="Count of used hints")
+    completed = models.BooleanField(default=False, verbose_name="Is task completed for user or team")
+    started = models.BooleanField(default=False, verbose_name="Task started")
+    answered = models.BooleanField(default=False, verbose_name="Task is correctly answered")
 
     def __str__(self):
         if self.team != None:
@@ -467,7 +475,22 @@ class TaskStatistics(models.Model):
         ordering = ('time',)
 
 
+class TodayEvents(models.Model):
+    """
 
+    """
+    event = models.OneToOneField(Events)
+    start_time = models.DateTimeField()
+
+
+class EventsWinners(models.Model):
+    """
+
+    """
+    eventstat = models.OneToOneField(EventStatistics)
+    player = models.OneToOneField(User, null=True, blank=True)
+    team = models.OneToOneField(Teams, null=True, blank=True)
+    event = models.OneToOneField(Events)
 
 
 
