@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load tags %}
+{% block title %}
+    Write message | Get your own quest
+{% endblock %}
+{% block scripts %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="error">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4">
+                <h2>{{ user.username }}</h2>
+                {% if user.questsusers.image.url != None %}
+                    <img src="{{ user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
+                {% else %}
+                    <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
+                {% endif %}
+            </div>
+            <div class="col-xs-8">
+                <h3>New message</h3>
+                <form method="post" id="newMessageForm">
+                    {% csrf_token %}
+                    <label for="to_user">Enter username:</label>
+                    <input type="text" name="to_user" class="form-control" id="to_user">
+                    <label for="text">Enter message:</label>
+                    <textarea placeholder="Enter your message" rows="5" class="form-control" id="text"></textarea>
+                    <input type="submit" value="Send" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,7 +1,7 @@
 __author__ = 'kodiers'
 from django import template
 from django.contrib.auth.models import User
-from web.models import Organizers, Events, QuestsUsers, Players, EventStatistics, Tasks, TaskStatistics
+from web.models import Organizers, Events, QuestsUsers, Players, EventStatistics, Tasks, TaskStatistics, Teams
 
 register = template.Library()
 
@@ -116,6 +116,13 @@ def get_taskstat_for_task(username, task_id):
             task_stat = None
     return task_stat
 
+
+@register.filter()
+def get_team_by_title(title):
+    """
+    """
+    team = Teams.objects.get(title=title)
+    return team.pk
 
 
 # @register.filter()

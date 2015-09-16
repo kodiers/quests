@@ -138,6 +138,13 @@ class Players(models.Model):
         """
         return Photos.objects.filter(user=self.user).order_by('date')
 
+    def add_points(self, points):
+        """
+        Increment user points
+        """
+        self.points += points
+        self.save()
+
     class Meta:
         verbose_name = "Player"
         verbose_name_plural = "Players"
@@ -201,7 +208,7 @@ class Organizers(models.Model):
         Get all future events for organizer. Calling in template.
         """
         today = datetime.date.today()
-        events = Events.objects.filter(organizer=self.user).filter(start_date__gte=today).order_by('start_date')
+        events = Events.objects.filter(organizer=self.user).filter(start_date__gte=today).filter(started=False).filter(completed=False).order_by('start_date')
         return events
 
     def get_current_events(self):
@@ -209,7 +216,7 @@ class Organizers(models.Model):
         Get current events for this organizer. Calling in template.
         """
         today = datetime.date.today()
-        events = Events.objects.filter(organizer=self.user).filter(start_date=today).order_by('pk')
+        events = Events.objects.filter(organizer=self.user).filter(start_date=today).filter(completed=False).filter(started=True).order_by('pk')
         return events
 
     def get_completed_events(self):
@@ -217,8 +224,14 @@ class Organizers(models.Model):
         Get completed events for this organizer. Calling in template
         """
         today = datetime.date.today()
-        events = Events.objects.filter(organizer=self.user).filter(start_date__lt=today).filter(completed=True).order_by('start_date')
+        events = Events.objects.filter(organizer=self.user).filter(completed=True).order_by('start_date')
         return events
+
+    def get_organizers_photo(self):
+        """
+        Get photo for current organizer.
+        """
+        return Photos.objects.filter(user=self.user).order_by('date')
 
     class Meta:
         verbose_name = "Organizer"
@@ -237,27 +250,16 @@ class Teams(models.Model):
     def __str__(self):
         return self.title
 
+    def add_points(self, points):
+        """
+        Increase team points
+        """
+        self.points += points
+        self.save()
+
     class Meta:
         verbose_name = "Team"
         verbose_name_plural = "Teams"
-
-
-class Messages(models.Model):
-    """
-    Model for user messages
-    """
-    text = models.TextField(verbose_name="Text")
-    from_user = models.ForeignKey(User, verbose_name="From", related_name='from_user')
-    to_user = models.ForeignKey(User, verbose_name="To", related_name='to_user')
-    date = models.DateTimeField(verbose_name="Date")
-
-    def __str__(self):
-        return self.from_user.username + " to " + self.to_user.username
-
-    class Meta:
-        verbose_name = "Message"
-        verbose_name_plural = "Messages"
-        ordering = ('date',)
 
 
 class EventsPlaces(models.Model):
@@ -328,20 +330,46 @@ class Events(models.Model):
         """
         Return username (if user is winner) or team.title if event for team only. Calling in template.
         """
-        statistics = EventStatistics.objects.filter(event=self).aggregate(Max('score'))
-        eventstat = EventStatistics.objects.filter(event=self).get(score=statistics['score__max'])
+        # statistics = EventStatistics.objects.filter(event=self).aggregate(Max('score'))
+        # eventstat = EventStatistics.objects.filter(event=self).get(score=statistics['score__max'])
+        # if self.is_team:
+        #     team = eventstat.team.title
+        #     return team
+        # else:
+        #     username = eventstat.player.username
+        #     return username
+        eventwinner = EventsWinners.objects.get(event=self)
         if self.is_team:
-            team = eventstat.team.title
-            return team
+            return eventwinner.team.title
         else:
-            username = eventstat.player.username
-            return username
+            return eventwinner.player.username
 
     def get_event_score(self):
         """
         Return max score for event. Calling in template.
         """
         statistics = EventStatistics.objects.filter(event=self).aggregate(Max('score'))
+        return statistics['score__max']
+
+    def get_registered_count(self):
+        """
+        Return number of registered players or teams
+        """
+        if self.is_team:
+            return self.registered_teams.count()
+        else:
+            return self.registered_players.count()
+
+    def get_event_score_by_winner(self):
+        """
+        Return max score for event winner.
+        """
+        if self.is_team:
+            team = Teams.objects.get(title=self.get_event_winner())
+            statistics = EventStatistics.objects.filter(event=self).filter(team=team).aggregate(Max('score'))
+        else:
+            user = User.objects.get(username=self.get_event_winner())
+            statistics = EventStatistics.objects.filter(event=self).filter(player=user).aggregate(Max('score'))
         return statistics['score__max']
 
 
@@ -420,8 +448,8 @@ class EventStatistics(models.Model):
     Model for store event's statistic
     """
     event = models.ForeignKey(Events, verbose_name="Event")
-    team = models.OneToOneField(Teams, verbose_name="Team", null=True, blank=True)
-    player = models.OneToOneField(User, verbose_name="Player", null=True, blank=True)
+    team = models.ForeignKey(Teams, verbose_name="Team", null=True, blank=True)
+    player = models.ForeignKey(User, verbose_name="Player", null=True, blank=True)
     score = models.IntegerField(verbose_name="Score", null=True, blank=True)
     time = DurationField(verbose_name="Executed time", null=True, blank=True)
     start_time = models.DateTimeField(verbose_name="Start time", null=True, blank=True)
@@ -462,6 +490,7 @@ class TaskStatistics(models.Model):
     completed = models.BooleanField(default=False, verbose_name="Is task completed for user or team")
     started = models.BooleanField(default=False, verbose_name="Task started")
     answered = models.BooleanField(default=False, verbose_name="Task is correctly answered")
+    # TODO: add fields for executed time in days, seconds, minutes, hours and add handler for this
 
     def __str__(self):
         if self.team != None:
@@ -488,8 +517,8 @@ class EventsWinners(models.Model):
 
     """
     eventstat = models.OneToOneField(EventStatistics)
-    player = models.OneToOneField(User, null=True, blank=True)
-    team = models.OneToOneField(Teams, null=True, blank=True)
+    player = models.ForeignKey(User, null=True, blank=True)
+    team = models.ForeignKey(Teams, null=True, blank=True)
     event = models.OneToOneField(Events)
 
 

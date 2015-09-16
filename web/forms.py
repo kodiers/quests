@@ -70,3 +70,19 @@ class CreateEventForm(forms.ModelForm):
         widgets = {'organizer':forms.HiddenInput()}
 
 
+class OrganizerProfileForm(forms.Form):
+    """
+    Change organizer profile form
+    """
+    avatar = forms.ImageField(label="Avatar", required=False)
+    description = forms.CharField(widget=forms.Textarea(attrs={'rows': 5}), label="About me", required=False)
+    date_of_birth = forms.DateField(label="Date of birth", required=False)
+    country = forms.CharField(max_length=255, required=False, label="Country")
+    city = forms.CharField(max_length=255, required=False, label="City")
+    street = forms.CharField(required=False, label="Street", widget=forms.Textarea(attrs={'rows': 1}))
+    phone = forms.CharField(required=False, label='Phone number', max_length=15)
+    skype = forms.CharField(max_length=255, label="Skype", required=False)
+    site = forms.CharField(label="Web site", required=False)
+    email = forms.EmailField(label="Email")
+
+

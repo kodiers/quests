@@ -74,9 +74,11 @@
                         </div>
                     </div>
                     <!-- end modal -->
+                {% else %}
+                    <p class="error">You are completed this event</p>
                 {% endif %}
                 <p>Duration: {{ event.duration }}</p>
-                <p>{{ event.description }}</p>
+                <p>Event description: {{ event.description }}</p>
                 {% if event.map_link != None %}
                     {{ event.map_link|safe }}
                 {% endif %}
@@ -84,7 +86,7 @@
                     {% get_taskstat_for_task username=user.username task_id=task.pk as taskstat %}
                     {% if taskstat.completed %}
                         Completed
-                        {{ task.title }} {{ task.score }} {{ task.time }} {{ taskstat.score }} {{ taskstat.time }}
+                        {{ task.title }} Task core: {{ task.score }} Task time: {{ task.time }} Your score: {{ taskstat.score }} Your time: {{ taskstat.time }}
                     {% else %}
                         Not completed
                         <button onclick="start_task({{ task.pk }})" class="btn btn-primary">{{ task.title }}</button>
@@ -117,7 +119,6 @@
                             </div>
                         </div>
                     {% endif %}
-                    <a href="#">{{ task.title }}</a>
                 {% endfor %}
             </div>
         </div>

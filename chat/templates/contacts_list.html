@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load tags %}
+{% block title %}
+    Write message | Get your own quest
+{% endblock %}
+{% block scripts %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4">
+                <h2>{{ user.username }}</h2>
+                {% if user.questsusers.image.url != None %}
+                    <img src="{{ user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
+                {% else %}
+                    <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
+                {% endif %}
+                <a href="{% url 'new_message' %}" class="btn btn-primary">New message</a>
+            </div>
+            <div class="col-xs-8">
+                <h3>Your contacts</h3>
+                {% for user in object.contacts.all %}
+                    {{ user.username }}<a href="#" class="btn btn-primary">Send message</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

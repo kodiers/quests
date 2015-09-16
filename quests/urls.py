@@ -4,7 +4,7 @@ from django.contrib import admin
 from web.views import registration, index, restore_password, logout_view, login_view, EventView, confirm_join_event, \
     create_team, join_team, join_event, PlayerView, OrganizerView, show_my_profile, create_event, add_task, delete_task, \
     edit_task, delete_event, delete_team, leave_team, unregister_event, upload_photos, delete_photo, play_event, \
-    start_task, task_answer
+    start_task, task_answer, complete_event, show_my_organizer_profile
     #join_event_as_player, join_as_team
 
 from quests.settings import MEDIA_ROOT
@@ -18,7 +18,8 @@ urlpatterns = patterns('',
     url(r'^event/(?P<pk>\d+)/$', EventView.as_view(), name='event'),
     url(r'^player/(?P<pk>\d+)/$', PlayerView.as_view(), name='player'),
     url(r'^organizer/(?P<pk>\d+)/$', OrganizerView.as_view(), name='organizer'),
-    url(r'^my_profile/(?P<pk>\d+)/$', show_my_profile, name='player_profile'),
+    url(r'^my_profile/$', show_my_profile, name='player_profile'),
+    url(r'^my_organizer_profile/$', show_my_organizer_profile, name='organizer_profile'),
     url(r'^confirm_join/(?P<pk>\d+)/$', confirm_join_event, name='confirm_join'),
     url(r'^join/(?P<flag>\w+)/$', join_event, name='join_event'),
     url(r'^unregister_event/$', unregister_event, name='unregister_event'),
@@ -38,10 +39,12 @@ urlpatterns = patterns('',
     url(r'^play_event/(?P<pk>\d+)/$', play_event, name='play_event'),
     url(r'^start_task/$', start_task, name='start_task'),
     url(r'^task_answer/$', task_answer, name='task_answer'),
+    url(r'^complete_event/$', complete_event, name='complete_event'),
     url(r'^register/$', registration, name='register'),
     url(r'^restore/$', restore_password, name='restore'),
     url(r'^login/$', login_view, name='login'),
     url(r'^logout/$', logout_view, name='logout'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT}),
+    url(r'^messages/', include('chat.urls')),
 )

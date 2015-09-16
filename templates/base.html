@@ -39,9 +39,9 @@
                                 <ul class="dropdown-menu">
                                     <li>
                                         {% if user.questsusers.is_organizer %}
-                                            <a href="#">
+                                            <a href="{% url 'organizer_profile' %}">
                                         {% else %}
-                                            <a href="{% url 'player_profile' user.pk %}">
+                                            <a href="{% url 'player_profile' %}">
                                         {% endif %}
                                             Profile</a>
                                     </li>

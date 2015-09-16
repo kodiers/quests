@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
 from web.models import QuestsUsers, Contacts, Players, Tariffs, TariffsFeature, Organizers, Teams
-from web.models import Messages, EventsPlaces, Events, Tasks, Hints, Photos
+from web.models import EventsPlaces, Events, Tasks, Hints, Photos
 from web.models import EventStatistics, TaskStatistics, TodayEvents, EventsWinners
 
 # Register your models here.
@@ -38,7 +38,6 @@ admin.site.register(Tariffs)
 admin.site.register(TariffsFeature)
 admin.site.register(Organizers)
 admin.site.register(Teams)
-admin.site.register(Messages)
 admin.site.register(EventsPlaces)
 admin.site.register(Events, EventsAdmin)
 admin.site.register(Tasks)

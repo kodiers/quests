@@ -21,7 +21,8 @@ from django.core.mail import send_mail
 
 from web.models import QuestsUsers, Players, Organizers, Contacts, Events, Teams, Tasks, Hints, EventsPlaces, Photos, \
     TaskStatistics, EventStatistics
-from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm, PlayerProfileForm, CreateEventForm
+from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm, PlayerProfileForm, CreateEventForm, \
+    OrganizerProfileForm
 
 from quests.settings import EMAIL_HOST_USER
 
@@ -339,7 +340,7 @@ class OrganizerView(DetailView):
 
 
 @login_required()
-def show_my_profile(request, pk):
+def show_my_profile(request):
     """
     Show and edit user (player) profile.
     :param request: HttpRequest
@@ -348,7 +349,7 @@ def show_my_profile(request, pk):
     """
     message = ''
     error = ''
-    user = User.objects.get(pk=pk)
+    user = User.objects.get(pk=request.user.pk)
     if request.method == 'POST':
         form = PlayerProfileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -687,10 +688,10 @@ def delete_photo(request):
 @login_required()
 def play_event(request, pk):
     """
-
-    :param request:
-    :param pk:
-    :return:
+    Show play events page. If user just started => then create eventstatistics object for this event and user.
+    :param request: HttpRequest object
+    :param pk: pk of event
+    :return: HttpResponse (render play_event.html template)
     """
     error = ''
     event = Events.objects.get(pk=pk)
@@ -701,29 +702,34 @@ def play_event(request, pk):
         error = _("Event is not started!")
         return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
     if event.is_team:
+        # Check if user in registered team
         for team in user_teams:
             if team in event.registered_teams.all():
                 user_team = team
                 user_registered = True
     else:
+        # Check if user registered by self
         if request.user in event.registered_players.all():
             user_registered = True
     if not user_registered:
+        # If user isn't register - show error
         error = _("You are not registered to this event")
         return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
     tasks = event.get_event_tasks()
-    eventstat = EventStatistics.objects.filter(event=event).filter(player=request.user).filter(completed=False)
-    if not eventstat:
+    try:
+        # Try get existing EventStatistics object. If not => create new one
+        eventstat = EventStatistics.objects.filter(event=event).get(player=request.user)
+    except EventStatistics.DoesNotExist:
         eventstat = EventStatistics()
         eventstat.event = event
         eventstat.team = user_team
         eventstat.player = request.user
-        eventstat.start_time = datetime.datetime.now()
+        eventstat.start_time = datetime.datetime.utcnow().replace(tzinfo=utc)
         eventstat.save()
     return render_to_response('play_event.html', {'event': event, 'tasks': tasks, 'user_team': user_team, 'eventstat': eventstat},
                               context_instance=RequestContext(request))
 
-
+# TODO: complete comments from here
 @login_required()
 @json_wrapper
 def start_task(request):
@@ -732,10 +738,9 @@ def start_task(request):
     :param request: HttpRequest (from AJAX function start_task())
     :return: HttpResponse - if success return json else return error page
     """
-    now = datetime.datetime.now()
+    now = datetime.datetime.utcnow().replace(tzinfo=utc)
     error = ''
     task = Tasks.objects.get(pk=request.POST['pk'])
-    # user_teams = None
     task_completed = False
     registered_team = None
     if task.event.is_team:
@@ -772,9 +777,9 @@ def start_task(request):
 @json_wrapper
 def task_answer(request):
     """
-
-    :param request:
-    :return:
+    Complete task and check if answer is correct. Accept request from AJAX function.
+    :param request: HttpRequest (from send_answer JS function)
+    :return: HttpResponse - if success return json else return error page
     """
     error = ''
     user = request.user
@@ -787,23 +792,24 @@ def task_answer(request):
             error = _("You are answered for this task")
         else:
             answer = request.POST['answer']
+            task_fact_duraction = abs(now - taskstat.start_time)
+            taskstat.time = task_fact_duraction.seconds // 60
             if task.answer == answer:
                 #
                 correct_time =True
                 if task.time is not None:
-                    task_fact_duraction = abs(now - taskstat.start_time)
-                    taskstat.time = task_fact_duraction.seconds // 60
-                    if taskstat.time <= int(task.time):
-                        correct_time = True
-                    else:
-                        correct_time = False
+                    if task.time != 'None':
+                        if taskstat.time <= int(task.time):
+                           correct_time = True
+                        else:
+                           correct_time = False
             if correct_time:
                 taskstat.answered = True
                 taskstat.score = task.score
-                user.players.points += task.score
+                user.players.add_points(task.score)
                 if task.event.is_team:
                     team = taskstat.team
-                    team.points += task.score
+                    team.add_points(task.score)
             taskstat.end_time = now
             taskstat.completed = True
             taskstat.save()
@@ -817,32 +823,88 @@ def task_answer(request):
 @json_wrapper
 def complete_event(request):
     """
-
-    :param request:
-    :return:
+    Complete event. Accept request from AJAX function.
+    :param request: HttpRequest (from complete_event JS function)
+    :return: HttpResponse - if success return json else return error page
     """
     eventstat = EventStatistics.objects.get(pk=request.POST['pk'])
     user_team = None
     if request.user == eventstat.player:
         event = eventstat.event
         tasks = Tasks.objects.filter(event=event)
-        task_count = tasks.count()
-        taskstat_count = 0
+        tasks_score = 0
         for task in tasks:
-            taskstat = TaskStatistics.objects.filter(player=request.user).filter(completed=True).filter(task=task).get(answered=True)
+            try:
+                taskstat = TaskStatistics.objects.filter(player=request.user).filter(completed=True).filter(task=task).get(answered=True)
+            except TaskStatistics.DoesNotExist:
+                taskstat = None
             if taskstat:
-                taskstat_count += 1
-        if task_count == taskstat_count:
-            if event.is_team:
-                user_teams = request.user.players.get_user_teams()
-                for team in user_teams:
-                    if team in event.registered_teams.all():
-                        user_team = team
-            eventstat.completed = True
-            eventstat.end_time = datetime.datetime.now()
-            event_fact_duration = abs(datetime.datetime.now() - eventstat.start_time)
-            eventstat.time
+                tasks_score += taskstat.score
+        eventstat.completed = True
+        eventstat.score = tasks_score
+        now = datetime.datetime.utcnow().replace(tzinfo=utc)
+        eventstat.end_time = now
+        event_fact_duration = abs(now - eventstat.start_time)
+        eventstat.time = event_fact_duration.seconds // 60
+        eventstat.save()
+        return HttpResponse(json.dumps(SIMPLE_JSON_ANSWER), content_type="application/json")
+    else:
+        error = _("You are not started this event")
+        return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
 
+
+@login_required()
+def show_my_organizer_profile(request):
+    """
+    Show and edit user (organizer) profile.
+    :param request: HttpRequest
+    :return: HttpResponse
+    """
+    message = ''
+    error = ''
+    user = User.objects.get(pk=request.user.pk)
+    if request.method == 'POST':
+        form = OrganizerProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Change players and user properties
+            user.email = form.cleaned_data['email']
+            if 'avatar' in request.FILES:
+                user.questsusers.image = form.cleaned_data['avatar']
+            user.organizers.description = form.cleaned_data['description']
+            if not Contacts.objects.filter(user=user).exists():
+                # Create contacts for user if not exists
+                user_contacts = Contacts()
+                user_contacts.user = user
+                user_contacts.save()
+            user.contacts.country = form.cleaned_data['country']
+            user.contacts.city = form.cleaned_data['city']
+            user.contacts.street = form.cleaned_data['street']
+            user.contacts.phone = form.cleaned_data['phone']
+            user.contacts.skype = form.cleaned_data['skype']
+            user.contacts.site = form.cleaned_data['site']
+            user.questsusers.save()
+            user.organizers.save()
+            user.contacts.save()
+            user.save()
+            message = _("Your profile updated successfully!")
+        else:
+            error = FORM_FIELDS_ERROR
+    # Initialize form fields dictionary
+    intial_formdata = {'avatar': user.questsusers.image, 'description': user.organizers.description,
+                       'country': '', 'city': '', 'street': '', 'phone':'', 'skype': '', 'site': '',
+                       'email': user.email}
+    if Contacts.objects.filter(user=user).exists():
+        # Load contacts in form field for user if exists
+        intial_formdata['country'] = user.contacts.country
+        intial_formdata['city'] = user.contacts.city
+        intial_formdata['street'] = user.contacts.street
+        intial_formdata['phone'] = user.contacts.phone
+        intial_formdata['skype'] = user.contacts.skype
+        intial_formdata['site'] = user.contacts.site
+    form = OrganizerProfileForm(request.POST or None, initial=intial_formdata)
+    return render_to_response('organizer_profile.html',
+                              {'object': user, 'message': message, 'error': error , 'form': form},
+                              context_instance=RequestContext(request))
 
 
 

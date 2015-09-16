@@ -45,7 +45,7 @@ function delete_event(event_pk) {
                 var div_id = '#event' + event_pk;
                 $(div_id).remove();
                 // reload to show changes
-                //location.reload();
+                location.reload();
             }
 
         },

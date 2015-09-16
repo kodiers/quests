@@ -2,8 +2,8 @@ __author__ = 'kodiers'
 
 import kronos
 import datetime
-from web.models import Events, TodayEvents
-
+from web.models import Events, TodayEvents, EventStatistics, EventsWinners
+from django.db.models import Max, Min
 
 @kronos.register('0 0 * * *')
 def test_task():
@@ -39,6 +39,20 @@ def check_today_events():
             completed_event.completed = True
             completed_event.started = False
             completed_event.save()
+            max_event_score = EventStatistics.objects.filter(event=completed_event).aggregate(Max('score'))
+            min_event_time = EventStatistics.objects.filter(event=completed_event).aggregate(Min('time'))
+            if max_event_score['score__max']:
+                if EventStatistics.objects.filter(event=completed_event).filter(time=min_event_time['time__min']).filter(score=max_event_score['score__max']).exists():
+                    winner_eventstats = EventStatistics.objects.filter(event=completed_event).filter(time=min_event_time['time__min']).get(score=max_event_score['score__max'])
+                    if not EventsWinners.objects.filter(eventstat=winner_eventstats).exists():
+                        winner = EventsWinners()
+                        winner.event = winner_eventstats.event
+                        winner.eventstat = winner_eventstats
+                        winner.player = winner_eventstats.player
+                        winner.team = winner_eventstats.team
+                        winner.save()
+
+
 
 
 @kronos.register('0 0 * * *')
