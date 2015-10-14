@@ -14,7 +14,35 @@
                 {% else %}
                     <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
                 {% endif %}
-                <a href="#" class="btn btn-primary">Send message</a>
+
+                <button class="btn btn-primary" data-toggle="modal" data-target="#SendMessageModal">
+                    Send message
+                </button>
+                <div class="modal fade" id="SendMessageModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                                <h4 class="modal-title">Send new message</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div id="modal_error"></div>
+                                <form action="{% url 'send_message' %}" method="post" id="idSendMessageForm">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="sender" value="{{ user.username }}">
+                                    <input type="hidden" name="receiver" value="{{ object.user.username }}">
+                                    <textarea name="text" class="form-control" placeholder="Enter message"></textarea>
+                                    <input type="submit" value="Send" class="btn btn-primary">
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" id="id_editCloseButton{{ task.pk }}">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <p>City: {{ object.user.contacts.city }}</p>
                 <p>Street: {{ object.user.contacts.street }}</p>
                 <p>Phone: {{ object.user.contacts.phone }}</p>

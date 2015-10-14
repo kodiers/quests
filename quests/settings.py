@@ -106,3 +106,12 @@ LOGIN_URL = 'login'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 EMAIL_HOST_USER = 'test@test.ru'
+
+
+#API KEY FOR TORNADO CHAT APPLICATION
+
+API_KEY = '8W29kBOVkntM4+AqXJ/hyDVhHsmF02Qn'
+
+# API ENDPOINT FOR TORNADO CHAT APPLICATION
+
+API_URL = 'http://127.0.0.1:8000/messages/send_message_api/'

@@ -5,6 +5,8 @@
     Write message | Get your own quest
 {% endblock %}
 {% block scripts %}
+    <script src="{% static 'js/jquery.cookie.js' %}"></script>
+    <script src="{% static 'js/check_username.js' %}"></script>
 {% endblock %}
 {% block content %}
     <div class="container">
@@ -16,13 +18,49 @@
                 {% else %}
                     <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
                 {% endif %}
-                <a href="{% url 'new_message' %}" class="btn btn-primary">New message</a>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#SendMessageModal">
+                    Send message
+                </button>
+                <div class="modal fade" id="SendMessageModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                                <h4 class="modal-title">Send new message</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div id="modal_error"></div>
+                                <form action="{% url 'send_message' %}" method="post" id="idSendMessageForm">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="sender" value="{{ user.username }}">
+                                    <input type="text" name="receiver" class="form-control" placeholder="Enter username" id="idReceiver">
+                                    <textarea name="text" class="form-control" placeholder="Enter message"></textarea>
+                                    <input type="submit" value="Send" class="btn btn-primary">
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" id="id_editCloseButton{{ task.pk }}">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-xs-8">
                 <h3>Your contacts</h3>
-                {% for user in object.contacts.all %}
-                    {{ user.username }}<a href="#" class="btn btn-primary">Send message</a>
-                {% endfor %}
+                {% if chats %}
+                    {% for chat in chats %}
+                        <p>
+                            <a href="{% url 'chat' chat.id %}">{{ chat.partner.username }}</a>
+                            {% if chat.have_new_message %}
+                                <span class="new_message"> New </span>
+                            {% endif %}
+                        </p>
+                    {% endfor %}
+                {% else %}
+                    <p>You haven't contacts</p>
+                {% endif %}
             </div>
         </div>
     </div>

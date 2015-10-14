@@ -56,3 +56,23 @@ body {
     max-width: 300px;
     max-height: 300px;
 }
+.new_message {
+    color: green;
+    font-style: italic;
+}
+.conversation {
+    overflow: auto;
+    border-style: solid;
+    height: 400px;
+}
+.chat_message {
+    color: black;
+}
+.sender {
+    color: navy;
+    font-style: italic;
+}
+.receiver {
+    color: #23527c;
+    font-style: italic;
+}

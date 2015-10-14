@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load tags %}
+{% block title %}
+    Chat with {{ receiver }} | Get your own quest
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'js/chat.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-3">
+                <h2>{{ user.username }}</h2>
+                {% if user.questsusers.image.url != None %}
+                    <img src="{{ user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
+                {% else %}
+                    <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
+                {% endif %}
+            </div>
+            <div class="col-xs-6">
+                <div class="conversation">
+                    {% for message in messages %}
+                        {% if message.sender == user %}
+                            <p class="sender">
+                                {{ message.sender }} {{ message.datetime|date:'j-m-Y H:i' }}
+                            </p>
+                        {% else %}
+                            <p class="receiver">
+                                {{ message.sender }} {{ message.datetime|date:'j-m-Y H:i' }}
+                            </p>
+                        {% endif %}
+                        <p class="chat_message">
+                            {{ message.text }}
+                        </p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <h2>{{ receiver.username }}</h2>
+                {% if receiver.questsusers.image.url != None %}
+                    <img src="{{ receiver.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
+                {% else %}
+                    <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <form method="post" id="idSendMessageForm">
+                    {% csrf_token %}
+                    <input type="hidden" name="sender" value="{{ user.username }}" id="idSender">
+                    <input type="hidden" name="chat" value="{{ chat.id }}" id="idChat">
+                    <textarea class="form-control" placeholder="Enter message" id="idText"></textarea>
+                    <input type="submit" value="Send!" class="btn btn-primary" id="idSend">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
