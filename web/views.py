@@ -907,7 +907,13 @@ def show_my_organizer_profile(request):
                               context_instance=RequestContext(request))
 
 
+class EventsListView(ListView):
+    """
 
+    """
+    template_name = 'events.html'
+    queryset = Events.objects.filter(start_date__gte=datetime.datetime.now())
+    paginate_by = 20
 
 
 

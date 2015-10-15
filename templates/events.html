@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load tags %}
+{% block title %}
+    Events | get your own quest
+{% endblock %}
+{% block scripts %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                Search form
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h1 class="page-header">Events</h1>
+                <p>{% now "j-m-Y" %}</p>
+                {% for object in object_list %}
+                    <div class="row">
+                        <div class="col-xs-2">
+                            {% if object.image.url != None %}
+                                <img src="{{ object.image.url }}" class="img-responsive img-rounded index_avatar" alt="{{ object.title }}">
+                            {% else %}
+                                <img src="{% static 'images/no_item_image.jpg' %}" class="img-responsive img-rounded index_avatar">
+                            {% endif %}
+                        </div>
+                        <div class="col-xs-8">
+                            <h2>{{ object.title }}</h2>
+                            <p>{{ object.description }}</p>
+                        </div>
+                        <div class="col-xs-2">
+                            <p>Start date: {{ object.start_date|date: 'j-m-Y' }}</p>
+                            <p>End date: {{ object.end_date|date: 'j-m-Y' }}</p>
+                            {% if object.is_team %}
+                                <p>Team only</p>
+                            {% endif %}
+                            <a href="{% url 'event' object.pk %}" class="btn btn-primary">More...</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
