@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -90,7 +91,7 @@ STATICFILES_DIRS = (
 )
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR,  'templates'),
+    os.path.join(BASE_DIR, 'templates'),
 )
 
 MEDIA_ROOT = (
@@ -108,10 +109,22 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST_USER = 'test@test.ru'
 
 
-#API KEY FOR TORNADO CHAT APPLICATION
+# API KEY FOR TORNADO CHAT APPLICATION
 
 API_KEY = '8W29kBOVkntM4+AqXJ/hyDVhHsmF02Qn'
 
 # API ENDPOINT FOR TORNADO CHAT APPLICATION
 
 API_URL = 'http://127.0.0.1:8000/messages/send_message_api/'
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    # Added request context_processor for forming URL in template (for search views)
+    "django.core.context_processors.request",
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.core.context_processors.tz",
+    "django.contrib.messages.context_processors.messages"
+)

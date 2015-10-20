@@ -5,18 +5,30 @@
     Events | get your own quest
 {% endblock %}
 {% block scripts %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.datetimepicker.css' %}">
+    <script src="{% static 'js/jquery.datetimepicker.js' %}"></script>
+    <script src="{% static 'js/calendar_create.js' %}"></script>
 {% endblock %}
 {% block content %}
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                Search form
+                <form method="get" action="{% url 'search_events' %}">
+                    <label for="search">Enter word to search:</label>
+                    <input type="text" class="form-control" name="search" id="search">
+                    <label for="id_start_date">From start date:</label>
+                    <input type="datetime" id="id_start_date" class="form-control" name="start_date">
+                    <label for="id_end_date">To end date:</label>
+                    <input type="datetime" id="id_end_date" class="form-control" name="end_date">
+                    <input type="submit" class="btn btn-primary" value="Search">
+                </form>
+                <a href="{% url 'all_events' %}" class="btn btn-primary">All events</a>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-12">
                 <h1 class="page-header">Events</h1>
-                <p>{% now "j-m-Y" %}</p>
+                <p>Today: {% now "j-m-Y" %}</p>
                 {% for object in object_list %}
                     <div class="row">
                         <div class="col-xs-2">
@@ -31,15 +43,47 @@
                             <p>{{ object.description }}</p>
                         </div>
                         <div class="col-xs-2">
-                            <p>Start date: {{ object.start_date|date: 'j-m-Y' }}</p>
-                            <p>End date: {{ object.end_date|date: 'j-m-Y' }}</p>
+                            <p>Start date: {{ object.start_date|date:'j-m-Y' }}</p>
+                            <p>End date: {{ object.end_date|date:'j-m-Y' }}</p>
                             {% if object.is_team %}
                                 <p>Team only</p>
                             {% endif %}
                             <a href="{% url 'event' object.pk %}" class="btn btn-primary">More...</a>
                         </div>
                     </div>
+                {% empty %}
+                    <div class="row">
+                        <div class="col-xs-12">
+                            Sorry, no events found.
+                        </div>
+                    </div>
                 {% endfor %}
+            </div>
+        </div>
+        {{ request.GET.items }}
+        <div class="row">
+            <div class="col-xs-12">
+                {% if is_paginated %}
+                    <div class="pagination">
+                        {% if page_obj.has_previous %}
+                            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                        {% endif %}
+                            {{ page_obj.number }} ({{ page_obj.paginator.num_pages }}).
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                        {% endif %}
+                    </div>
+                {% elif object_list.paginator.num_pages > 1 %}
+                    <div class="pagination">
+                        {% if object_list.has_previous %}
+                            <a href="?page={{ object_list.previous_page_number }}{% for key, value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">Previous</a>
+                        {% endif %}
+                        {{ object_list.number }} ({{ object_list.paginator.num_pages }})
+                        {% if object_list.has_next %}
+                            <a href="?page={{ object_list.next_page_number }}{% for key, value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">Next</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

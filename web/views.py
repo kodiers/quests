@@ -18,6 +18,7 @@ from django.utils.translation import ugettext as _
 from django.utils.timezone import utc
 
 from django.core.mail import send_mail
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from web.models import QuestsUsers, Players, Organizers, Contacts, Events, Teams, Tasks, Hints, EventsPlaces, Photos, \
     TaskStatistics, EventStatistics
@@ -26,7 +27,7 @@ from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm,
 
 from quests.settings import EMAIL_HOST_USER
 
-from web.functions import create_password_str, json_wrapper
+from web.functions import create_password_str, json_wrapper, search_events
 
 from web.constants import *
 
@@ -909,11 +910,60 @@ def show_my_organizer_profile(request):
 
 class EventsListView(ListView):
     """
-
+    Show events from today start_date. Default events view.
     """
     template_name = 'events.html'
     queryset = Events.objects.filter(start_date__gte=datetime.datetime.now())
     paginate_by = 20
+
+
+class AllEventsListView(ListView):
+    """
+    Show all events. Ordering like in model.
+    """
+    template_name = 'events.html'
+    model = Events
+    paginate_by = 20
+
+
+def search_events_view(request):
+    """
+    Search events by start date, end date, title and description
+    :param request: HttpRequest (with search, start_date and end_date parameters - or without it)
+    :return: HttpResponse object
+    """
+    if 'search' not in request.GET or request.GET['search'] == '':
+        search_string = None
+    else:
+        search_string = request.GET['search']
+    start_date = None
+    end_date = None
+    if 'start_date' in request.GET:
+        if request.GET['start_date'] != '':
+            try:
+                # Convert string ['start_date'] to datetime object
+                start_date = datetime.datetime.strptime(request.GET['start_date'], "%Y-%m-%d %H:%M")
+            except ValueError:
+                start_date = None
+    if 'end_date' in request.GET:
+        if request.GET['end_date'] != '':
+            try:
+                # Convert string ['end_date'] to datetime object
+                end_date = datetime.datetime.strptime(request.GET['end_date'], "%Y-%m-%d %H:%M")
+            except ValueError:
+                end_date = None
+    # Search events
+    objects = search_events(search_string, start_date, end_date)
+    paginator = Paginator(objects, 20)
+    page = request.GET.get('page')
+    try:
+        object_list = paginator.page(page)
+    except PageNotAnInteger:
+        object_list = paginator.page(1)
+    except EmptyPage:
+        object_list = paginator.page(paginator.num_pages)
+    return render_to_response('events.html', {'object_list': object_list}, context_instance=RequestContext(request))
+
 
 
 

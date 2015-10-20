@@ -1,12 +1,15 @@
 __author__ = 'kodiers'
 
 import random
-
+import datetime
 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
+from django.db.models import Q
+
 from web.constants import *
+from web.models import Events
 
 def create_password_str():
     """
@@ -36,3 +39,23 @@ def json_wrapper(func):
             error = REQUEST_TYPE_ERROR
         return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
     return decorated_func
+
+
+def search_events(string, start_date, end_date):
+    """
+    Search string in title or description of events or search events from event.start_date=start_date
+    to event.end_date = end_date
+    :param string: String to search
+    :param start_date: datetime object (from date)
+    :param end_date: datetime object (to date)
+    :return: QuerySet object (list of Events)
+    """
+    if string is not None:
+        objects = Events.objects.filter(Q(title__icontains=string) | Q(description__icontains=string))
+    else:
+        objects = Events.objects.all()
+    if start_date is not None:
+        objects = objects.filter(start_date__gte=start_date)
+    if end_date is not None:
+        objects = objects.filter(end_date__lte=end_date)
+    return objects
