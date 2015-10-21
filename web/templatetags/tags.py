@@ -3,6 +3,8 @@ from django import template
 from django.contrib.auth.models import User
 from web.models import Organizers, Events, QuestsUsers, Players, EventStatistics, Tasks, TaskStatistics, Teams
 
+from web.constants import PAGE_TITLE
+
 register = template.Library()
 
 @register.filter()
@@ -123,6 +125,11 @@ def get_team_by_title(title):
     """
     team = Teams.objects.get(title=title)
     return team.pk
+
+
+@register.simple_tag()
+def show_title_page():
+    return PAGE_TITLE
 
 
 # @register.filter()

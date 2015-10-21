@@ -5,7 +5,7 @@ from web.views import registration, index, restore_password, logout_view, login_
     create_team, join_team, join_event, PlayerView, OrganizerView, show_my_profile, create_event, add_task, delete_task, \
     edit_task, delete_event, delete_team, leave_team, unregister_event, upload_photos, delete_photo, play_event, \
     start_task, task_answer, complete_event, show_my_organizer_profile, EventsListView, AllEventsListView, \
-    search_events_view
+    search_events_view, PlayersListView, search_players_view, OrganizerListView, search_organizers_view, FAQListView
     #join_event_as_player, join_as_team
 
 from quests.settings import MEDIA_ROOT
@@ -48,6 +48,11 @@ urlpatterns = patterns('',
     url(r'^events/$', EventsListView.as_view(), name='events'),
     url(r'^events/all/$', AllEventsListView.as_view(), name='all_events'),
     url(r'^events/search/$', search_events_view, name='search_events'),
+    url(r'^players/$', PlayersListView.as_view(), name='players'),
+    url(r'^players/search/$', search_players_view, name='search_players'),
+    url(r'^organizers/$', OrganizerListView.as_view(), name='organizers'),
+    url(r'^organizers/search/$', search_organizers_view, name='search_organizers'),
+    url(r'^faq/$', FAQListView.as_view(), name='faq'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT}),
     url(r'^messages/', include('chat.urls')),

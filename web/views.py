@@ -12,6 +12,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 
+from django.db.models import Q
+
 from django.views.generic import ListView, DetailView, UpdateView
 
 from django.utils.translation import ugettext as _
@@ -21,7 +23,7 @@ from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from web.models import QuestsUsers, Players, Organizers, Contacts, Events, Teams, Tasks, Hints, EventsPlaces, Photos, \
-    TaskStatistics, EventStatistics
+    TaskStatistics, EventStatistics, FAQ
 from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm, PlayerProfileForm, CreateEventForm, \
     OrganizerProfileForm
 
@@ -345,7 +347,6 @@ def show_my_profile(request):
     """
     Show and edit user (player) profile.
     :param request: HttpRequest
-    :param pk: pk (id) of user
     :return: HttpResponse
     """
     message = ''
@@ -361,6 +362,7 @@ def show_my_profile(request):
             user.players.description = form.cleaned_data['description']
             user.players.date_of_birth = form.cleaned_data['date_of_birth']
             user.players.sex = form.cleaned_data['sex']
+            user.players.show_personal_info = form.cleaned_data['show_personal_info']
             if not Contacts.objects.filter(user=user).exists():
                 # Create contacts for user if not exists
                 user_contacts = Contacts()
@@ -383,7 +385,7 @@ def show_my_profile(request):
     intial_formdata = {'avatar': user.questsusers.image, 'description': user.players.description,
                        'date_of_birth': user.players.date_of_birth, 'sex': user.players.sex,
                        'country': '', 'city': '', 'street': '', 'phone':'', 'skype': '', 'site': '',
-                       'email': user.email}
+                       'email': user.email, 'show_personal_info': user.players.show_personal_info}
     if Contacts.objects.filter(user=user).exists():
         # Load contacts in form field for user if exists
         intial_formdata['country'] = user.contacts.country
@@ -965,10 +967,74 @@ def search_events_view(request):
     return render_to_response('events.html', {'object_list': object_list}, context_instance=RequestContext(request))
 
 
+class PlayersListView(ListView):
+    """
+    Show list of all players. Ordering by username
+    """
+    queryset = Players.objects.all().order_by('user__username')
+    template_name = "players.html"
+    paginate_by = 20
 
 
+def search_players_view(request):
+    """
+    Search players by username and description
+    :param request: HttpRequest (with search parameter - or without it)
+    :return: HttpResponse object
+    """
+    if 'search' not in request.GET or request.GET['search'] != '':
+        objects = Players.objects.filter(Q(user__username__icontains=request.GET['search'])|Q(description__icontains=request.GET['search']))
+    else:
+        objects = Players.objects.all()
+    objects = objects.order_by('user__username')
+    paginator = Paginator(objects, 20)
+    page = request.GET.get('page')
+    try:
+        object_list = paginator.page(page)
+    except PageNotAnInteger:
+        object_list = paginator.page(1)
+    except EmptyPage:
+        object_list = paginator.page(paginator.num_pages)
+    return render_to_response('players.html', {'object_list': object_list}, context_instance=RequestContext(request))
 
 
+class OrganizerListView(ListView):
+    """
+    Show list of all organizers. Ordering by username
+    """
+    queryset = Organizers.objects.all().order_by('user__username')
+    template_name = 'organizers.html'
+    paginate_by = 20
+
+
+def search_organizers_view(request):
+    """
+    Search organizers by username and description
+    :param request: HttpRequest (with search parameter - or without it)
+    :return: HttpResponse object
+    """
+    if 'search' not in request.GET or request.GET['search'] != '':
+        objects = Organizers.objects.filter(Q(user__username__icontains=request.GET['search'])|Q(description__icontains=request.GET['search']))
+    else:
+        objects = Organizers.objects.all()
+    objects = objects.order_by('user__username')
+    paginator = Paginator(objects, 20)
+    page = request.GET.get('page')
+    try:
+        object_list = paginator.page(page)
+    except PageNotAnInteger:
+        object_list = paginator.page(1)
+    except EmptyPage:
+        object_list = paginator.page(paginator.num_pages)
+    return render_to_response('organizers.html', {'object_list': object_list}, context_instance=RequestContext(request))
+
+
+class FAQListView(ListView):
+    """
+    Show list of all questions. Ordering by model definition
+    """
+    model = FAQ
+    template_name = "faq.html"
 
 
 

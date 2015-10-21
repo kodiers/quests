@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load tags %}
 {% block title %}
-    Chat with {{ receiver }} | Get your own quest
+    Chat with {{ receiver }} | {% show_title_page %}
 {% endblock %}
 {% block scripts %}
     <script src="{% static 'js/chat.js' %}"></script>

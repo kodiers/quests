@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load tags %}
 {% block title %}
-    Create your own quest!
+    {% show_title_page %}
 {% endblock %}
 {% block content %}
     <div class="container">

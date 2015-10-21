@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load tags %}
+{% block title %}
+    F.A.Q. | {% show_title_page %}
+{% endblock %}
+{% block scripts %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1 class="page-header">Frequently Asked Questions</h1>
+                {% for object in object_list %}
+                    <h2>{{ object.question }}</h2>
+                    <p>{{ object.answer }}</p>
+                {% empty %}
+                    No questions.
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

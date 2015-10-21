@@ -57,6 +57,7 @@ class PlayerProfileForm(forms.Form):
     skype = forms.CharField(max_length=255, label="Skype", required=False)
     site = forms.CharField(label="Web site", required=False)
     email = forms.EmailField(label="Email")
+    show_personal_info = forms.BooleanField(label="Show my personal info", required=False)
 
 
 class CreateEventForm(forms.ModelForm):

@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load tags %}
 {% block title %}
-    Playing event {{ event.title }} | Get your own quest
+    Playing event {{ event.title }} | {% show_title_page %}
 {% endblock %}
 {% block scripts %}
     <script src="{% static 'js/jquery.cookie.js' %}"></script>

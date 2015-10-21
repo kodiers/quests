@@ -522,6 +522,23 @@ class EventsWinners(models.Model):
     event = models.OneToOneField(Events)
 
 
+class FAQ(models.Model):
+    """
+
+    """
+    question = models.TextField(verbose_name="Question")
+    answer = models.TextField(verbose_name="Answer")
+    created = models.DateField(verbose_name="Created", auto_now=True, blank=True)
+
+    def __str__(self):
+        return self.question
+
+    class Meta:
+        verbose_name = "F.A.Q."
+        verbose_name_plural = verbose_name
+        ordering = ("created",)
+
+
 
 
 

@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load tags %}
 {% block title %}
-    {{ object.username }} | Get your own quest!
+    {{ object.username }} | {% show_title_page %}
 {% endblock %}
 {% block scripts %}
     <script src="{% static 'js/jquery.cookie.js' %}"></script>
@@ -81,6 +81,10 @@
                     <p>
                         {{ form.site.label }}:
                         {{ form.site|add_class_to_formfield:"form-control" }}
+                    </p>
+                    <p>
+                        {{ form.show_personal_info.label }}
+                        {{ form.show_personal_info|add_class_to_formfield:"form-control" }}
                     </p>
                     <input type="submit" value="Save!">
                 </form>

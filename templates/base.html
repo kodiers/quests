@@ -26,9 +26,11 @@
                     <ul class="nav navbar-nav">
                         <li><a href="{% url 'index' %}">Home</a> </li>
                         <li><a href="{% url 'events' %}">Events</a></li>
-                        <li><a href="#">Players</a> </li>
-                        <li><a href="#">Organizers</a></li>
-                        <li><a href="#">About</a> </li>
+                        <li><a href="{% url 'players' %}">Players</a> </li>
+                        <li><a href="{% url 'organizers' %}">Organizers</a></li>
+                        <li><a href="{% url 'faq' %}">F.A.Q.</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact us</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         {% if user.is_authenticated %}
