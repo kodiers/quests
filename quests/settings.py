@@ -31,15 +31,18 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'filebrowser',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tinymce',
     'web',
     'chat',
     'kronos',
+    'pages',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -105,17 +108,15 @@ LOGIN_URL = 'login'
 
 # EMAIL BACKEND (for developing process)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 EMAIL_HOST_USER = 'test@test.ru'
 
 
 # API KEY FOR TORNADO CHAT APPLICATION
-
 API_KEY = '8W29kBOVkntM4+AqXJ/hyDVhHsmF02Qn'
 
 # API ENDPOINT FOR TORNADO CHAT APPLICATION
-
 API_URL = 'http://127.0.0.1:8000/messages/send_message_api/'
+
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     # Added request context_processor for forming URL in template (for search views)
@@ -128,3 +129,29 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages"
 )
+
+
+# TINYMCE SETTINGS
+TINYMCE_FILEBROWSER = True
+TINYMCE_DEFAULT_CONFIG = {
+    'plugins': "table,paste,searchreplace",
+    'theme': "advanced",
+    'mode': "textareas",
+    'file_browser_callback': 'mce_filebrowser',
+    'theme_advanced_buttons3_add': "tablecontrols",
+    'table_styles': "Header 1=header1;Header 2=header2;Header 3=header3",
+    'table_cell_styles': "Header 1=header1;Header 2=header2;Header 3=header3;Table Cell=tableCel1",
+    'table_row_styles': "Header 1=header1;Header 2=header2;Header 3=header3;Table Row=tableRow1",
+    'table_cell_limit': 100,
+    'table_row_limit': 5,
+    'table_col_limit': 5,
+    'style_formats': [
+        {'title': 'Bold text', 'inline': 'strong'},
+        {'title': 'Red text', 'inline': 'span', 'styles' : {'color' : '#ff0000'}},
+        {'title': 'Help', 'inline': 'strong', 'classes' : 'help'},
+        {'title': 'Table styles'},
+        {'title': 'Table row 1', 'selector': 'tr', 'classes': 'tablerow'}
+    ],
+    'width': '1140',
+    'height': '800',
+}

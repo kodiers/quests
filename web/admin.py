@@ -6,8 +6,6 @@ from web.models import QuestsUsers, Contacts, Players, Tariffs, TariffsFeature, 
 from web.models import EventsPlaces, Events, Tasks, Hints, Photos
 from web.models import EventStatistics, TaskStatistics, TodayEvents, EventsWinners
 
-from web.models import FAQ
-
 # Register your models here.
 class QuestsUserInline(admin.StackedInline):
     """
@@ -49,4 +47,3 @@ admin.site.register(TaskStatistics)
 admin.site.register(Photos)
 admin.site.register(TodayEvents)
 admin.site.register(EventsWinners)
-admin.site.register(FAQ)

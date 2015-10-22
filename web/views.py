@@ -1,10 +1,9 @@
 import datetime
 import json
-import os
 
-from django.http import Http404, HttpResponse
+from django.http import HttpResponse
 
-from django.shortcuts import render, render_to_response, redirect, get_list_or_404, get_object_or_404
+from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -14,7 +13,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from django.db.models import Q
 
-from django.views.generic import ListView, DetailView, UpdateView
+from django.views.generic import ListView, DetailView
 
 from django.utils.translation import ugettext as _
 from django.utils.timezone import utc
@@ -23,7 +22,7 @@ from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from web.models import QuestsUsers, Players, Organizers, Contacts, Events, Teams, Tasks, Hints, EventsPlaces, Photos, \
-    TaskStatistics, EventStatistics, FAQ
+    TaskStatistics, EventStatistics
 from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm, PlayerProfileForm, CreateEventForm, \
     OrganizerProfileForm
 
@@ -228,10 +227,10 @@ def confirm_join_event(request, pk):
 @login_required()
 def join_event(request, flag):
     """
-
-    :param request:
-    :param flag:
-    :return:
+    View for regiter user or team in event.
+    :param request: HttpRequest
+    :param flag: 'player' or 'team' if event is team
+    :return: HttpResponse object
     """
     event = None
     error = ''
@@ -798,7 +797,6 @@ def task_answer(request):
             task_fact_duraction = abs(now - taskstat.start_time)
             taskstat.time = task_fact_duraction.seconds // 60
             if task.answer == answer:
-                #
                 correct_time =True
                 if task.time is not None:
                     if task.time != 'None':
@@ -1027,14 +1025,3 @@ def search_organizers_view(request):
     except EmptyPage:
         object_list = paginator.page(paginator.num_pages)
     return render_to_response('organizers.html', {'object_list': object_list}, context_instance=RequestContext(request))
-
-
-class FAQListView(ListView):
-    """
-    Show list of all questions. Ordering by model definition
-    """
-    model = FAQ
-    template_name = "faq.html"
-
-
-

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load tags %}
+{% block title %}
+    Contact us | {% show_title_page %}
+{% endblock %}
+{% block seo %}
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'js/jquery.cookie.js' %}"></script>
+    <script src="{% static 'js/send_email.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1 class="page-header">Our contacts</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Phone: {{ object.phone }}</h2>
+                <h2>Email: {{ object.email }}</h2>
+                {% if object.address != '' %}
+                    <h2>Address: {{ object.address }}</h2>
+                {% endif %}
+                {% if object.comments != '' %}
+                    <p>{{ object.comments|safe }}</p>
+                {% endif %}
+                {% if object.map != '' %}
+                    <p>{{ object.map|safe }}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h3>You can write to us:</h3>
+                <div id="result"></div>
+                <form method="post" id="idSendMessage">
+                    {% csrf_token %}
+                    <input type="hidden" id="token" value="{{ object.url }}">
+                    <label for="idName">Your name:</label>
+                    <input type="text" name="name" class="form-control" placeholder="Your name" id="idName" required>
+                    <label for="idEmail">Your email:</label>
+                    <input type="text" name="email" class="form-control" placeholder="Email" id="idEmail" required>
+                    <label for="idMessage">Your question:</label>
+                    <textarea class="form-control" name="message" placeholder="Your message" id="idMessage"></textarea>
+                    <input type="submit" value="Send" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

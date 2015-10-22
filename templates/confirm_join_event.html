@@ -13,7 +13,7 @@
                 {% else %}
                     <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
                 {% endif %}
-                <a href="#" class="btn btn-default">Message count</a>
+                <a href="{% url 'contact_list' %}" class="btn btn-default">Message count</a>
             </div>
             <div class="col-xs-8">
                 <div class="row">

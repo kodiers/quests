@@ -5,8 +5,11 @@ from web.views import registration, index, restore_password, logout_view, login_
     create_team, join_team, join_event, PlayerView, OrganizerView, show_my_profile, create_event, add_task, delete_task, \
     edit_task, delete_event, delete_team, leave_team, unregister_event, upload_photos, delete_photo, play_event, \
     start_task, task_answer, complete_event, show_my_organizer_profile, EventsListView, AllEventsListView, \
-    search_events_view, PlayersListView, search_players_view, OrganizerListView, search_organizers_view, FAQListView
-    #join_event_as_player, join_as_team
+    search_events_view, PlayersListView, search_players_view, OrganizerListView, search_organizers_view
+
+from pages.urls import urlpatterns as pages_url
+
+from filebrowser.sites import site
 
 from quests.settings import MEDIA_ROOT
 
@@ -52,8 +55,10 @@ urlpatterns = patterns('',
     url(r'^players/search/$', search_players_view, name='search_players'),
     url(r'^organizers/$', OrganizerListView.as_view(), name='organizers'),
     url(r'^organizers/search/$', search_organizers_view, name='search_organizers'),
-    url(r'^faq/$', FAQListView.as_view(), name='faq'),
+    url(r'^admin/filebrowser/', include(site.urls)),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT}),
     url(r'^messages/', include('chat.urls')),
+    url(r'^tinymce/', include('tinymce.urls')),
+    url(r'^pages/', include(pages_url)),
 )

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load tags %}
+{% block title %}
+    {{ object.title }} | {% show_title_page %}
+{% endblock %}
+{% block seo %}
+    <meta name="description" content="{{ object.ceo_description }}">
+    <meta name="keywords" content="{{ object.ceo_keywords }}">
+{% endblock %}
+{% block scripts %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1 class="page-header">{{ object.title }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                {{ object.content|safe }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

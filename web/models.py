@@ -28,6 +28,7 @@ class QuestsUsers(models.Model):
 
     def get_user_events(self):
         """
+        Return events for user is organizer.
         """
         events = Events.objects.filter(organizer=self.user).order_by('start_date')
         return events
@@ -301,7 +302,6 @@ class Events(models.Model):
     duration = DurationField(verbose_name="Duration", null=True, blank=True)
     image = models.ImageField(upload_to='images', blank=True, null=True, verbose_name="Image")
     started = models.BooleanField(verbose_name="Started", default=False)
-    # event_photos = models.ManyToManyField(EventsPhotos, verbose_name="Event photos")
 
     def image_tag(self):
         return u'<img src="%s" height=75 width=75 />' % (self.image.url)
@@ -330,14 +330,6 @@ class Events(models.Model):
         """
         Return username (if user is winner) or team.title if event for team only. Calling in template.
         """
-        # statistics = EventStatistics.objects.filter(event=self).aggregate(Max('score'))
-        # eventstat = EventStatistics.objects.filter(event=self).get(score=statistics['score__max'])
-        # if self.is_team:
-        #     team = eventstat.team.title
-        #     return team
-        # else:
-        #     username = eventstat.player.username
-        #     return username
         eventwinner = EventsWinners.objects.get(event=self)
         if self.is_team:
             return eventwinner.team.title
@@ -462,13 +454,6 @@ class EventStatistics(models.Model):
         else:
             return self.player.username + ":" + self.event.title
 
-    # def get_winner(self):
-    #     """
-    #     Get winner in event.
-    #     """
-    #     if self.event.is_team:
-
-
     class Meta:
         verbose_name = "Event statistic"
         verbose_name_plural = "Events statistics"
@@ -506,7 +491,7 @@ class TaskStatistics(models.Model):
 
 class TodayEvents(models.Model):
     """
-
+    Model for kronos app task. Contains events that start today. (For faster search)
     """
     event = models.OneToOneField(Events)
     start_time = models.DateTimeField()
@@ -514,31 +499,9 @@ class TodayEvents(models.Model):
 
 class EventsWinners(models.Model):
     """
-
+    Model for events winner.
     """
     eventstat = models.OneToOneField(EventStatistics)
     player = models.ForeignKey(User, null=True, blank=True)
     team = models.ForeignKey(Teams, null=True, blank=True)
     event = models.OneToOneField(Events)
-
-
-class FAQ(models.Model):
-    """
-
-    """
-    question = models.TextField(verbose_name="Question")
-    answer = models.TextField(verbose_name="Answer")
-    created = models.DateField(verbose_name="Created", auto_now=True, blank=True)
-
-    def __str__(self):
-        return self.question
-
-    class Meta:
-        verbose_name = "F.A.Q."
-        verbose_name_plural = verbose_name
-        ordering = ("created",)
-
-
-
-
-
