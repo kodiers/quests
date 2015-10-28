@@ -17,9 +17,20 @@
                     <h1>Registration</h1>
                     <form action="." method="post">
                         {% csrf_token %}
-                       <table class="form_table">
-                            {{ form.as_table }}
-                       </table>
+                        {% for field in form %}
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    {{ field.label_tag }}
+                                </div>
+                                <div class="col-xs-2">
+                                    {{ field|add_class_to_formfield:"form-control"}}
+                                </div>
+                                <div class="col-xs-4">
+                                    <span class="error"> {{ field.errors.as_text}}</span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <p class="tooltips">Your password should be 8 symbols.</p>
                         <br>
                         <input type="submit" value="Register!" class="btn btn-primary">
                     </form>

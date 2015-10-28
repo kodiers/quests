@@ -76,3 +76,7 @@ body {
     color: #23527c;
     font-style: italic;
 }
+.tooltips {
+    color: gray;
+    font-style: italic;
+}

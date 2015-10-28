@@ -14,7 +14,7 @@ def test_task():
     print("Task success!")
 
 
-@kronos.register('0 0 * * *')
+@kronos.register('01 0 * * *')
 def check_today_events():
     """
     Should run at 0:0 o'clock.
@@ -55,7 +55,7 @@ def check_today_events():
 
 
 
-@kronos.register('0 0 * * *')
+@kronos.register('*/5 * * * *')
 def check_now_events():
     """
     Should run every 5 minutes.

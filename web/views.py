@@ -109,9 +109,10 @@ def registration(request):
                 error = _("Password and confirm password doesn't match")
         else:
             error = FORM_FIELDS_ERROR
+            # error = form.errors
     else:
         error = ""
-    form = UserRegistrationForm()
+        form = UserRegistrationForm()
     return render_to_response('register.html', {'form': form, 'error': error}, context_instance=RequestContext(request))
 
 
@@ -121,6 +122,10 @@ def restore_password(request):
     :param request: HttpRequest
     :return: HttpResponse
     """
+    if request.user.is_authenticated():
+        message = _("You are already registered!")
+        return render_to_response('register_success.html', {'message': message},
+                                  context_instance=RequestContext(request))
     success = False
     if request.method == 'POST':
         form = RestorePasswordForm(request.POST)
