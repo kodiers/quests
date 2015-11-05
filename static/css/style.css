@@ -4,6 +4,7 @@ html {
 }
 body {
     margin-bottom: 100px;
+    /*padding: 0px;*/
 }
 .footer {
     position: absolute;
@@ -79,4 +80,10 @@ body {
 .tooltips {
     color: gray;
     font-style: italic;
+}
+
+@media only screen and (max-width: 560px) {
+    #index_carousel {
+        display: none;
+    }
 }

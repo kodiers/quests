@@ -20,50 +20,64 @@
     {% block scripts %}{% endblock %}
 </head>
 <body>
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#idNavbar" aria-expanded="false">
+                    <span class="sr-only">Navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'index' %}">GetQuests</a>
+            </div>
+            <div class="collapse navbar-collapse" id="idNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="{% url 'index' %}">Home</a> </li>
+                    <li><a href="{% url 'events' %}">Events</a></li>
+                    <li><a href="{% url 'players' %}">Players</a> </li>
+                    <li><a href="{% url 'organizers' %}">Organizers</a></li>
+                    <li><a href="{% url 'faq' %}">F.A.Q.</a></li>
+                    <li><a href="{% url 'pages' 'about' %}">About</a></li>
+                    <li><a href="{% url 'contacts' 'contacts' %}">Contact us</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                {{ user.username }}
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    {% if user.questsusers.is_organizer %}
+                                        <a href="{% url 'organizer_profile' %}">
+                                    {% else %}
+                                        <a href="{% url 'player_profile' %}">
+                                    {% endif %}
+                                    Profile</a>
+                                </li>
+                                <li><a href="{% url 'logout' %}">Logout</a> </li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Login/register<span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'login' %}">Login</a> </li>
+                                <li><a href="{% url 'register' %}">Register</a> </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                <nav class="navbar navbar-default">
-                    <ul class="nav navbar-nav">
-                        <li><a href="{% url 'index' %}">Home</a> </li>
-                        <li><a href="{% url 'events' %}">Events</a></li>
-                        <li><a href="{% url 'players' %}">Players</a> </li>
-                        <li><a href="{% url 'organizers' %}">Organizers</a></li>
-                        <li><a href="{% url 'faq' %}">F.A.Q.</a></li>
-                        <li><a href="{% url 'pages' 'about' %}">About</a></li>
-                        <li><a href="{% url 'contacts' 'contacts' %}">Contact us</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        {% if user.is_authenticated %}
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    {{ user.username }}
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        {% if user.questsusers.is_organizer %}
-                                            <a href="{% url 'organizer_profile' %}">
-                                        {% else %}
-                                            <a href="{% url 'player_profile' %}">
-                                        {% endif %}
-                                            Profile</a>
-                                    </li>
-                                    <li><a href="{% url 'logout' %}">Logout</a> </li>
-                                </ul>
-                            </li>
-                        {% else %}
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    Login/register<span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="{% url 'login' %}">Login</a> </li>
-                                    <li><a href="{% url 'register' %}">Register</a> </li>
-                                </ul>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </nav>
+
             </div>
         </div>
     </div>

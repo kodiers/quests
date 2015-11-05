@@ -164,7 +164,7 @@ def login_view(request):
     :param request: HttpRequest
     :return: HttpResponse
     """
-    # TODO: complete debugging
+    error = ""
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
@@ -176,12 +176,11 @@ def login_view(request):
                     login(request, user)
                     return redirect(request.POST.get('next', '/'))
                 else:
-                    error = _("User is not active!")
+                    error = USER_NOT_ACTIVE
             else:
-                error = _("Incorrect username or password!")
+                error = INCORRECT_USERNAME_PASSWORD
         else:
-            error = FORM_FIELDS_ERROR
-    error = ""
+            error = INCORRECT_USERNAME_PASSWORD
     next_url = '/'
     if 'next' in request.GET:
         if request.GET['next'] != '':
@@ -409,6 +408,7 @@ def create_event(request, pk=None):
     Create new event.
     If pk != none edit event with pk.
     :param request: HttpRequest
+    :param pk: id of event for edit
     :return: HttpResponse
     """
     # TODO: Recreate to ajax
