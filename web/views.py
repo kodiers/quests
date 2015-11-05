@@ -412,6 +412,7 @@ def create_event(request, pk=None):
     :return: HttpResponse
     """
     # TODO: Recreate to ajax
+    # TODO: Add error output to template
     error = ''
     if pk is not None:
         event = get_object_or_404(Events, pk=pk)
