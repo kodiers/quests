@@ -81,6 +81,9 @@ body {
     color: gray;
     font-style: italic;
 }
+.star {
+    color: gray;
+}
 
 @media only screen and (max-width: 560px) {
     #index_carousel {

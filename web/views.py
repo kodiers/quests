@@ -430,7 +430,7 @@ def create_event(request, pk=None):
         else:
             error = FORM_FIELDS_ERROR
     else:
-        form = CreateEventForm(initial={'organizer':request.user}, instance=event)
+        form = CreateEventForm(initial={'organizer':request.user, 'duration':'1d 00:00:00'}, instance=event)
     return render_to_response('create_event.html', {'form': form, 'event': event, 'error': error},
                               context_instance=RequestContext(request))
 
