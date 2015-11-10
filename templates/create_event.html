@@ -10,6 +10,7 @@
     <script src="{% static 'js/jquery.datetimepicker.js' %}"></script>
     <script src="{% static 'js/jquery.mask.min.js' %}"></script>
     <script src="{% static 'js/mask_duration.js' %}"></script>
+    <script src="{% static 'js/mask_lat_lon.js' %}"></script>
     <script src="{% static 'js/delete_task.js' %}"></script>
     <script src="{% static 'js/edit_task.js' %}"></script>
     <script src="{% static 'js/calendar_create.js' %}"></script>
@@ -195,8 +196,14 @@
                                     <label for="id_taskStreet">Street</label>
                                     <input type="text" name="taskStreet" class="form-control" id="id_taskStreet">
                                     <label for="id_taskLon">Longtitude</label>
+                                    <span class="tooltips">
+                                        Enter Longtitude in format '11.11'
+                                    </span>
                                     <input type="text" name="taskLon" class="form-control" id="id_taskLon">
                                     <label for="id_taskLat">Latitude</label>
+                                    <span class="tooltips">
+                                        Enter Latitude in format '11.11'
+                                    </span>
                                     <input type="text" name="taskLat" class="form-control" id="id_taskLat">
                                     <hr>
                                     <h4>Task hint:</h4>
