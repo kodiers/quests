@@ -291,7 +291,8 @@ class Events(models.Model):
     place = models.ForeignKey(EventsPlaces, verbose_name="Place", null=True, blank=True)
     is_team = models.BooleanField(default=False, verbose_name="Team only")
     price = models.FloatField(verbose_name="Price", default=0.0)
-    max_players = models.IntegerField(verbose_name="Limit players", null=True, blank=True)
+    min_players = models.IntegerField(verbose_name="Minimum players", null=True, blank=True)
+    max_players = models.IntegerField(verbose_name="Maximum players", null=True, blank=True)
     start_date = models.DateTimeField(verbose_name="Start date")
     end_date = models.DateTimeField(verbose_name="End date")
     registered_players = models.ManyToManyField(User, verbose_name="Registered users", related_name="regitered_players",

@@ -63,23 +63,31 @@
                         {% if user_registered %}
                             <p>You are in team, that registered</p>
                         {% else %}
-                            <a href="{% url 'create_and_register_team' object.pk %}" class="btn btn-primary">
-                                Create team and join!
-                            </a>
-                            <form action="{% url 'join_event' 'team' %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" value="{{ object.pk }}" name="event_pk">
-                                <input type="submit" value="Join as team!" class="btn btn-primary">
-                            </form>
+                            {% if object.get_registered_count >= object.max_players %}
+                                <p>Maximum number of players are registered to this event</p>
+                            {% else %}
+                                <a href="{% url 'create_and_register_team' object.pk %}" class="btn btn-primary">
+                                    Create team and join!
+                                </a>
+                                <form action="{% url 'join_event' 'team' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="{{ object.pk }}" name="event_pk">
+                                    <input type="submit" value="Join as team!" class="btn btn-primary">
+                                </form>
+                            {% endif %}
                         {% endif %}
                     {% for team in object.registered_teams.all %}
                         <h3>{{ team.title }}</h3>
                         {% if user_registered == False %}
-                            <form action="{% url 'join_team' %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" value="{{ team.pk }}" name="team_pk">
-                                <input type="submit" value="Join team!" class="btn btn-primary">
-                            </form>
+                            {% if object.get_registered_count >= object.max_players %}
+                                <p>Maximum number of players are registered to this event</p>
+                            {% else %}
+                                <form action="{% url 'join_team' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="{{ team.pk }}" name="team_pk">
+                                    <input type="submit" value="Join team!" class="btn btn-primary">
+                                </form>
+                            {% endif %}
                         {% endif %}
                         <p>Team players:</p>
                         {% for player in team.players.all %}
@@ -92,11 +100,15 @@
                     {% if user_registered %}
                         <p>You are already joined this event!</p>
                     {% else %}
-                        <form method="post" action="{% url 'join_event' 'player' %}">
-                            {% csrf_token %}
-                            <input type="hidden" value="{{ object.pk }}" name="event_pk">
-                            <input type="submit" value="Join event!" class="btn btn-primary btn_width_200">
-                        </form>
+                        {% if object.get_registered_count >= object.max_players %}
+                            <p>Maximum number of players are registered to this event</p>
+                        {% else %}
+                            <form method="post" action="{% url 'join_event' 'player' %}">
+                                {% csrf_token %}
+                                <input type="hidden" value="{{ object.pk }}" name="event_pk">
+                                <input type="submit" value="Join event!" class="btn btn-primary btn_width_200">
+                            </form>
+                        {% endif %}
                     {% endif %}
                     <h2>Registered players</h2>
                     {% for player in object.registered_players.all %}

@@ -127,6 +127,24 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
+                            {{ form.max_players.label_tag }}
+                            <span class="error">
+                                {{ form.max_players.errors.as_text }}
+                            </span>
+                            {{ form.max_players|add_class_to_formfield:'form-control' }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            {{ form.min_players.label_tag }}
+                            <span class="error">
+                                {{ form.min_players.errors.as_text }}
+                            </span>
+                            {{ form.min_players|add_class_to_formfield:'form-control' }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
                             {{ form.image.label_tag }}
                             <span class="error">
                                 {{ form.image.errors.as_text }}

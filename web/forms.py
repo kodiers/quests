@@ -62,7 +62,7 @@ class CreateEventForm(forms.ModelForm):
     class Meta:
         model = Events
         fields = ['title', 'description', 'map_link', 'is_team', 'start_date', 'end_date', 'duration', 'image',
-                  'organizer']
+                  'max_players', 'min_players', 'organizer']
         widgets = {'organizer':forms.HiddenInput()}
 
 

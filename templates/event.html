@@ -46,7 +46,11 @@
                     {% if user in object.registered_players.all or user.username|check_user_in_registered_team:object.pk %}
                         <p>You are already joined this event</p>
                     {% else %}
-                        <a href="{% url 'confirm_join' object.pk %}" class="btn btn-primary">Join!</a>
+                        {% if object.get_registered_count >= object.max_players %}
+                            <p>Maximum number of players are registered to this event!</p>
+                        {% else %}
+                            <a href="{% url 'confirm_join' object.pk %}" class="btn btn-primary">Join!</a>
+                        {% endif %}
                     {% endif %}
                 {% else %}
                     <a href="{% url 'login' %}" class="btn btn-primary">Login to join!</a>
@@ -54,7 +58,19 @@
             </div>
         </div>
         <div class="row">
+            <div class="col-xs-4">
+                <p>Maximum players/teams: {{ object.max_players }}</p>
+            </div>
+            <div class="col-xs-4">
+                <p>Minimum players/teams: {{ object.min_players }}</p>
+            </div>
+            <div class="col-xs-4">
+                <p>Registered players/teams: {{ object.get_registered_count }}</p>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-xs-12">
+                <h3>Event description</h3>
                 <p>{{ object.description }}</p>
             </div>
         </div>

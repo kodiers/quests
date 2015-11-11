@@ -109,6 +109,7 @@ LOGIN_URL = 'login'
 # EMAIL BACKEND (for developing process)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST_USER = 'test@test.ru'
+FAIL_EMAIL_SILENTLY = False
 
 
 # API KEY FOR TORNADO CHAT APPLICATION

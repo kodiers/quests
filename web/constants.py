@@ -11,3 +11,7 @@ INCORRECT_USERNAME_PASSWORD = _("Incorrect username or password!")
 SIMPLE_JSON_ANSWER = {'code': 1}
 
 PAGE_TITLE = _("Get your own quest")
+
+SUCCESSFULLY_REGITERED = _('You was successfully registered to event!')
+TEAM_ALREADY_REGISTERED = _('Your team are already registered in this event!')
+TEAM_WAS_REGISTERED = 'Your team was registered to event %s'

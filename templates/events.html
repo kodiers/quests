@@ -45,6 +45,9 @@
                         <div class="col-xs-2">
                             <p>Start date: {{ object.start_date|date:'j-m-Y' }}</p>
                             <p>End date: {{ object.end_date|date:'j-m-Y' }}</p>
+                            <p>Maximum players/teams: {{ object.max_players }}</p>
+                            <p>Minimum players/teams: {{ object.min_players }}</p>
+                            <p>Regitered players/teams: {{ object.get_registered_count }}</p>
                             {% if object.is_team %}
                                 <p>Team only</p>
                             {% endif %}

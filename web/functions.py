@@ -4,11 +4,17 @@ import random
 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 from django.db.models import Q
 
+from django.core.mail import EmailMultiAlternatives
+
 from web.constants import *
 from web.models import Events
+
+from quests.settings import FAIL_EMAIL_SILENTLY
 
 def create_password_str():
     """
@@ -58,3 +64,20 @@ def search_events(string, start_date, end_date):
     if end_date is not None:
         objects = objects.filter(end_date__lte=end_date)
     return objects
+
+
+def send_user_notification(subject, notification, from_email, to_email):
+    """
+    Send notification to user
+    :param subject: Subject of email
+    :param notification: Text of notification
+    :param from_email: Sender email
+    :param to_email: User email
+    :return:
+    """
+    template_html = 'notifications/notification.html'
+    html_content = render_to_string(template_html, {'subject': subject, 'notification': notification})
+    text_content = strip_tags(html_content)
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
+    msg.attach_alternative(html_content, 'text/html')
+    msg.send(fail_silently=FAIL_EMAIL_SILENTLY)

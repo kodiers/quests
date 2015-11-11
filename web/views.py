@@ -26,9 +26,9 @@ from web.models import QuestsUsers, Players, Organizers, Contacts, Events, Teams
 from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm, PlayerProfileForm, CreateEventForm, \
     OrganizerProfileForm
 
-from quests.settings import EMAIL_HOST_USER
+from quests.settings import EMAIL_HOST_USER, FAIL_EMAIL_SILENTLY
 
-from web.functions import create_password_str, json_wrapper, search_events
+from web.functions import create_password_str, json_wrapper, search_events, send_user_notification
 
 from web.constants import *
 
@@ -88,16 +88,13 @@ def registration(request):
                         player.user = new_user
                         player.save()
                     email_subject = "Registration complete!"
-                    email_message = """Hello! You was registered on site OUR_SITE. \n
+                    email_message = """Hello! You was registered on site GetQuests.com. \n
                     Your login {login} \n Your password {password} \n Your email {email} \n
                     Thank you!""".format(login=form.cleaned_data['login'],
                                          password=form.cleaned_data['password1'],
                                          email=form.cleaned_data['email'])
                     recipients = [new_user.email]
-                    try:
-                        send_mail(email_subject, email_message, EMAIL_HOST_USER, recipients)
-                    except:
-                        error = _("Error sending confirmation email")
+                    send_mail(email_subject, email_message, EMAIL_HOST_USER, recipients, fail_silently=FAIL_EMAIL_SILENTLY)
                 except:
                     error = _("Error creating new user")
                 auth_user = authenticate(username=new_user.username,
@@ -140,10 +137,7 @@ def restore_password(request):
                 email_message = """Hello! \n Your new password to our site is {password} \n
                                 Thank you!""".format(password=password)
                 recipients = [user.email]
-                try:
-                    send_mail(email_subject, email_message, EMAIL_HOST_USER, recipients)
-                except:
-                    error = _("Error send email!")
+                send_mail(email_subject, email_message, EMAIL_HOST_USER, recipients, fail_silently=FAIL_EMAIL_SILENTLY)
                 error = _("Your password sent to your email")
                 success = True
             except ObjectDoesNotExist:
@@ -243,15 +237,33 @@ def join_event(request, flag):
             event = get_object_or_404(Events, pk=request.POST['event_pk'])
             if flag == 'player':
                 event.registered_players.add(request.user)
-                error = _('You was successfully registered to event!')
+                error = SUCCESSFULLY_REGITERED
+                player_notification = _('You was succesfully registered to event %s' % event.title)
+                # Send notification to player
+                send_user_notification(SUCCESSFULLY_REGITERED, player_notification, EMAIL_HOST_USER, request.user.email)
+                # Send notification to organizer
+                org_subject = _("Player was registered to your event %s" % event.title)
+                org_notification = _("Player {player} was registered to your event {event}".format(
+                    player=request.user.username, event=event.title))
+                send_user_notification(org_subject, org_notification, EMAIL_HOST_USER, event.organizer.email)
             elif flag == 'team':
                 try:
                     team = Teams.objects.get(creator=request.user)
                     if team in event.registered_teams.all():
-                        error = _('Your team are already registered in this event!')
+                        error = TEAM_ALREADY_REGISTERED
                     else:
                         event.registered_teams.add(team)
-                        error = _('You team was registered to event %s' % event.title)
+                        error = _(TEAM_WAS_REGISTERED % event.title)
+                        creator_notification = _("Your team {team} was registered to event {event}".format(
+                            team=team.title, event=event.title))
+                        # Send notification to team creator
+                        send_user_notification(error, creator_notification, EMAIL_HOST_USER, team.creator.email)
+                        # Send notification to organizer
+                        org_subject = _("Team was registered to your event.")
+                        org_notification = _("Team {team} was registered to your event {event}".format(
+                            team=team.title, event=event.title
+                        ))
+                        send_user_notification(org_subject, org_notification, EMAIL_HOST_USER, event.organizer.email)
                 except ObjectDoesNotExist:
                     pass
             else:
