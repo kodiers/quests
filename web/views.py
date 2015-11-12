@@ -26,9 +26,9 @@ from web.models import QuestsUsers, Players, Organizers, Contacts, Events, Teams
 from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm, PlayerProfileForm, CreateEventForm, \
     OrganizerProfileForm
 
-from quests.settings import EMAIL_HOST_USER, FAIL_EMAIL_SILENTLY
+from quests.settings import EMAIL_HOST_USER, FAIL_EMAIL_SILENTLY, GOOGLE_MAPS_BROWSER_API_KEY, GOOGLE_API_STRING_URL
 
-from web.functions import create_password_str, json_wrapper, search_events, send_user_notification
+from web.functions import create_password_str, json_wrapper, search_events, send_user_notification, construct_map_link
 
 from web.constants import *
 
@@ -423,26 +423,42 @@ def create_event(request, pk=None):
     :param pk: id of event for edit
     :return: HttpResponse
     """
-    # TODO: Recreate to ajax
-    # TODO: Add error output to template
     error = ''
     if pk is not None:
         event = get_object_or_404(Events, pk=pk)
+        # Try get existing event place object
+        if event.place:
+            place = EventsPlaces.objects.get(pk=event.place.pk)
+        else:
+            place = EventsPlaces()
         # Check that user want edit created by self
         if event.organizer != request.user:
             error = _("You are not creator of this event")
             return render_to_response('error.html', {'error': error}, context_instance=RequestContext(request))
     else:
         event = None
+        place = EventsPlaces()
     if request.method == 'POST':
         form = CreateEventForm(request.POST, request.FILES, instance=event)
         if form.is_valid():
             event = form.save()
+            if 'country' in request.POST and request.POST['country']:
+                place.country = request.POST['country']
+            if 'city' in request.POST and request.POST['city']:
+                place.city = request.POST['city']
+            if 'street' in request.POST and request.POST['street']:
+                place.street = request.POST['street']
+            place.save()
+            event.place = place
+            event.map_link = construct_map_link(GOOGLE_API_STRING_URL, GOOGLE_MAPS_BROWSER_API_KEY, place.country, place.city, place.street)
+            event.save()
             return redirect('/create_event/' + str(event.pk) + '/')
         else:
             error = FORM_FIELDS_ERROR
     else:
-        form = CreateEventForm(initial={'organizer':request.user, 'duration':'1d 00:00:00'}, instance=event)
+        form = CreateEventForm(initial={'organizer':request.user, 'duration':'1d 00:00:00',
+                                        'country': place.country, 'city': place.city,
+                                        'street': place.street}, instance=event)
     return render_to_response('create_event.html', {'form': form, 'event': event, 'error': error},
                               context_instance=RequestContext(request))
 

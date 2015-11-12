@@ -79,15 +79,6 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
-                            {{ form.map_link.label_tag }}
-                            <span class="error">
-                                {{ form.map_link.errors.as_text }}
-                            </span>
-                            {{ form.map_link|add_class_to_formfield:'form-control' }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
                             {{ form.is_team.label_tag }}
                             <span class="error">
                                 {{ form.is_team.errors.as_text }}
@@ -154,6 +145,33 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
+                            {{ form.country.label_tag }}
+                            <span class="error">
+                                {{ form.country.errors.as_text }}
+                            </span>
+                            {{ form.country|add_class_to_formfield:'form-control' }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            {{ form.city.label_tag }}
+                            <span class="error">
+                                {{ form.city.errors.as_text }}
+                            </span>
+                            {{ form.city|add_class_to_formfield:'form-control' }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            {{ form.street.label_tag }}
+                            <span class="error">
+                                {{ form.street.errors.as_text }}
+                            </span>
+                            {{ form.street|add_class_to_formfield:'form-control' }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
                             {{ form.organizer|add_class_to_formfield:'form-control' }}
                             <span class="error">
                                 {{ form.organizer.errors.as_text }}
@@ -169,6 +187,10 @@
                     </div>
                     <input type="submit" value="Save" class="btn btn-primary">
                 </form>
+                {% if event %}
+                    <h6>Map of event:</h6>
+                    <img src="{{ event.map_link }}">
+                {% endif %}
             </div>
             <div class="col-xs-6">
             {% if event %}

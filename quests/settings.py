@@ -156,3 +156,8 @@ TINYMCE_DEFAULT_CONFIG = {
     'width': '1140',
     'height': '800',
 }
+
+
+# ACCESS TO GOOGLE API
+GOOGLE_MAPS_BROWSER_API_KEY = 'GOOGLE_API_KEY'
+GOOGLE_API_STRING_URL = "https://maps.googleapis.com/maps/api/staticmap?center={country},{city},{street}&zoom={zoom}&size=600x300&maptype=roadmap&markers=color:red|label:S|{country},{city},{street}&key={api_key}"

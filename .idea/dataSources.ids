@@ -10,8 +10,6 @@
       <primary-key columns="id"/>
       <exported-key name="#FAKE_auth_group_permissions_2" table="auth_group_permissions" schema="" catalog="" columns="group_id"/>
       <exported-key name="#FAKE_auth_user_groups_1" table="auth_user_groups" schema="" catalog="" columns="group_id"/>
-      <exported-key name="#FAKE_auth_group_permissions_2" table="auth_group_permissions" schema="" catalog="" columns="group_id"/>
-      <exported-key name="#FAKE_auth_user_groups_1" table="auth_user_groups" schema="" catalog="" columns="group_id"/>
     </table>
     <table name="auth_group_permissions" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
@@ -30,8 +28,6 @@
       <column name="name" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_auth_permission_1" columns="content_type_id" ref-table="django_content_type" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
-      <exported-key name="#FAKE_auth_group_permissions_1" table="auth_group_permissions" schema="" catalog="" columns="permission_id"/>
-      <exported-key name="#FAKE_auth_user_user_permissions_1" table="auth_user_user_permissions" schema="" catalog="" columns="permission_id"/>
       <exported-key name="#FAKE_auth_group_permissions_1" table="auth_group_permissions" schema="" catalog="" columns="permission_id"/>
       <exported-key name="#FAKE_auth_user_user_permissions_1" table="auth_user_user_permissions" schema="" catalog="" columns="permission_id"/>
       <index name="auth_permission_417f1b1c" unique="true" columns="content_type_id"/>
@@ -66,14 +62,6 @@
       <exported-key name="#FAKE_web_taskstatistics_3" table="web_taskstatistics" schema="" catalog="" columns="player_id"/>
       <exported-key name="#FAKE_web_teams_1" table="web_teams" schema="" catalog="" columns="creator_id"/>
       <exported-key name="#FAKE_web_teams_players_1" table="web_teams_players" schema="" catalog="" columns="user_id"/>
-      <exported-key name="#FAKE_auth_user_groups_2" table="auth_user_groups" schema="" catalog="" columns="user_id"/>
-      <exported-key name="#FAKE_auth_user_user_permissions_2" table="auth_user_user_permissions" schema="" catalog="" columns="user_id"/>
-      <exported-key name="#FAKE_chat_chat_users_1" table="chat_chat_users" schema="" catalog="" columns="user_id"/>
-      <exported-key name="#FAKE_chat_messages_1" table="chat_messages" schema="" catalog="" columns="sender_id"/>
-      <exported-key name="#FAKE_django_admin_log_1" table="django_admin_log" schema="" catalog="" columns="user_id"/>
-      <exported-key name="#FAKE_web_contacts_1" table="web_contacts" schema="" catalog="" columns="user_id"/>
-      <exported-key name="#FAKE_web_events_2" table="web_events" schema="" catalog="" columns="organizer_id"/>
-      <exported-key name="#FAKE_web_events_registered_players_1" table="web_events_registered_players" schema="" catalog="" columns="user_id"/>
       <exported-key name="#FAKE_web_eventstatistics_2" table="web_eventstatistics" schema="" catalog="" columns="player_id"/>
       <exported-key name="#FAKE_web_eventswinners_2" table="web_eventswinners" schema="" catalog="" columns="player_id"/>
       <exported-key name="#FAKE_web_organizers_1" table="web_organizers" schema="" catalog="" columns="user_id"/>
@@ -108,8 +96,6 @@
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="have_new_message" sqlType="BOOL" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <primary-key columns="id"/>
-      <exported-key name="#FAKE_chat_chat_users_2" table="chat_chat_users" schema="" catalog="" columns="chat_id"/>
-      <exported-key name="#FAKE_chat_messages_2" table="chat_messages" schema="" catalog="" columns="chat_id"/>
       <exported-key name="#FAKE_chat_chat_users_2" table="chat_chat_users" schema="" catalog="" columns="chat_id"/>
       <exported-key name="#FAKE_chat_messages_2" table="chat_messages" schema="" catalog="" columns="chat_id"/>
     </table>
@@ -156,8 +142,6 @@
       <column name="app_label" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <column name="model" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <primary-key columns="id"/>
-      <exported-key name="#FAKE_auth_permission_1" table="auth_permission" schema="" catalog="" columns="content_type_id"/>
-      <exported-key name="#FAKE_django_admin_log_2" table="django_admin_log" schema="" catalog="" columns="content_type_id"/>
       <exported-key name="#FAKE_auth_permission_1" table="auth_permission" schema="" catalog="" columns="content_type_id"/>
       <exported-key name="#FAKE_django_admin_log_2" table="django_admin_log" schema="" catalog="" columns="content_type_id"/>
     </table>
@@ -252,8 +236,6 @@
       <exported-key name="#FAKE_web_photos_2" table="web_photos" schema="" catalog="" columns="event_id"/>
       <exported-key name="#FAKE_web_tasks_2" table="web_tasks" schema="" catalog="" columns="event_id"/>
       <exported-key name="#FAKE_web_todayevents_1" table="web_todayevents" schema="" catalog="" columns="event_id"/>
-      <exported-key name="#FAKE_web_events_registered_players_2" table="web_events_registered_players" schema="" catalog="" columns="events_id"/>
-      <exported-key name="#FAKE_web_events_registered_teams_2" table="web_events_registered_teams" schema="" catalog="" columns="events_id"/>
       <exported-key name="#FAKE_web_eventstatistics_3" table="web_eventstatistics" schema="" catalog="" columns="event_id"/>
       <exported-key name="#FAKE_web_eventswinners_4" table="web_eventswinners" schema="" catalog="" columns="event_id"/>
       <exported-key name="#FAKE_web_photos_2" table="web_photos" schema="" catalog="" columns="event_id"/>
@@ -293,7 +275,6 @@
       <primary-key columns="id"/>
       <exported-key name="#FAKE_web_events_1" table="web_events" schema="" catalog="" columns="place_id"/>
       <exported-key name="#FAKE_web_tasks_1" table="web_tasks" schema="" catalog="" columns="place_id"/>
-      <exported-key name="#FAKE_web_events_1" table="web_events" schema="" catalog="" columns="place_id"/>
       <exported-key name="#FAKE_web_tasks_1" table="web_tasks" schema="" catalog="" columns="place_id"/>
     </table>
     <table name="web_eventstatistics" schema="" catalog="" type="TABLE">
@@ -465,7 +446,6 @@
       <exported-key name="#FAKE_web_eventswinners_1" table="web_eventswinners" schema="" catalog="" columns="team_id"/>
       <exported-key name="#FAKE_web_taskstatistics_1" table="web_taskstatistics" schema="" catalog="" columns="team_id"/>
       <exported-key name="#FAKE_web_teams_players_2" table="web_teams_players" schema="" catalog="" columns="teams_id"/>
-      <exported-key name="#FAKE_web_events_registered_teams_1" table="web_events_registered_teams" schema="" catalog="" columns="teams_id"/>
       <exported-key name="#FAKE_web_eventstatistics_1" table="web_eventstatistics" schema="" catalog="" columns="team_id"/>
       <exported-key name="#FAKE_web_eventswinners_1" table="web_eventswinners" schema="" catalog="" columns="team_id"/>
       <exported-key name="#FAKE_web_taskstatistics_1" table="web_taskstatistics" schema="" catalog="" columns="team_id"/>

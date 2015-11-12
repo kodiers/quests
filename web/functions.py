@@ -81,3 +81,31 @@ def send_user_notification(subject, notification, from_email, to_email):
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
     msg.attach_alternative(html_content, 'text/html')
     msg.send(fail_silently=FAIL_EMAIL_SILENTLY)
+
+
+def construct_map_link(url, api_key, country=None, city=None, street=None):
+    """
+    Construct link for google static maps api
+    :param url: google static maps api should contains {zoom}, {api_key}, {country}, {city}, {street} parameters,
+    for use in str.format method
+    :param api_key: API_KEY to access Google Static Maps API
+    :param country: country
+    :param city: city
+    :param street: street
+    :return: url to access Google Maps API with defined parameters
+    """
+    zoom = 1
+    if country is not None:
+        zoom = 2
+    else:
+        country = ""
+    if city is not None:
+        zoom = 8
+    else:
+        city = ""
+    if street is not None:
+       zoom = 13
+    else:
+        street = ""
+    url = url.format(api_key=api_key, zoom=zoom, country=country, city=city, street=street)
+    return url

@@ -20,7 +20,7 @@
                 {% else %}
                     <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
                 {% endif %}
-                <a href="#" class="btn btn-primary">Send message</a>
+                <a href="{% url 'contact_list' %}" class="btn btn-primary">Send message</a>
 
                 <div class="row">
                     <div class="col-xs-12">
@@ -80,7 +80,7 @@
                 <p>Duration: {{ event.duration }}</p>
                 <p>Event description: {{ event.description }}</p>
                 {% if event.map_link != None %}
-                    {{ event.map_link|safe }}
+                    <img src="{{ event.map_link }}">
                 {% endif %}
                 {% for task in tasks %}
                     {% get_taskstat_for_task username=user.username task_id=task.pk as taskstat %}

@@ -58,10 +58,14 @@ class PlayerProfileForm(forms.Form):
 class CreateEventForm(forms.ModelForm):
     """
     Model Form for create event.
+    Add fields to create and edit EventPlaces object and generate map.
     """
+    country = forms.CharField(max_length=255, required=False, label="Country")
+    city = forms.CharField(max_length=255, required=False, label="City")
+    street = forms.CharField(required=False, label="Street", max_length=255)
     class Meta:
         model = Events
-        fields = ['title', 'description', 'map_link', 'is_team', 'start_date', 'end_date', 'duration', 'image',
+        fields = ['title', 'description', 'is_team', 'start_date', 'end_date', 'duration', 'image',
                   'max_players', 'min_players', 'organizer']
         widgets = {'organizer':forms.HiddenInput()}
 

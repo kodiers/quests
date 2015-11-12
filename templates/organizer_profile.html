@@ -156,6 +156,8 @@
                             {% if event.is_team %}
                                 Team game
                             {% endif %}
+                            Minimum players/teams: {{ event.min_players }}
+                            Maximum players/teams: {{ event.max_players }}
                             Registered: {{ event.get_registered_count }}
                             <a href="{% url 'edit_event' event.pk %}" class="btn btn-primary"> Edit</a>
                             <button class="btn btn-danger" data-toggle="modal" data-target="#deleteEventModal{{ event.pk }}">
