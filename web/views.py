@@ -304,6 +304,8 @@ def create_team(request, event_pk=None):
                 team.save()
                 team.players.add(request.user)
                 success = True
+                email_subject = _("You created team on Getquests.com")
+                email_message = _("You created team %s on GetQuest.com" % team.title)
             except:
                 error = _('Error create team!')
             if 'event_pk' in request.POST:
@@ -311,6 +313,17 @@ def create_team(request, event_pk=None):
                 if team is not None:
                     event.registered_teams.add(team)
                     success = True
+                    # Notification for player
+                    email_message = _("You created team {team} on Getquests.com. This team join event {event}".format(
+                        team=team.title, event=event.title
+                    ))
+                    # Notification for organizer
+                    org_subject = _("On event %s was registered team." % event.title)
+                    org_message = _("On event {event} was registered team {team}".format(
+                        event=event.title, team=team.title))
+                    send_user_notification(org_subject, org_message, EMAIL_HOST_USER, event.organizer.email)
+            if success:
+                send_user_notification(email_subject, email_message, EMAIL_HOST_USER, request.user.email)
         else:
             error = FORM_FIELDS_ERROR
     form = CreateTeamForm()
