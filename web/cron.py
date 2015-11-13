@@ -2,8 +2,11 @@ __author__ = 'kodiers'
 
 import kronos
 import datetime
+from quests.settings import EMAIL_HOST_USER
 from web.models import Events, TodayEvents, EventStatistics, EventsWinners
+from web.functions import send_user_notification
 from django.db.models import Max, Min
+from django.utils.translation import ugettext as _
 
 @kronos.register('0 0 * * *')
 def test_task():
@@ -32,6 +35,25 @@ def check_today_events():
             today_event.event = event
             today_event.start_time = event.start_date
             today_event.save()
+            # Notify organizer
+            org_subject = _("Your event %s begin today" % event.title)
+            send_user_notification(org_subject, "", EMAIL_HOST_USER, event.organizer.email)
+            # Notify players (teams)
+            email_message = _("Event {event} begin today {date_time}".format(
+                            event=event.title, date_time=event.start_date.strftime("%Y-%m-%d %H:%M")
+                        ))
+            if event.is_team:
+                for team in event.registered_teams.all():
+                    for player in team.players.all():
+                        email_subject = _("You in team {team} that registered on event {event}".format(
+                            team=team.title, event=event.title
+                        ))
+                        send_user_notification(email_subject, email_message, EMAIL_HOST_USER, player.email)
+            else:
+                # Notify players (not team events)
+                email_subject = _("You are registered at event %s that begin today" % event.title)
+                for player in event.registered_players.all():
+                    send_user_notification(email_subject, email_message, EMAIL_HOST_USER, player.email)
     else:
         print("No events today")
     if completed_events:
