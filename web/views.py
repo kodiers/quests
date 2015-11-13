@@ -837,7 +837,7 @@ def task_answer(request):
     user = request.user
     now = datetime.datetime.utcnow().replace(tzinfo=utc)
     task = Tasks.objects.get(pk=request.POST['pk'])
-    taskstat = TaskStatistics.objects.filter(task=task).filter(player=request.user).get(started=True)
+    taskstat = TaskStatistics.objects.filter(task=task).filter(player=user).get(started=True)
     correct_time = False
     if taskstat:
         if taskstat.completed:
@@ -898,6 +898,10 @@ def complete_event(request):
         event_fact_duration = abs(now - eventstat.start_time)
         eventstat.time = event_fact_duration.seconds // 60
         eventstat.save()
+        # Notify organizer
+        org_subject = _("User completed event")
+        org_message = _("User {user} completed event {event}".format(user=request.user.email, event=event.title))
+        send_user_notification(org_subject, org_message, EMAIL_HOST_USER, event.organizer.email)
         return HttpResponse(json.dumps(SIMPLE_JSON_ANSWER), content_type="application/json")
     else:
         error = _("You are not started this event")
