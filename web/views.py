@@ -818,7 +818,7 @@ def start_task(request):
             taskstat.player = request.user
             taskstat.started = True
             if task.event.is_team:
-                taskstat = registered_team
+                taskstat.team = registered_team
             taskstat.save()
         return HttpResponse(json.dumps(SIMPLE_JSON_ANSWER), content_type="application/json")
     else:

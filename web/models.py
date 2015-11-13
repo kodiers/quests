@@ -481,8 +481,10 @@ class TaskStatistics(models.Model):
     def __str__(self):
         if self.team != None:
             return self.team.title + ":" + self.task.title
-        else:
+        elif self.player != None:
             return self.player.username + ":" + self.task.title
+        else:
+            return self.task.title
 
     class Meta:
         verbose_name = "Task statistic"
