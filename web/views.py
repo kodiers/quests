@@ -87,14 +87,13 @@ def registration(request):
                         player = Players()
                         player.user = new_user
                         player.save()
-                    email_subject = "Registration complete!"
-                    email_message = """Hello! You was registered on site GetQuests.com. \n
+                    email_subject = _("Registration complete on GetQuests.com!")
+                    email_message = _("""Hello! You was registered on site GetQuests.com. \n
                     Your login {login} \n Your password {password} \n Your email {email} \n
                     Thank you!""".format(login=form.cleaned_data['login'],
                                          password=form.cleaned_data['password1'],
-                                         email=form.cleaned_data['email'])
-                    recipients = [new_user.email]
-                    send_mail(email_subject, email_message, EMAIL_HOST_USER, recipients, fail_silently=FAIL_EMAIL_SILENTLY)
+                                         email=form.cleaned_data['email']))
+                    send_user_notification(email_subject, email_message, EMAIL_HOST_USER, new_user.email)
                 except:
                     error = _("Error creating new user")
                 auth_user = authenticate(username=new_user.username,
@@ -106,7 +105,6 @@ def registration(request):
                 error = _("Password and confirm password doesn't match")
         else:
             error = FORM_FIELDS_ERROR
-            # error = form.errors
     else:
         error = ""
         form = UserRegistrationForm()
@@ -133,11 +131,10 @@ def restore_password(request):
                 password = create_password_str()
                 user.set_password(password)
                 user.save()
-                email_subject = "Your password restored"
-                email_message = """Hello! \n Your new password to our site is {password} \n
-                                Thank you!""".format(password=password)
-                recipients = [user.email]
-                send_mail(email_subject, email_message, EMAIL_HOST_USER, recipients, fail_silently=FAIL_EMAIL_SILENTLY)
+                email_subject = _("Your password was reseted on Getquests.com")
+                email_message = _("""Hello! \n Your new password to getquests.com is {password} \n
+                                Thank you!""".format(password=password))
+                send_user_notification(email_subject, email_message, EMAIL_HOST_USER, user.email)
                 error = _("Your password sent to your email")
                 success = True
             except ObjectDoesNotExist:
