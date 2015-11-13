@@ -482,8 +482,6 @@ def add_task(request):
                 new_task.title = request.POST['title']
             if 'description' in request.POST and request.POST['description']:
                 new_task.description = request.POST['description']
-            if 'map_link' in request.POST and request.POST['map_link']:
-                new_task.map_link = request.POST['map_link']
             if 'score' in request.POST and request.POST['score']:
                 new_task.score = request.POST['score']
             if 'answer' in request.POST and request.POST['answer']:
@@ -497,16 +495,17 @@ def add_task(request):
                 new_place.city = request.POST['city']
             if 'street' in request.POST and request.POST['street']:
                 new_place.street = request.POST['street']
-            if 'lon' in request.POST:
-                if request.POST['lon'] == '' or request.POST['lon'] == 'None':
-                    new_place.lon = 0.0
-                else:
-                    new_place.lon = float(request.POST['lon'])
-            if 'lat' in request.POST:
-                if request.POST['lat'] == '' or request.POST['lat'] == 'None':
-                    new_place.lat = 0.0
-                else:
-                    new_place.lat = float(request.POST['lat'])
+            #     Longtitude and latitude for task not used in this version
+            # if 'lon' in request.POST:
+            #     if request.POST['lon'] == '' or request.POST['lon'] == 'None':
+            #         new_place.lon = 0.0
+            #     else:
+            #         new_place.lon = float(request.POST['lon'])
+            # if 'lat' in request.POST:
+            #     if request.POST['lat'] == '' or request.POST['lat'] == 'None':
+            #         new_place.lat = 0.0
+            #     else:
+            #         new_place.lat = float(request.POST['lat'])
             new_place.save()
             new_task.place = new_place
             new_task.save()
@@ -564,8 +563,6 @@ def edit_task(request):
             task.title = request.POST['title']
         if 'description' in request.POST and request.POST['description']:
             task.description = request.POST['description']
-        if 'map_link' in request.POST and request.POST['map_link']:
-            task.map_link = request.POST['map_link']
         if 'score' in request.POST and request.POST['score']:
             task.score = request.POST['score']
         if 'answer' in request.POST and request.POST['answer']:
@@ -582,16 +579,17 @@ def edit_task(request):
                 place.city = request.POST['city']
             if 'street' in request.POST and request.POST['street']:
                 place.street = request.POST['street']
-            if 'lon' in request.POST:
-                if request.POST['lon'] == 'None' or request.POST['lon'] == '':
-                    place.lon = 0.0
-                else:
-                    place.lon = float(request.POST['lon'])
-            if 'lat' in request.POST:
-                if request.POST['lat'] == 'None' or request.POST['lat'] == '':
-                    place.lat = 0.0
-                else:
-                    place.lat = float(request.POST['lat'])
+            # Longtitude and latitude not used in this version
+            # if 'lon' in request.POST:
+            #     if request.POST['lon'] == 'None' or request.POST['lon'] == '':
+            #         place.lon = 0.0
+            #     else:
+            #         place.lon = float(request.POST['lon'])
+            # if 'lat' in request.POST:
+            #     if request.POST['lat'] == 'None' or request.POST['lat'] == '':
+            #         place.lat = 0.0
+            #     else:
+            #         place.lat = float(request.POST['lat'])
             place.save()
         hint = None
         json_answer = { 'title': task.title, 'description': task.description, 'maplink': task.map_link,

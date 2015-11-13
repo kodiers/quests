@@ -21,7 +21,6 @@ function edit_task (task_pk) {
     // Get value from form
     var taskTitle = $('#id_editTaskTitle' + task_pk).val();
     var taskDescription = $('#id_editTaskDescription' + task_pk).val();
-    var taskMaplink = $('#id_editMapLink' + task_pk).val();
     var taskTime = $('#id_editTaskTime' + task_pk).val();
     var taskScore = $('#id_editTaskScore' + task_pk).val();
     var taskAnswer = $('#id_editTaskAnswer' + task_pk).val();
@@ -31,8 +30,9 @@ function edit_task (task_pk) {
     var taskCountry = $('#id_editTaskCountry' + task_pk).val();
     var taskCity = $('#id_editTaskCity' + task_pk).val();
     var taskStreet = $('#id_editTaskStreet' + task_pk).val();
-    var taskLon = $('#id_editTaskLon' + task_pk).val();
-    var taskLat = $('#id_editTaskLat' + task_pk).val();
+    // Longtitude and latitude not used in this version
+    //var taskLon = $('#id_editTaskLon' + task_pk).val();
+    //var taskLat = $('#id_editTaskLat' + task_pk).val();
 
     var taskHint = $('#id_editTaskHint' + task_pk).val();
     var taskHintPk = $('#id_editTaskHintPk' + task_pk).val();
@@ -50,7 +50,6 @@ function edit_task (task_pk) {
             pk: task_pk,
             title: taskTitle,
             description: taskDescription,
-            map_link: taskMaplink,
             time: taskTime,
             score: taskScore,
             answer: taskAnswer,
@@ -58,8 +57,8 @@ function edit_task (task_pk) {
             country: taskCountry,
             city: taskCity,
             street: taskStreet,
-            lon: taskLon,
-            lat: taskLat,
+            //lon: taskLon,
+            //lat: taskLat,
             hint: taskHint,
             csrfmiddlewaretoken: csrfmiddlewaretoken,
             placepk: taskPlacePk,

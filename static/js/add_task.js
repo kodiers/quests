@@ -32,7 +32,6 @@ function add_task () {
     // Get value from form
     var taskTitle = $('#id_taskTitle').val();
     var taskDescription = $('#id_taskDescription').val();
-    var taskMaplink = $('#id_mapLink').val();
     var taskTime = $('#id_taskTime').val();
     var taskScore = $('#id_taskScore').val();
     var taskAnswer = $('#id_taskAnswer').val();
@@ -41,8 +40,9 @@ function add_task () {
     var taskCountry = $('#id_taskCountry').val();
     var taskCity = $('#id_taskCity').val();
     var taskStreet = $('#id_taskStreet').val();
-    var taskLon = $('#id_taskLon').val();
-    var taskLat = $('#id_taskLat').val();
+    // Longtitude and latitude not used in this version
+    //var taskLon = $('#id_taskLon').val();
+    //var taskLat = $('#id_taskLat').val();
 
     var taskHint = $('#id_taskHint').val();
 
@@ -56,7 +56,6 @@ function add_task () {
         data: {
             title: taskTitle,
             description: taskDescription,
-            map_link: taskMaplink,
             time: taskTime,
             score: taskScore,
             answer: taskAnswer,
@@ -64,8 +63,6 @@ function add_task () {
             country: taskCountry,
             city: taskCity,
             street: taskStreet,
-            lon: taskLon,
-            lat: taskLat,
             hint: taskHint,
             csrfmiddlewaretoken: csrfmiddlewaretoken
         },
