@@ -14,4 +14,6 @@ PAGE_TITLE = _("Get your own quest")
 
 SUCCESSFULLY_REGITERED = _('You was successfully registered to event!')
 TEAM_ALREADY_REGISTERED = _('Your team are already registered in this event!')
+
 TEAM_WAS_REGISTERED = 'Your team was registered to event %s'
+YOU_JOINED_TEAM = "You successfully joined team"

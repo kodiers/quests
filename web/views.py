@@ -343,7 +343,15 @@ def join_team(request):
         if 'team_pk' in request.POST:
             team = get_object_or_404(Teams, pk=request.POST['team_pk'])
             team.players.add(request.user)
-            error = _('You successfully joined team %s' % team.title)
+            error = _(YOU_JOINED_TEAM + " " + team.title)
+            # Notify user
+            email_subject = _(YOU_JOINED_TEAM)
+            send_user_notification(email_subject, error, EMAIL_HOST_USER, request.user.email)
+            # Notify creator of the team
+            creator_subject = _("Player joined your team")
+            creator_message = _("Player {player} joined your team {team}".format(
+                player=request.user.username, team=team.title))
+            send_user_notification(creator_subject, creator_message, EMAIL_HOST_USER, team.creator.email)
         else:
             error = REQUEST_PARAMETRS_ERROR
     else:
