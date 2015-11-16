@@ -1,0 +1,271 @@
+# encoding=utf-8
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-16 14:48+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: chat/constants.py:6
+msgid "Incorrect chat id"
+msgstr "Неправильный chat id"
+
+#: pages/constants.py:3
+msgid "Message from site"
+msgstr "Сообщение с сайта"
+
+#: templates/index.html:50
+msgid "Nearest events! "
+msgstr "Ближайшие события"
+
+#: web/constants.py:5
+msgid "Error in forms fields. Try again!"
+msgstr "Ошибка при заполнении формы, Попробуйте снова!"
+
+#: web/constants.py:6
+msgid "Incorrect request parameters!"
+msgstr "Неправильные параметры запроса!"
+
+#: web/constants.py:7
+msgid "Incorrect request!"
+msgstr "Неправильный запрос!"
+
+#: web/constants.py:8
+msgid "User is not active!"
+msgstr "Пользователь не активен!"
+
+#: web/constants.py:9
+msgid "Incorrect username or password!"
+msgstr "Неправильный логин или пароль!"
+
+#: web/constants.py:13
+msgid "Get your own quest"
+msgstr "Создай свой квест"
+
+#: web/constants.py:15
+msgid "You was successfully registered to event!"
+msgstr "Вы успешно зарегистрировались на событие!"
+
+#: web/constants.py:16
+msgid "Your team are already registered in this event!"
+msgstr "Ваша команда уже зарегистрирована на событие!"
+
+#: web/cron.py:39
+#, python-format
+msgid "Your event %s begin today"
+msgstr "Ваше событие %s начинается сегодня"
+
+#: web/cron.py:42
+#, python-brace-format
+msgid "Event {event} begin today {date_time}"
+msgstr "Событие {event} начинается сегодня {date_time}"
+
+#: web/cron.py:48
+#, python-brace-format
+msgid "You in team {team} that registered on event {event}"
+msgstr "Вы участник команды {team}, которая зарегистрирована на событие {event}"
+
+#: web/cron.py:54
+#, python-format
+msgid "You are registered at event %s that begin today"
+msgstr "Вы зарегистрированы на событие %s которое начинается сегодня"
+
+#: web/views.py:62 web/views.py:121
+msgid "You are already registered!"
+msgstr "Вы уже зарегистрированы"
+
+#: web/views.py:90
+msgid "Registration complete on GetQuests.com!"
+msgstr "Регистрация на GetQuests.com завершена."
+
+#: web/views.py:91
+#, python-brace-format
+msgid ""
+"Hello! You was registered on site GetQuests.com. \n"
+"\n"
+"                    Your login {login} \n"
+" Your password {password} \n"
+" Your email {email} \n"
+"\n"
+"                    Thank you!"
+msgstr "Здравствуйте! Вы зарегистрировались на сайте GetQuests.com \n"
+"\n"
+"                    Ваш логин {login} \n"
+" Ваш пароль {password} \n"
+" Ваш email {email} \n"
+"\n"
+"                   Спасибо!"
+
+#: web/views.py:98
+msgid "Error creating new user"
+msgstr "Ошибка при создании пользователя"
+
+#: web/views.py:102
+msgid "You was succesfully registered!"
+msgstr "Вы успешно зарегистрировались!"
+
+#: web/views.py:105
+msgid "Password and confirm password doesn't match"
+msgstr "Пароль и подтверждение не совпадают"
+
+#: web/views.py:134
+msgid "Your password was reseted on Getquests.com"
+msgstr "Ваш пароль на сайте GetQuests.com был сброшен"
+
+#: web/views.py:135
+#, python-brace-format
+msgid ""
+"Hello! \n"
+" Your new password to getquests.com is {password} \n"
+"\n"
+"                                Thank you!"
+msgstr ""
+"Здравствуйте! \n"
+" Ваш новый пароль на сайте getquests.com - {password} \n"
+"\n"
+"                                Спасибо!"
+#: web/views.py:138
+msgid "Your password sent to your email"
+msgstr "Ваш новый пароль был отправлен вам на email"
+
+#: web/views.py:141
+msgid "User with this email not found"
+msgstr "Пользователь с таким email не найден"
+
+#: web/views.py:238
+#, python-format
+msgid "You was succesfully registered to event %s"
+msgstr "Вы успешно зарегистрировались на событие %s"
+
+#: web/views.py:242
+#, python-format
+msgid "Player was registered to your event %s"
+msgstr "Игрок зарегистрировался на событие %s"
+
+#: web/views.py:243
+#, python-brace-format
+msgid "Player {player} was registered to your event {event}"
+msgstr "Игрок {player} зарегистрировался на ваше событие {event}"
+
+#: web/views.py:254
+#, python-brace-format
+msgid "Your team {team} was registered to event {event}"
+msgstr "Ваша команда {team} была зарегистрирована на событие {event}"
+
+#: web/views.py:259
+msgid "Team was registered to your event."
+msgstr "Команда зарегистрировалась на ваше событие"
+
+#: web/views.py:260
+#, python-brace-format
+msgid "Team {team} was registered to your event {event}"
+msgstr "Команда {team} зарегистрировалась на ваше событие {event}"
+
+#: web/views.py:294
+#, python-format
+msgid "You are creator of team %s"
+msgstr "Вы создатель команды %s"
+
+#: web/views.py:307
+msgid "You created team on Getquests.com"
+msgstr "Вы создали команду на сайте GetQuests.com"
+
+#: web/views.py:308
+#, python-format
+msgid "You created team %s on GetQuest.com"
+msgstr "Вы создали команду %s на сайте GetQuests.com"
+
+#: web/views.py:310
+msgid "Error create team!"
+msgstr "Ошибка при создании команды"
+
+#: web/views.py:317
+#, python-brace-format
+msgid "You created team {team} on Getquests.com. This team join event {event}"
+msgstr "Вы создали команду {team} на сайте GetQuests.com. Эта команда присоединилась к событию {event}"
+
+#: web/views.py:321
+#, python-format
+msgid "On event %s was registered team."
+msgstr "На событие %s зарегистрировалась команда"
+
+#: web/views.py:322
+#, python-brace-format
+msgid "On event {event} was registered team {team}"
+msgstr "На событие {event} зарегистрировалась команда {team}"
+
+#: web/views.py:346
+msgid " "
+msgstr ""
+
+#: web/views.py:351
+msgid "Player joined your team"
+msgstr "Игрок присоединился к вашей команде"
+
+#: web/views.py:352
+#, python-brace-format
+msgid "Player {player} joined your team {team}"
+msgstr "Игрок {player} присоединился к вашей команде {team}"
+
+#: web/views.py:414 web/views.py:944
+msgid "Your profile updated successfully!"
+msgstr "ваш профиль успешно обновлен!"
+
+#: web/views.py:454
+msgid "You are not creator of this event"
+msgstr "Вы не являетесь организатором этого события!"
+
+#: web/views.py:546
+msgid "Event undefined!"
+msgstr "Событие не определено!"
+
+#: web/views.py:736
+msgid "You are not owner of photo"
+msgstr "Вы не владелец фото"
+
+#: web/views.py:754
+msgid "Event is not started!"
+msgstr "Событие не началось!"
+
+#: web/views.py:768
+msgid "You are not registered to this event"
+msgstr "Вы не зарегистрированны на это событие"
+
+#: web/views.py:805
+msgid "Your team member answered for this task"
+msgstr "Игрок вашей команды уже ответил на эту задачу"
+
+#: web/views.py:810 web/views.py:844
+msgid "You are answered for this task"
+msgstr "Вы ответили на эту задачу"
+
+#: web/views.py:869
+msgid "This task isn't started"
+msgstr "Задача еще не началась"
+
+#: web/views.py:902
+msgid "User completed event"
+msgstr "Пользователь завершил событие"
+
+#: web/views.py:903
+#, python-brace-format
+msgid "User {user} completed event {event}"
+msgstr "Пользователь {user} завершил событие {event}"
+
+#: web/views.py:907
+msgid "You are not started this event"
+msgstr "Вы не начали выполнение события!"

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% load tags %}
+{% load i18n %}
 {% block title %}
     {% show_title_page %}
 {% endblock %}
@@ -46,7 +47,7 @@
         <div class="row">
             <!-- Events block -->
             <div class="col-xs-12">
-                <h1>Nearest events!</h1>
+                <h1>{% blocktrans %}Nearest events! {% endblocktrans %}</h1>
                 <div class="row">
                     {% for event in nearest_events %}
                         <div class="col-xs-4">

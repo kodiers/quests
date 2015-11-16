@@ -35,7 +35,6 @@ from web.constants import *
 
 # Create your views here.
 
-
 def index(request):
     """
     Return index page. With events, players and organizers.
