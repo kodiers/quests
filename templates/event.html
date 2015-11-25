@@ -49,11 +49,17 @@
                         {% if object.get_registered_count >= object.max_players %}
                             <p>Maximum number of players are registered to this event!</p>
                         {% else %}
-                            <a href="{% url 'confirm_join' object.pk %}" class="btn btn-primary">Join!</a>
+                            {% if user != object.organizer %}
+                                <a href="{% url 'confirm_join' object.pk %}" class="btn btn-primary">Join!</a>
+                            {% endif %}
                         {% endif %}
                     {% endif %}
                 {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-primary">Login to join!</a>
+                    {% if user == object.organizer %}
+                        <p>You are organizer of this event</p>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-primary">Login to join!</a>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>

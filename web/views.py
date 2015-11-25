@@ -232,7 +232,7 @@ def join_event(request, flag):
     if request.method == 'POST':
         if 'event_pk' in request.POST:
             event = get_object_or_404(Events, pk=request.POST['event_pk'])
-            if flag == 'player':
+            if flag == 'player' and request.user != event.organizer:
                 event.registered_players.add(request.user)
                 error = SUCCESSFULLY_REGITERED
                 player_notification = _('You was succesfully registered to event %s' % event.title)
@@ -249,20 +249,20 @@ def join_event(request, flag):
                     if team in event.registered_teams.all():
                         error = TEAM_ALREADY_REGISTERED
                     else:
-                        event.registered_teams.add(team)
-                        error = _(TEAM_WAS_REGISTERED % event.title)
-                        creator_notification = _("Your team {team} was registered to event {event}".format(
-                            team=team.title, event=event.title))
-                        # Send notification to team creator
-                        send_user_notification(error, creator_notification, EMAIL_HOST_USER, team.creator.email)
-                        # Send notification to organizer
-                        org_subject = _("Team was registered to your event.")
-                        org_notification = _("Team {team} was registered to your event {event}".format(
-                            team=team.title, event=event.title
-                        ))
-                        send_user_notification(org_subject, org_notification, EMAIL_HOST_USER, event.organizer.email)
+                        if request.user != event.organizer:
+                            event.registered_teams.add(team)
+                            error = _(TEAM_WAS_REGISTERED % event.title)
+                            creator_notification = _("Your team {team} was registered to event {event}".format(
+                                team=team.title, event=event.title))
+                            # Send notification to team creator
+                            send_user_notification(error, creator_notification, EMAIL_HOST_USER, team.creator.email)
+                            # Send notification to organizer
+                            org_subject = _("Team was registered to your event.")
+                            org_notification = _("Team {team} was registered to your event {event}".format(
+                                team=team.title, event=event.title))
+                            send_user_notification(org_subject, org_notification, EMAIL_HOST_USER, event.organizer.email)
                 except ObjectDoesNotExist:
-                    pass
+                    error = _("You doesn't have any team")
             else:
                 error = REQUEST_PARAMETRS_ERROR
         else:
@@ -310,20 +310,23 @@ def create_team(request, event_pk=None):
                 error = _('Error create team!')
             if 'event_pk' in request.POST:
                 event = get_object_or_404(Events, pk=request.POST['event_pk'])
-                if team is not None:
-                    event.registered_teams.add(team)
-                    success = True
-                    # Notification for player
-                    email_message = _("You created team {team} on Getquests.com. This team join event {event}".format(
-                        team=team.title, event=event.title
-                    ))
-                    # Notification for organizer
-                    org_subject = _("On event %s was registered team." % event.title)
-                    org_message = _("On event {event} was registered team {team}".format(
-                        event=event.title, team=team.title))
-                    send_user_notification(org_subject, org_message, EMAIL_HOST_USER, event.organizer.email)
-            if success:
-                send_user_notification(email_subject, email_message, EMAIL_HOST_USER, request.user.email)
+                if request.user != event.organizer:
+                    if team is not None:
+                        event.registered_teams.add(team)
+                        success = True
+                        # Notification for player
+                        email_message = _("You created team {team} on Getquests.com. This team join event {event}".format(
+                            team=team.title, event=event.title
+                        ))
+                        # Notification for organizer
+                        org_subject = _("On event %s was registered team." % event.title)
+                        org_message = _("On event {event} was registered team {team}".format(
+                            event=event.title, team=team.title))
+                        send_user_notification(org_subject, org_message, EMAIL_HOST_USER, event.organizer.email)
+                    if success:
+                        send_user_notification(email_subject, email_message, EMAIL_HOST_USER, request.user.email)
+                else:
+                    error = _("You are organizer of this event")
         else:
             error = FORM_FIELDS_ERROR
     form = CreateTeamForm()
