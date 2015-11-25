@@ -214,12 +214,12 @@
                                 <!-- create task form -->
                                 <form method="post" id="id_addTaskForm">
                                     {% csrf_token %}
-                                    <label for="id_taskTitle">Title</label>
+                                    <label for="id_taskTitle">Title:</label>&nbsp;<span class="error" id="title_error"></span>
                                     <input type="text" name="taskTitle" placeholder="Enter task title" class="form-control" id="id_taskTitle">
-                                    <label for="id_taskDescription">Description</label>
+                                    <label for="id_taskDescription">Description:</label>&nbsp;<span class="error" id="description_error"></span>
                                     <textarea class="form-control" id="id_taskDescription" name="taskDescription" placeholder="Enter description for task"></textarea>
                                     <label for="id_taskTime">Time for task (minutes):</label>
-                                    <input type="time" class="form-control" name="taskTime" id="id_taskTime">
+                                    <input type="number" class="form-control" name="taskTime" id="id_taskTime">
                                     <label for="id_taskScore">Score:</label>
                                     <input type="number" class="form-control" name="taskScore" id="id_taskScore">
                                     <label for="id_taskAnswer">Answer:</label>
@@ -285,7 +285,7 @@
                                                 <label for="id_editTaskDescription{{ task.pk }}">Description</label>
                                                 <textarea class="form-control" id="id_editTaskDescription{{ task.pk }}" name="editTaskDescription">{{ task.description }}</textarea>
                                                 <label for="id_editTaskTime{{ task.pk }}">Time for task (minutes):</label>
-                                                <input type="time" class="form-control" name="editTaskTime" id="id_editTaskTime{{ task.pk }}" value="{{ task.time }}">
+                                                <input type="number" class="form-control" name="editTaskTime" id="id_editTaskTime{{ task.pk }}" value="{{ task.time }}">
                                                 <label for="id_editTaskScore{{ task.pk }}">Score:</label>
                                                 <input type="number" class="form-control" name="editTaskScore" id="id_editTaskScore{{ task.pk }}" value="{{ task.score }}">
                                                 <label for="id_editTaskAnswer{{ task.pk }}">Answer:</label>

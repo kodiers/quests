@@ -109,3 +109,16 @@ def construct_map_link(url, api_key, country=None, city=None, street=None):
         street = ""
     url = url.format(api_key=api_key, zoom=zoom, country=country, city=city, street=street)
     return url
+
+
+def convert_str_to_int(string):
+    """
+    CTry convert string to int. If exception then return 0.
+    :param string: string to convert
+    :return: int
+    """
+    try:
+        integer = int(string)
+    except ValueError:
+        integer = 0
+    return integer

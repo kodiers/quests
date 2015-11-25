@@ -15,13 +15,18 @@ $('#id_addTaskForm').on('submit', function(event) {
 
 function checkEmpty() {
     // Check if task title or task description is empty
-    if ((document.getElementById('id_taskTitle').value.length == 0) || (document.getElementById('id_taskDescription').value.length == 0))
+    if (document.getElementById('id_taskTitle').value.length == 0)
     {
-        $('#modal_error').html("<p class='error'> Enter title and description for task</p>");
+        $('#title_error').html("Enter title for task");
+        $('#description_error').html("");
         return false;
     }
-    else
-        return true;
+    if (document.getElementById('id_taskDescription').value.length == 0) {
+        $('#title_error').html("");
+        $('#description_error').html("Enter description");
+        return false;
+    }
+    return true;
 }
 
 function add_task () {
@@ -80,6 +85,7 @@ function add_task () {
             location.reload();
         },
         error: function(xhr, errmsg, err) {
+            $('#modal_error').html("<p class='error'>" + errmsg + "</p>")
             $('#id_error').html("<p class='error'>" + errmsg + "</p>")
         }
 

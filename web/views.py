@@ -28,7 +28,8 @@ from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm,
 
 from quests.settings import EMAIL_HOST_USER, FAIL_EMAIL_SILENTLY, GOOGLE_MAPS_BROWSER_API_KEY, GOOGLE_API_STRING_URL
 
-from web.functions import create_password_str, json_wrapper, search_events, send_user_notification, construct_map_link
+from web.functions import create_password_str, json_wrapper, search_events, send_user_notification, construct_map_link, \
+    convert_str_to_int
 
 from web.constants import *
 
@@ -500,11 +501,11 @@ def add_task(request):
             if 'description' in request.POST and request.POST['description']:
                 new_task.description = request.POST['description']
             if 'score' in request.POST and request.POST['score']:
-                new_task.score = request.POST['score']
+                new_task.score = convert_str_to_int(request.POST['score'])
             if 'answer' in request.POST and request.POST['answer']:
                 new_task.answer = request.POST['answer']
             if 'time' in request.POST and request.POST['time']:
-                new_task.time = request.POST['time']
+                new_task.time = convert_str_to_int(request.POST['time'])
             # Filing EventPlace properties
             if 'country' in request.POST and request.POST['country']:
                 new_place.country = request.POST['country']
@@ -581,11 +582,11 @@ def edit_task(request):
         if 'description' in request.POST and request.POST['description']:
             task.description = request.POST['description']
         if 'score' in request.POST and request.POST['score']:
-            task.score = request.POST['score']
+            task.score = convert_str_to_int(request.POST['score'])
         if 'answer' in request.POST and request.POST['answer']:
             task.answer = request.POST['answer']
         if 'time' in request.POST and request.POST['time']:
-            task.time = request.POST['time']
+            task.time = convert_str_to_int(request.POST['time'])
         task.save()
         # Filing EventPlace properties
         if 'placepk' in request.POST and request.POST['placepk']:

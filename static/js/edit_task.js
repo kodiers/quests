@@ -79,6 +79,7 @@ function edit_task (task_pk) {
             location.reload();
         },
         error: function(xhr, errmsg, err) {
+            $('#modal_error').html("<p class='error'>" + errmsg + "</p>")
             $('#id_error').html("<p class='error'>" + errmsg + "</p>")
         }
 
