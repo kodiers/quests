@@ -116,6 +116,12 @@
                                 <span>Score: {{ player.username|get_player_score }}</span>
                             </div>
                         </div>
+                    {% empty %}
+                        <div class="row">
+                            <div class="col-xs-6">
+                                None registered to this event yet
+                            </div>
+                        </div>
                     {% endfor %}
                 </div>
             {% elif object.is_team %}
@@ -134,6 +140,12 @@
                                 </div>
                             </div>
                         {% endfor %}
+                    {% empty %}
+                        <div class="row">
+                            <div class="col-xs-12">
+                                None registered to this event yet
+                            </div>
+                        </div>
                     {% endfor %}
                 </div>
             {% endif %}

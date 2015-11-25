@@ -11,12 +11,17 @@ register = template.Library()
 def get_player_score(username):
     """
     Return score for user.
+    If player not found return 0.
     :param username: username
     :return: score
     """
     user = User.objects.get(username=username)
-    player = Players.objects.get(user=user)
-    return player.points
+    try:
+        player = Players.objects.get(user=user)
+        points = player.points
+    except Players.DoesNotExist:
+        points = 0
+    return points
 
 
 @register.filter()
