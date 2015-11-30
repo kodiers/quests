@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load tags %}
+{% load i18n %}
 {% block title %}
 {% endblock %}
 {% block content %}
@@ -10,9 +11,9 @@
                 <script>redirect();</script>
                 <h1>{{ error }}</h1>
                 {% if object %}
-                    <p>Event: {{ object.title }}</p>
+                    <p>{% trans 'Event' %}: {{ object.title }}</p>
                 {% endif %}
-                <p>You will be redirected in 5 seconds or click <a href="{% url 'index' %}">here</a> </p>
+                <p>{% trans 'You will be redirected in 5 seconds or click' %} <a href="{% url 'index' %}">{% trans 'here' %}</a> </p>
             </div>
         </div>
     </div>

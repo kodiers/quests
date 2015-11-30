@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load tags %}
+{% load i18n %}
 {% block title %}
-    Error! {% show_title_page %}
+    {% trans 'Error!' %} {% show_title_page %}
 {% endblock %}
 {% block content %}
     <div class="container">
@@ -10,7 +11,11 @@
             <div class="col-xs-12">
                 <p class="error">{{ error }}</p>
                 <br>
-                <a href="{% url 'index' %}">Return to main page</a>
+                <a href="{% url 'index' %}">
+                    {% blocktrans %}
+                        Return to main page
+                    {% endblocktrans %}
+                </a>
             </div>
         </div>
     </div>

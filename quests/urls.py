@@ -61,4 +61,5 @@ urlpatterns = patterns('',
     url(r'^messages/', include('chat.urls')),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^pages/', include(pages_url)),
+    url(r'^i18n/', include('django.conf.urls.i18n')),
 )

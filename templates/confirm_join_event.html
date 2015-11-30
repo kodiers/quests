@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load tags %}
+{% load i18n %}
 {% block title %}
-    Join event {{ object.title }} | {% show_title_page %}
+    {% trans "Join event" %} {{ object.title }} | {% show_title_page %}
 {% endblock %}
 {% block content %}
     <div class="container">
@@ -13,36 +14,34 @@
                 {% else %}
                     <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
                 {% endif %}
-                <a href="{% url 'contact_list' %}" class="btn btn-default">Message count</a>
+                <a href="{% url 'contact_list' %}" class="btn btn-default">{% trans "Message count" %}</a>
             </div>
             <div class="col-xs-8">
                 <div class="row">
                     <div class="col-xs-12">
-                        <h1 class="page-header">You want to join event: {{ object.title }}</h1>
+                        <h1 class="page-header">{% trans "You want to join event" %}: {{ object.title }}</h1>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-3">
-                        <p>Start date: {{ object.start_date }}</p>
+                        <p>{% trans "Start date" %}: {{ object.start_date }}</p>
                     </div>
                     <div class="col-xs-3">
-                        <p>Place</p>
+                        <p>{% trans "Place" %}</p>
                         <ul>
-                            <li>Country: {{ object.place.country }}</li>
-                            <li>City: {{ object.place.city }}</li>
-                            <li>Street: {{ object.place.street }}</li>
-                            <li>Latitude: {{ object.place.lat }}</li>
-                            <li>Longtitude: {{ object.place.lon }}</li>
+                            <li>{% trans "Country" %}: {{ object.place.country }}</li>
+                            <li>{% trans "City" %}: {{ object.place.city }}</li>
+                            <li>{% trans "Street" %}: {{ object.place.street }}</li>
                         </ul>
                     </div>
                     <div class="col-xs-3">
-                        <p>Organizer: {{ object.organizer.username }}</p>
+                        <p>{% trans "Organizer" %}: {{ object.organizer.username }}</p>
                     </div>
                     <div class="col-xs-3">
                         {% if object.price != 0.0 %}
-                            <p>Price: {{ object.price }}</p>
+                            <p>{% trans "Price" %}: {{ object.price }}</p>
                         {% else %}
-                            <p class="free_event">FREE</p>
+                            <p class="free_event">{% trans "FREE" %}</p>
                         {% endif %}
                     </div>
                 </div>
@@ -59,23 +58,23 @@
         <div class="row">
             {% if object.is_team %}
                 <div class="col-xs-12">
-                    <h2>Registered teams</h2>
+                    <h2>{% trans "Registered teams" %}</h2>
                         {% if user_registered %}
-                            <p>You are in team, that registered</p>
+                            <p>{% trans "You are in team, that registered" %}</p>
                         {% else %}
                             {% if object.get_registered_count >= object.max_players %}
-                                <p>Maximum number of players are registered to this event</p>
+                                <p>{% trans "Maximum number of players are registered to this event" %}</p>
                             {% else %}
                                 {% if user == object.organizer %}
-                                    <p> You are organizer of this event</p>
+                                    <p>{% trans "You are organizer of this event" %}</p>
                                 {% else %}
                                     <a href="{% url 'create_and_register_team' object.pk %}" class="btn btn-primary">
-                                        Create team and join!
+                                        {% blocktrans %}Create team and join!{% endblocktrans %}
                                     </a>
                                     <form action="{% url 'join_event' 'team' %}" method="post">
                                         {% csrf_token %}
                                         <input type="hidden" value="{{ object.pk }}" name="event_pk">
-                                        <input type="submit" value="Join as team!" class="btn btn-primary">
+                                        <input type="submit" value="{% trans 'Join as team!' %}" class="btn btn-primary">
                                     </form>
                                 {% endif %}
                             {% endif %}
@@ -84,18 +83,18 @@
                         <h3>{{ team.title }}</h3>
                         {% if user_registered == False %}
                             {% if object.get_registered_count >= object.max_players %}
-                                <p>Maximum number of players are registered to this event</p>
+                                <p>{% blocktrans %}Maximum number of players are registered to this event{% endblocktrans %}</p>
                             {% else %}
                                 {% if user != object.organizer %}
                                     <form action="{% url 'join_team' %}" method="post">
                                         {% csrf_token %}
                                         <input type="hidden" value="{{ team.pk }}" name="team_pk">
-                                        <input type="submit" value="Join team!" class="btn btn-primary">
+                                        <input type="submit" value="{% trans 'Join team!' %}" class="btn btn-primary">
                                     </form>
                                 {% endif %}
                             {% endif %}
                         {% endif %}
-                        <p>Team players:</p>
+                        <p>{% trans "Team players" %}:</p>
                         {% for player in team.players.all %}
                             <p>{{ player.username }}</p>
                         {% endfor %}
@@ -104,23 +103,23 @@
             {% else %}
                 <div class="col-xs-12 text_center">
                     {% if user_registered %}
-                        <p>You are already joined this event!</p>
+                        <p>{% blocktrans %}You are already joined this event!{% endblocktrans %}</p>
                     {% else %}
                         {% if object.get_registered_count >= object.max_players %}
-                            <p>Maximum number of players are registered to this event</p>
+                            <p>{% blocktrans %}Maximum number of players are registered to this event{% endblocktrans %}</p>
                         {% else %}
                             {% if user != object.organizer %}
                                 <form method="post" action="{% url 'join_event' 'player' %}">
                                     {% csrf_token %}
                                     <input type="hidden" value="{{ object.pk }}" name="event_pk">
-                                    <input type="submit" value="Join event!" class="btn btn-primary btn_width_200">
+                                    <input type="submit" value="{% trans "Join event!" %}" class="btn btn-primary btn_width_200">
                                 </form>
                             {% else %}
-                                <p>You are organizer of this event</p>
+                                <p>{% blocktrans %}You are organizer of this event{% endblocktrans %}</p>
                             {% endif %}
                         {% endif %}
                     {% endif %}
-                    <h2>Registered players</h2>
+                    <h2>{% trans "Registered players" %}</h2>
                     {% for player in object.registered_players.all %}
                         <h4 class="text_on_1_line">{{ player.username }}</h4>
                         {% if player.questsusers.image.url != None %}
@@ -128,7 +127,36 @@
                         {% else %}
                             <img src="{% static 'images/default-user-avatar.png' %}" class="img-rounded small_avatar">
                         {% endif %}
-                        <a href="#" class="btn btn-primary">Write message</a>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#SendMessageModal{{ player.pk }}">
+                            {% trans "Send message" %}
+                        </button>
+                        <div class="modal fade" id="SendMessageModal{{ player.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                            &times;
+                                        </button>
+                                        <h4 class="modal-title">{% trans "Send new message" %}</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div id="modal_error"></div>
+                                        <form action="{% url 'send_message' %}" method="post" id="idSendMessageForm">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="sender" value="{{ user.username }}">
+                                            <input type="hidden" name="receiver" value="{{ player.username }}">
+                                            <textarea name="text" class="form-control" placeholder="{% trans 'Enter message' %}"></textarea>
+                                            <input type="submit" value="{% trans 'Send' %}" class="btn btn-primary">
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                                            {% trans 'Close' %}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <br>
                     {% endfor %}
                 </div>

@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% load tags %}
+{% load i18n %}
 {% block title %}
-    Register new user | {% show_title_page %}
+    {% blocktrans %}Register new user{% endblocktrans %} | {% show_title_page %}
 {% endblock %}
 {% block content %}
     <div class="container">
@@ -14,7 +15,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <h1>Registration</h1>
+                    <h1>{% trans 'Registration' %}</h1>
                     <form action="." method="post">
                         {% csrf_token %}
                         {% for field in form %}
@@ -30,10 +31,13 @@
                                 </div>
                             </div>
                         {% endfor %}
-                        <p class="tooltips">Your password should be 8 symbols.</p>
+                        <p class="tooltips">{% blocktrans %}Your password should be 8 symbols.{% endblocktrans %}</p>
                         <br>
-                        <input type="submit" value="Register!" class="btn btn-primary">
+                        <input type="submit" value="{% trans 'Register!' %}" class="btn btn-primary">
                     </form>
+                    <p>{% blocktrans %}Clicking Register I accept {% endblocktrans %}
+                        <a href="#">{% blocktrans %}Terms of Service{% endblocktrans %}</a>
+                    </p>
                 </div>
             </div>
         </div>

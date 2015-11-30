@@ -1,0 +1,1462 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-30 15:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: chat/constants.py:6
+msgid "Incorrect chat id"
+msgstr "Неправильный id чата"
+
+#: chat/models.py:13
+msgid "Users"
+msgstr "Пользователи"
+
+#: chat/models.py:14
+msgid "New message"
+msgstr "Новое сообщение"
+
+#: chat/models.py:25
+msgid "Sender"
+msgstr "Отправитель"
+
+#: chat/models.py:27
+msgid "Message"
+msgstr "Сообщение"
+
+#: chat/models.py:28 chat/templates/contacts_list.html:60
+msgid "New"
+msgstr "Новое"
+
+#: chat/models.py:29
+msgid "Date and time"
+msgstr "Дата и время"
+
+#: chat/templates/chat.html:6
+msgid "Chat with"
+msgstr "Чат с"
+
+#: chat/templates/chat.html:55 chat/templates/contacts_list.html:40
+#: templates/confirm_join_event.html:148 templates/organizer.html:37
+#: templates/player.html:50
+msgid "Enter message"
+msgstr "Введите сообщение"
+
+#: chat/templates/chat.html:56
+msgid "Send!"
+msgstr "Отправить"
+
+#: chat/templates/contacts_list.html:6
+msgid "Write message"
+msgstr "Написать сообщение"
+
+#: chat/templates/contacts_list.html:23 templates/confirm_join_event.html:131
+#: templates/organizer.html:20 templates/organizer_profile.html:36
+#: templates/play_event.html:24 templates/player.html:33
+#: templates/player_profile.html:41
+msgid "Send message"
+msgstr "Отправить сообщение"
+
+#: chat/templates/contacts_list.html:32 templates/confirm_join_event.html:140
+#: templates/organizer.html:29 templates/player.html:42
+msgid "Send new message"
+msgstr "Отправить новое сообщение"
+
+#: chat/templates/contacts_list.html:39
+msgid "Enter username"
+msgstr "Введите имя пользователя"
+
+#: chat/templates/contacts_list.html:41 templates/confirm_join_event.html:149
+#: templates/organizer.html:38 templates/pages/contacts.html:49
+#: templates/player.html:51
+msgid "Send"
+msgstr "Отправить"
+
+#: chat/templates/contacts_list.html:46 templates/confirm_join_event.html:154
+#: templates/create_event.html:47 templates/create_event.html.py:261
+#: templates/create_event.html:323 templates/create_event.html.py:353
+#: templates/organizer.html:43 templates/organizer_profile.html:143
+#: templates/organizer_profile.html:187 templates/player.html:56
+#: templates/player_profile.html:143 templates/player_profile.html.py:174
+#: templates/player_profile.html:213 templates/player_profile.html.py:283
+#: templates/player_profile.html:326 templates/player_profile.html.py:373
+msgid "Close"
+msgstr "Закрыть"
+
+#: chat/templates/contacts_list.html:54
+msgid "Your contacts"
+msgstr "Ваши контакты"
+
+#: chat/templates/contacts_list.html:65
+msgid "You haven't contacts"
+msgstr "У вас нет контактов"
+
+#: pages/constants.py:3
+msgid "Message from site"
+msgstr "Сообщение с сайта"
+
+#: pages/models.py:12
+msgid "Question"
+msgstr "Вопрос"
+
+#: pages/models.py:13 templates/create_event.html:230
+#: templates/create_event.html.py:272 templates/create_event.html:297
+#: templates/play_event.html:113 web/models.py:386
+msgid "Answer"
+msgstr "Ответ"
+
+#: pages/models.py:14 pages/models.py:34
+msgid "Created"
+msgstr "Создано"
+
+#: pages/models.py:29
+msgid "Page title"
+msgstr "Заголовок страницы"
+
+#: pages/models.py:30
+msgid "Page content"
+msgstr "Контент страницы"
+
+#: pages/models.py:50 templates/organizer.html:51
+#: templates/pages/contacts.html:23 templates/player.html:76
+msgid "Phone"
+msgstr "Телефон"
+
+#: pages/models.py:51 templates/pages/contacts.html:26
+msgid "Address"
+msgstr "Адрес"
+
+#: pages/models.py:53
+msgid "Map script"
+msgstr "Скрипт карты"
+
+#: pages/models.py:54
+msgid "Comments"
+msgstr "Комментарии"
+
+#: templates/base.html:37
+msgid "Home"
+msgstr "Домой"
+
+#: templates/base.html:38 templates/events.html:6 templates/events.html.py:31
+msgid "Events"
+msgstr "События"
+
+#: templates/base.html:39 templates/players.html:6
+#: templates/players.html.py:22 web/models.py:250
+msgid "Players"
+msgstr "Игроки"
+
+#: templates/base.html:40 templates/organizers.html:6
+#: templates/organizers.html.py:22
+msgid "Organizers"
+msgstr "Организаторы"
+
+#: templates/base.html:42 templates/organizer.html:58
+msgid "About us"
+msgstr "О нас"
+
+#: templates/base.html:43 templates/pages/contacts.html:6
+msgid "Contact us"
+msgstr "Наши контакты"
+
+#: templates/base.html:77
+msgid "Profile"
+msgstr "Профиль"
+
+#: templates/base.html:79
+msgid "Logout"
+msgstr "Выйти"
+
+#: templates/base.html:85
+msgid "Login/register"
+msgstr "Войти/зарегистрироваться"
+
+#: templates/base.html:88
+msgid "Login"
+msgstr "Войти"
+
+#: templates/base.html:89
+msgid "Register"
+msgstr "Зарегистрироваться"
+
+#: templates/confirm_join_event.html:6
+msgid "Join event"
+msgstr "Присоединиться к событию"
+
+#: templates/confirm_join_event.html:17
+#, fuzzy
+#| msgid "Message from site"
+msgid "Message count"
+msgstr "Количество сообщений"
+
+#: templates/confirm_join_event.html:22
+msgid "You want to join event"
+msgstr "Вы хотите присодиниться к событию"
+
+#: templates/confirm_join_event.html:27 templates/event.html:19
+#: templates/events.html:47 templates/index.html:62
+#: templates/organizer_profile.html:156 templates/organizer_profile.html:201
+#: templates/organizers.html:40 web/models.py:298
+msgid "Start date"
+msgstr "Дата начала"
+
+#: templates/confirm_join_event.html:30 templates/event.html:22
+#: web/models.py:293 web/models.py:384
+msgid "Place"
+msgstr "Место"
+
+#: templates/confirm_join_event.html:32 templates/create_event.html:235
+#: templates/create_event.html.py:301 templates/organizers.html:47
+#: templates/player.html:73 templates/players.html:44 web/forms.py:49
+#: web/forms.py:64 web/forms.py:81 web/models.py:48 web/models.py:272
+msgid "Country"
+msgstr "Страна"
+
+#: templates/confirm_join_event.html:33 templates/create_event.html:237
+#: templates/create_event.html.py:303 templates/organizer.html:49
+#: templates/organizers.html:48 templates/player.html:74
+#: templates/players.html:45 web/forms.py:50 web/forms.py:65 web/forms.py:82
+#: web/models.py:49 web/models.py:273
+msgid "City"
+msgstr "Город"
+
+#: templates/confirm_join_event.html:34 templates/create_event.html:239
+#: templates/create_event.html.py:305 templates/organizer.html:50
+#: templates/player.html:75 web/forms.py:51 web/forms.py:66 web/forms.py:83
+#: web/models.py:50 web/models.py:274
+msgid "Street"
+msgstr "Улица"
+
+#: templates/confirm_join_event.html:38 templates/event.html:25
+#: web/models.py:19 web/models.py:303
+msgid "Organizer"
+msgstr "Организатор"
+
+#: templates/confirm_join_event.html:42 templates/event.html:35
+#: web/models.py:162 web/models.py:295 web/models.py:403
+msgid "Price"
+msgstr "Цена"
+
+#: templates/confirm_join_event.html:44 templates/event.html:37
+msgid "FREE"
+msgstr "Бесплатно"
+
+#: templates/confirm_join_event.html:61 templates/event.html:112
+#: templates/play_event.html:28 web/models.py:302
+msgid "Registered teams"
+msgstr "Зарегистрированные команды"
+
+#: templates/confirm_join_event.html:63
+msgid "You are in team, that registered"
+msgstr "Ваша команда зарегистрирована"
+
+#: templates/confirm_join_event.html:66 templates/confirm_join_event.html:86
+#: templates/confirm_join_event.html:109
+msgid "Maximum number of players are registered to this event"
+msgstr "У данного события уже максимальное число участников"
+
+#: templates/confirm_join_event.html:69 templates/confirm_join_event.html:118
+#: templates/event.html:60 web/views.py:328
+msgid "You are organizer of this event"
+msgstr "Вы организатор этого события"
+
+#: templates/confirm_join_event.html:72
+msgid "Create team and join!"
+msgstr "Создать команду и присоединиться к событию"
+
+#: templates/confirm_join_event.html:77
+msgid "Join as team!"
+msgstr "Присоединиться к событию своей командой"
+
+#: templates/confirm_join_event.html:92
+msgid "Join team!"
+msgstr "Присоединиться к команде"
+
+#: templates/confirm_join_event.html:97
+msgid "Team players"
+msgstr "Игроки в команде"
+
+#: templates/confirm_join_event.html:106
+msgid "You are already joined this event!"
+msgstr "Вы уже присоединились к событию"
+
+#: templates/confirm_join_event.html:115
+msgid "Join event!"
+msgstr "Присоединиться к событию"
+
+#: templates/confirm_join_event.html:122 templates/event.html:110
+#: templates/play_event.html:41
+msgid "Registered players"
+msgstr "Участники события"
+
+#: templates/create_event.html:6
+#, fuzzy
+#| msgid "Nearest events!"
+msgid "Create event!"
+msgstr "Создать событие!"
+
+#: templates/create_event.html:30
+msgid "You can now add or edit tasks"
+msgstr "Теперь вы можете добавлять и редактировать задачи"
+
+#: templates/create_event.html:39
+msgid "Congratulations!"
+msgstr "Поздравляем!"
+
+#: templates/create_event.html:42
+msgid "Congratulations! You create event!"
+msgstr "Поздравляем! Вы создали событие!"
+
+#: templates/create_event.html:43
+msgid "Now you can add tasks to this event!"
+msgstr "Теперь вы можете добавлять и редактировать задачи в данном событии"
+
+#: templates/create_event.html:112
+msgid ""
+"\n"
+"                                    Enter duration of event in format 'Dd HH:"
+"MM:SS:' where, D - is days, HH -is hours, MM - minutes, SS - seconds.\n"
+"                                "
+msgstr ""
+"\n"
+"Введите длительность события в формате 'Дd ЧЧ:ММ:СС', где Д - дни, ЧЧ - "
+"часы, ММ - минуты, СС - секунды.\n"
+"                                "
+
+#: templates/create_event.html:187
+msgid ""
+"\n"
+"                                    All fields marked as * are required!\n"
+"                                "
+msgstr ""
+"\n"
+"Все поля помеченные * обязательны для заполнения!\n"
+"                                "
+
+#: templates/create_event.html:193
+#, fuzzy
+#| msgid "Save!"
+msgid "Save"
+msgstr "Сохранить"
+
+#: templates/create_event.html:196
+msgid "Map of event"
+msgstr "Карта события"
+
+#: templates/create_event.html:205 templates/create_event.html.py:215
+msgid "Add task"
+msgstr "Добавить задание"
+
+#: templates/create_event.html:222 templates/create_event.html.py:289
+#: templates/organizer.html:86 templates/organizer.html.py:112
+#: templates/organizer_profile.html:130 templates/player_profile.html:270
+#: templates/player_profile.html.py:359 web/forms.py:33 web/models.py:160
+#: web/models.py:177 web/models.py:248 web/models.py:290 web/models.py:381
+#: web/models.py:418
+msgid "Title"
+msgstr "Название"
+
+#: templates/create_event.html:223
+msgid "Enter task title"
+msgstr "Введите название задания"
+
+#: templates/create_event.html:224 templates/create_event.html.py:291
+#: templates/organizer_profile.html:132 templates/player_profile.html:272
+#: templates/player_profile.html.py:361 web/models.py:74 web/models.py:161
+#: web/models.py:178 web/models.py:194 web/models.py:291 web/models.py:382
+msgid "Description"
+msgstr "Описание"
+
+#: templates/create_event.html:225
+msgid "Enter description for task"
+msgstr "Введите описание задания"
+
+#: templates/create_event.html:226 templates/create_event.html.py:293
+msgid "Time for task (minutes)"
+msgstr "Время на задание (минуты)"
+
+#: templates/create_event.html:228 templates/create_event.html.py:272
+#: templates/create_event.html:295 templates/event.html:102
+#: templates/event.html.py:123 templates/event.html:146
+#: templates/play_event.html:108 templates/player.html:64 web/models.py:385
+#: web/models.py:448 web/models.py:473
+msgid "Score"
+msgstr "Очки"
+
+#: templates/create_event.html:234 templates/create_event.html.py:300
+msgid "Task place"
+msgstr "Место задания"
+
+#: templates/create_event.html:253 templates/create_event.html.py:254
+#: templates/create_event.html:314 templates/create_event.html.py:315
+msgid "Task hint"
+msgstr "Подсказка к заданию"
+
+#: templates/create_event.html:255
+msgid "Enter hint"
+msgstr "Введите подсказку"
+
+#: templates/create_event.html:256
+msgid "Create!"
+msgstr "Создать!"
+
+#: templates/create_event.html:267 templates/event.html:95
+msgid "Tasks"
+msgstr "Задания"
+
+#: templates/create_event.html:272 web/models.py:470
+msgid "Task"
+msgstr "Задание"
+
+#: templates/create_event.html:272 templates/event.html:103
+msgid "Time"
+msgstr "Время"
+
+#: templates/create_event.html:272 templates/play_event.html:109
+msgid "Hint"
+msgstr "Подсказка"
+
+#: templates/create_event.html:274 templates/organizer_profile.html:163
+msgid "Edit"
+msgstr "Редактировать"
+
+#: templates/create_event.html:284
+msgid "Edit task"
+msgstr "Редактировать задание"
+
+#: templates/create_event.html:318 templates/player_profile.html:90
+msgid "Save!"
+msgstr "Сохранить!"
+
+#: templates/create_event.html:331 templates/create_event.html.py:348
+#: templates/organizer_profile.html:93 templates/organizer_profile.html:98
+#: templates/organizer_profile.html:165 templates/organizer_profile.html:182
+#: templates/player_profile.html:138 templates/player_profile.html.py:190
+#: templates/player_profile.html:208 templates/player_profile.html.py:233
+#: templates/player_profile.html:238
+msgid "Delete"
+msgstr "Удалить"
+
+#: templates/create_event.html:341
+msgid "Delete task"
+msgstr "Удалить задание"
+
+#: templates/create_event.html:344
+msgid "Are you sure"
+msgstr "Вы уверены"
+
+#: templates/create_event.html:364
+msgid "You shoul save your event first"
+msgstr "Вы должны сохранить событие"
+
+#: templates/create_team.html:6
+#, fuzzy
+#| msgid " Create your own quest! "
+msgid "Create your team!"
+msgstr "Создай свою команду!"
+
+#: templates/create_team.html:12
+#, fuzzy
+#| msgid " Create your own quest! "
+msgid "Create your team"
+msgstr "Создай свою команду"
+
+#: templates/create_team.html:23
+msgid ""
+"\n"
+"                            Team was created successfuly! You will be "
+"redirected in 5 second.\n"
+"                        "
+msgstr ""
+"\n"
+"Команда была создана успешно! Вы будете перенаправлены через 5 секунд. \n"
+"                        "
+
+#: templates/create_team.html:26
+msgid "Or press"
+msgstr "Или нажмите"
+
+#: templates/create_team.html:26 templates/join_event.html:16
+#: templates/login.html:32 templates/register_success.html:14
+#: templates/restore_password.html:31
+msgid "here"
+msgstr "здесь"
+
+#: templates/create_team.html:35
+msgid "Submit!"
+msgstr "Создать!"
+
+#: templates/error.html:6
+msgid "Error!"
+msgstr "Ошибка!"
+
+#: templates/error.html:15
+msgid ""
+"\n"
+"                        Return to main page\n"
+"                    "
+msgstr ""
+"\n"
+"Вернуться на главную страницу\n"
+"                    "
+
+#: templates/event.html:42
+msgid "TEAM GAME"
+msgstr "КОМАНДНАЯ ИГРА"
+
+#: templates/event.html:48 templates/organizer.html:98
+msgid "You are already joined this event"
+msgstr "Вы уже присоединились к событию"
+
+#: templates/event.html:51
+msgid "Maximum number of players are registered to this event!"
+msgstr "Максимальное число участников уже присоединилось к событию"
+
+#: templates/event.html:54 templates/organizer.html:100
+msgid "Join!"
+msgstr "Присоединиться!"
+
+#: templates/event.html:62 templates/organizer.html:103
+msgid "Login to join!"
+msgstr "Войти чтобы присоединиться!"
+
+#: templates/event.html:69 templates/events.html:49
+#: templates/organizer_profile.html:161
+msgid "Maximum players/teams"
+msgstr "Максимальное число игроков/команд"
+
+#: templates/event.html:72 templates/events.html:50
+#: templates/organizer_profile.html:160
+msgid "Minimum players/teams"
+msgstr "Минимальное число игроков/команд"
+
+#: templates/event.html:75
+msgid "Registered players/teams"
+msgstr "Число зарегистрированных игроков/команд"
+
+#: templates/event.html:80 templates/play_event.html:81
+msgid "Event description"
+msgstr "Описание события"
+
+#: templates/event.html:82
+msgid "Map"
+msgstr "Карта"
+
+#: templates/event.html:129 templates/event.html.py:153
+msgid "None registered to this event yet"
+msgstr "Еще никто не зарегистрировался на это событие"
+
+#: templates/events.html:18
+msgid "Enter word to search"
+msgstr "Введите слово для поиска"
+
+#: templates/events.html:20
+msgid "From start date"
+msgstr "Дата начала"
+
+#: templates/events.html:22
+msgid "To end date"
+msgstr "Дата завершения"
+
+#: templates/events.html:24 templates/organizers.html:16
+#: templates/players.html:16
+msgid "Search"
+msgstr "Поиск"
+
+#: templates/events.html:26
+msgid "All events"
+msgstr "Все события"
+
+#: templates/events.html:32
+msgid "Today"
+msgstr "Сегодня"
+
+#: templates/events.html:48 templates/organizer.html:113 web/models.py:299
+msgid "End date"
+msgstr "Дата завершения"
+
+#: templates/events.html:51
+msgid "Regitered players/teams"
+msgstr "Зарегистрированное число игроков/команд"
+
+#: templates/events.html:53 web/models.py:294
+msgid "Team only"
+msgstr "Командная игра"
+
+#: templates/events.html:55
+msgid "More..."
+msgstr "Побробнее..."
+
+#: templates/events.html:61
+msgid "Sorry, no events found."
+msgstr "Извините, событий не найдено."
+
+#: templates/events.html:72 templates/events.html.py:82
+#: templates/index.html:38 templates/organizer_profile.html:105
+#: templates/organizers.html:66 templates/organizers.html.py:76
+#: templates/player_profile.html:245 templates/players.html:64
+#: templates/players.html.py:74
+msgid "Previous"
+msgstr "Предыдущий"
+
+#: templates/events.html:76 templates/events.html.py:86
+#: templates/index.html:42 templates/organizer_profile.html:109
+#: templates/organizers.html:70 templates/organizers.html.py:80
+#: templates/player_profile.html:249 templates/players.html:68
+#: templates/players.html.py:78
+msgid "Next"
+msgstr "Следующий"
+
+#: templates/index.html:13
+msgid " Create your own quest! "
+msgstr " Создай свой квест!"
+
+#: templates/index.html:50
+msgid "Nearest events!"
+msgstr "Ближайшие события"
+
+#: templates/index.html:67
+msgid "Comming soon..."
+msgstr "Ожидаются в ближайшее время"
+
+#: templates/index.html:76
+msgid "Best players"
+msgstr "Лучшие игроки"
+
+#: templates/index.html:98
+msgid "Best organizers"
+msgstr "Лучшие организаторы"
+
+#: templates/index.html:121
+msgid "No planned events for this organizer"
+msgstr "У данного организатора нет запланированных событий"
+
+#: templates/join_event.html:14 web/models.py:387 web/models.py:421
+#: web/models.py:445
+msgid "Event"
+msgstr "Событие"
+
+#: templates/join_event.html:16 templates/register_success.html:14
+#: templates/restore_password.html:31
+msgid "You will be redirected in 5 seconds or click"
+msgstr "Вы будете перенаправлены в течении 5 секунд или нажмите"
+
+#: templates/login.html:6
+msgid "Login!"
+msgstr "Войти"
+
+#: templates/login.html:19
+msgid "Login please!"
+msgstr "Войдите пожалуйста!"
+
+#: templates/login.html:32
+msgid "Or you can restore your password "
+msgstr "Или вы можете восстановить свой пароль"
+
+#: templates/organizer.html:52 templates/player.html:77
+msgid "Skype"
+msgstr "Skype"
+
+#: templates/organizer.html:64 templates/player.html:22
+msgid "Photo"
+msgstr "Фото"
+
+#: templates/organizer.html:76
+msgid "Events today"
+msgstr "События сегодня"
+
+#: templates/organizer.html:84 templates/organizer_profile.html:153
+#: templates/organizers.html:37 templates/player.html:88
+#: templates/player_profile.html:294
+msgid "Future events"
+msgstr "Ближайшие события"
+
+#: templates/organizer.html:87 templates/organizer_profile.html:134
+#: templates/player_profile.html:274 templates/player_profile.html.py:363
+#: web/models.py:420
+msgid "Date"
+msgstr "Дата"
+
+#: templates/organizer.html:91
+msgid "Free"
+msgstr "Бесплатно"
+
+#: templates/organizer.html:110 templates/player.html:99
+msgid "Completed events:"
+msgstr "Завершенные события:"
+
+#: templates/organizer.html:114 templates/organizer_profile.html:204
+#: templates/organizer_profile.html:206
+msgid "Winner"
+msgstr "Победитель"
+
+#: templates/organizer.html:115
+msgid "Max score"
+msgstr "Максимальное число очков"
+
+#: templates/organizer_profile.html:37 templates/player_profile.html:96
+msgid "Create event"
+msgstr "Создать событие"
+
+#: templates/organizer_profile.html:40
+msgid "Change avatar"
+msgstr "Изменить автар"
+
+#: templates/organizer_profile.html:42
+msgid "Change personal info"
+msgstr "Изменить персональную информацию"
+
+#: templates/organizer_profile.html:77 templates/player_profile.html:102
+msgid "Today events"
+msgstr "События сегодня"
+
+#: templates/organizer_profile.html:85
+msgid "Photos"
+msgstr "Фото"
+
+#: templates/organizer_profile.html:114 templates/player_profile.html:254
+#: templates/player_profile.html.py:343
+msgid "Add photos"
+msgstr "Добавить фото"
+
+#: templates/organizer_profile.html:124 templates/player_profile.html:264
+#: templates/player_profile.html.py:353
+msgid "Add photo"
+msgstr "Добавить фото"
+
+#: templates/organizer_profile.html:127 templates/player_profile.html:267
+#: templates/player_profile.html.py:356
+msgid "Select photo"
+msgstr "Выбрать фото"
+
+#: templates/organizer_profile.html:131 templates/player_profile.html:271
+#: templates/player_profile.html.py:360
+msgid "Enter title for image"
+msgstr "Введите название изображения"
+
+#: templates/organizer_profile.html:133 templates/player_profile.html:273
+#: templates/player_profile.html.py:362
+msgid "Enter description"
+msgstr "Введите описание"
+
+#: templates/organizer_profile.html:136 templates/player_profile.html:276
+#: templates/player_profile.html.py:365
+msgid "Choose file"
+msgstr "Выберите файл"
+
+#: templates/organizer_profile.html:138 templates/player_profile.html:278
+#: templates/player_profile.html.py:368
+msgid "Upload"
+msgstr "Загрузить"
+
+#: templates/organizer_profile.html:158 templates/organizer_profile.html:203
+msgid "Team game"
+msgstr "Командная игра"
+
+#: templates/organizer_profile.html:162 templates/organizer_profile.html:208
+msgid "Registered"
+msgstr "Зарегистрировано"
+
+#: templates/organizer_profile.html:175 templates/player_profile.html:201
+#, fuzzy
+#| msgid "Nearest events!"
+msgid "Delete event"
+msgstr "Удалить событие"
+
+#: templates/organizer_profile.html:178 templates/player_profile.html:134
+#: templates/player_profile.html.py:165 templates/player_profile.html:204
+#: templates/player_profile.html.py:317
+msgid "Are you sure?"
+msgstr "Вы уверены?"
+
+#: templates/organizer_profile.html:198 templates/player_profile.html:339
+msgid "Completed events"
+msgstr "Завершенные события"
+
+#: templates/organizer_profile.html:208
+msgid "Winner score"
+msgstr "Очки победителя"
+
+#: templates/organizers.html:42
+#, fuzzy
+#| msgid "Nearest events!"
+msgid "No future events"
+msgstr "Нет ближайших событий"
+
+#: templates/organizers.html:49
+msgid "Site"
+msgstr "Site"
+
+#: templates/organizers.html:55
+msgid "Sorry, no organizers found."
+msgstr "Извените, не найдено ни одного организатора"
+
+#: templates/pages/contacts.html:18
+msgid "Our contacts"
+msgstr "Наши контакты"
+
+#: templates/pages/contacts.html:38
+msgid "You can write to us"
+msgstr "Вы можете написать нам"
+
+#: templates/pages/contacts.html:43
+msgid "Your name"
+msgstr "Ваше имя"
+
+#: templates/pages/contacts.html:45
+msgid "Your email"
+msgstr "Ваш email"
+
+#: templates/pages/contacts.html:47
+msgid "Your question"
+msgstr "Ваш вопрос"
+
+#: templates/pages/faq.html:14
+msgid "Frequently Asked Questions"
+msgstr "Часто задаваемые вопросы"
+
+#: templates/pages/faq.html:19
+msgid "No questions."
+msgstr "Нет вопросов"
+
+#: templates/play_event.html:6
+msgid "Playing event"
+msgstr "Участие в событии"
+
+#: templates/play_event.html:33
+msgid "Your team"
+msgstr "Ваша команда"
+
+#: templates/play_event.html:35
+msgid "Team members"
+msgstr "Игроки в команде"
+
+#: templates/play_event.html:52
+msgid "If you done all tasks press complete event button"
+msgstr "Если вы выполнили все задания нажмите кнопку 'Завершить событие'"
+
+#: templates/play_event.html:54 templates/play_event.html.py:64
+msgid "Complete event"
+msgstr "Завершить событие"
+
+#: templates/play_event.html:70
+msgid "Complete"
+msgstr "Завершить"
+
+#: templates/play_event.html:78
+msgid "You are completed this event"
+msgstr "Вы завершили это событие"
+
+#: templates/play_event.html:80 web/models.py:305
+msgid "Duration"
+msgstr "Длительность"
+
+#: templates/play_event.html:88
+msgid "Completed"
+msgstr "Завершено"
+
+#: templates/play_event.html:89
+#, fuzzy
+#| msgid "Max score"
+msgid "Task score"
+msgstr "Очки за задание"
+
+#: templates/play_event.html:89
+#, fuzzy
+#| msgid "Task hint"
+msgid "Task time"
+msgstr "Время на задание"
+
+#: templates/play_event.html:89
+#, fuzzy
+#| msgid "Winner score"
+msgid "Your score"
+msgstr "Ваши очки"
+
+#: templates/play_event.html:89
+#, fuzzy
+#| msgid "Your team"
+msgid "Your time"
+msgstr "Ваше время"
+
+#: templates/play_event.html:91
+msgid "Not completed"
+msgstr "Не завершено"
+
+#: templates/player.html:70
+msgid "Personal info:"
+msgstr "Персональная информация:"
+
+#: templates/player.html:71
+msgid "Date of birth:"
+msgstr "Дата рождения:"
+
+#: templates/player.html:72 templates/players.html:42 web/forms.py:48
+#: web/models.py:75
+msgid "Sex"
+msgstr "Пол"
+
+#: templates/player.html:82 web/forms.py:46 web/forms.py:79
+msgid "About me"
+msgstr "Обо мне"
+
+#: templates/player_profile.html:44
+msgid "Change avatar:"
+msgstr "Изменить автар:"
+
+#: templates/player_profile.html:46
+msgid "Change personal info:"
+msgstr "Изменить персональную информацию"
+
+#: templates/player_profile.html:99
+msgid "Create team"
+msgstr "Создать команду"
+
+#: templates/player_profile.html:110
+msgid "My score:"
+msgstr "Мои очки:"
+
+#: templates/player_profile.html:112
+msgid "Rating"
+msgstr "Рейтинг"
+
+#: templates/player_profile.html:116
+msgid "My teams:"
+msgstr "Мои команды:"
+
+#: templates/player_profile.html:121 templates/player_profile.html.py:131
+msgid "Delete team"
+msgstr "Удалить команду"
+
+#: templates/player_profile.html:152 templates/player_profile.html.py:162
+msgid "Leave team"
+msgstr "Покинуть команду"
+
+#: templates/player_profile.html:169
+msgid "Leave"
+msgstr "Покинуть"
+
+#: templates/player_profile.html:186
+msgid "My events"
+msgstr "Мои события"
+
+#: templates/player_profile.html:225
+msgid "My photos"
+msgstr "Мои фото"
+
+#: templates/player_profile.html:300
+msgid "For unregister event you should leave"
+msgstr "Для отмены регистрации на событие вам необходимо покинуть команду"
+
+#: templates/player_profile.html:304 templates/player_profile.html.py:321
+msgid "Unregister"
+msgstr "Отменить регистрацию"
+
+#: templates/player_profile.html:314
+#, fuzzy
+#| msgid "Nearest events!"
+msgid "Unregister event"
+msgstr "Отменить регистрацию на событие"
+
+#: templates/players.html:39 web/models.py:251
+msgid "Total points"
+msgstr "Всего очков"
+
+#: templates/players.html:41 web/forms.py:47 web/forms.py:80 web/models.py:76
+msgid "Date of birth"
+msgstr "Дата рождения"
+
+#: templates/players.html:53
+msgid "Sorry, no players found."
+msgstr "Извините, ни один игрок не найден"
+
+#: templates/register.html:6
+msgid "Register new user"
+msgstr "Регистрация нового пользователя"
+
+#: templates/register.html:18
+msgid "Registration"
+msgstr "Регистрация"
+
+#: templates/register.html:34
+msgid "Your password should be 8 symbols."
+msgstr "Ваш пароль должен быть не менее 8 символов."
+
+#: templates/register.html:36
+msgid "Register!"
+msgstr "Зарегистрироваться!"
+
+#: templates/register.html:38
+msgid "Clicking Register I accept "
+msgstr "Нажимая 'Зарегистрироваться' Я соглашаюсь с"
+
+#: templates/register.html:39
+msgid "Terms of Service"
+msgstr "Соглашение об использовании"
+
+#: templates/register_success.html:5
+msgid "You suggessfully registered!"
+msgstr "Вы успешно зарегистрировались!"
+
+#: templates/register_success.html:12
+msgid "Welcome"
+msgstr "Добро пожаловать"
+
+#: templates/restore_password.html:6 templates/restore_password.html.py:18
+msgid "Restore password"
+msgstr "Восстановить пароль"
+
+#: templates/restore_password.html:22
+msgid "Restore"
+msgstr "Восстановить"
+
+#: web/constants.py:5
+msgid "Error in forms fields. Try again!"
+msgstr "Ошибка в полях формы. Попробуйте снова!"
+
+#: web/constants.py:6
+msgid "Incorrect request parameters!"
+msgstr "Неправильные параметры запроса!"
+
+#: web/constants.py:7
+msgid "Incorrect request!"
+msgstr "Неправильный запрос!"
+
+#: web/constants.py:8
+msgid "User is not active!"
+msgstr "Пользователь не активен!"
+
+#: web/constants.py:9
+msgid "Incorrect username or password!"
+msgstr "Не правильное имя пользователя или пароль!"
+
+#: web/constants.py:13
+msgid "Get your own quest"
+msgstr "Создай свой квест"
+
+#: web/constants.py:15
+msgid "You was successfully registered to event!"
+msgstr "Вы успешно зарегистрировались на событие!"
+
+#: web/constants.py:16
+msgid "Your team are already registered in this event!"
+msgstr "Ваша команда уже зарегистрирована на это событие!"
+
+#: web/cron.py:39
+#, python-format
+msgid "Your event %s begin today"
+msgstr "Ваше событие %s начинается сегодня!"
+
+#: web/cron.py:42
+#, python-brace-format
+msgid "Event {event} begin today {date_time}"
+msgstr "Событие {event} начинается сегодня в {date_time}"
+
+#: web/cron.py:48
+#, python-brace-format
+msgid "You in team {team} that registered on event {event}"
+msgstr ""
+"Вы учасник команды {team} , которая зарегистрирована на событие {event}"
+
+#: web/cron.py:54
+#, python-format
+msgid "You are registered at event %s that begin today"
+msgstr "Вы зарегистрированы на событие %s которое начинается сегодня"
+
+#: web/forms.py:13
+msgid "Nickname"
+msgstr "Ник"
+
+#: web/forms.py:14
+msgid "Email"
+msgstr "Email"
+
+#: web/forms.py:15
+msgid "Password"
+msgstr "Пароль"
+
+#: web/forms.py:17
+msgid "Confirm password"
+msgstr "Подтверждение пароля"
+
+#: web/forms.py:19
+msgid "Are you organizer?"
+msgstr "Вы организатор?"
+
+#: web/forms.py:41 web/models.py:68
+msgid "MALE"
+msgstr "М"
+
+#: web/forms.py:42 web/models.py:69
+msgid "FEMALE"
+msgstr "Ж"
+
+#: web/forms.py:43 web/models.py:70
+msgid "NOT DEFINED"
+msgstr "Н/А"
+
+#: web/forms.py:45 web/forms.py:78 web/models.py:20
+msgid "Avatar"
+msgstr "Автар"
+
+#: web/forms.py:52 web/forms.py:84 web/models.py:51
+msgid "Phone number"
+msgstr "Номер телефона"
+
+#: web/forms.py:56
+msgid "Show my personal info"
+msgstr "Отображать мою персональную информацию для всех"
+
+#: web/models.py:25
+msgid "Current avatar"
+msgstr "Текущий аватар"
+
+#: web/models.py:77
+msgid "Points"
+msgstr "Очки"
+
+#: web/models.py:78
+msgid "Place (rating)"
+msgstr "Место (рейтинг)"
+
+#: web/models.py:79
+msgid "Show personal info"
+msgstr "Отображать мою персональную информацию для всех"
+
+#: web/models.py:195
+msgid "Tariff"
+msgstr "Тариф"
+
+#: web/models.py:196
+msgid "Best organizer (show on main page)"
+msgstr "Лучший организатор (показывать на главной)"
+
+#: web/models.py:249
+msgid "Creator"
+msgstr "Капитан"
+
+#: web/models.py:275
+msgid "Latitude"
+msgstr "Широта"
+
+#: web/models.py:276
+msgid "Longtitude"
+msgstr "Долгота"
+
+#: web/models.py:277 web/models.py:292 web/models.py:383
+msgid "Link to map"
+msgstr "Ссылка на карту"
+
+#: web/models.py:296
+msgid "Minimum players"
+msgstr "Минимальное число участников"
+
+#: web/models.py:297
+msgid "Maximum players"
+msgstr "Максимальное число участников"
+
+#: web/models.py:300
+msgid "Registered users"
+msgstr "Зарегистрированные пользователи"
+
+#: web/models.py:304
+msgid "Finished"
+msgstr "Завершено"
+
+#: web/models.py:306
+msgid "Image"
+msgstr "Изображение"
+
+#: web/models.py:307
+msgid "Started"
+msgstr "Началось"
+
+#: web/models.py:312 web/models.py:428
+msgid "Current image"
+msgstr "Текущее изображение"
+
+#: web/models.py:388
+msgid "Time for task"
+msgstr "Время на задание"
+
+#: web/models.py:402
+msgid "Text"
+msgstr "Текст"
+
+#: web/models.py:419
+msgid "Descrition"
+msgstr "Описание"
+
+#: web/models.py:422
+msgid "User"
+msgstr "Пользователь"
+
+#: web/models.py:446 web/models.py:471
+msgid "Team"
+msgstr "Команда"
+
+#: web/models.py:447 web/models.py:472
+msgid "Player"
+msgstr "Игрок"
+
+#: web/models.py:449 web/models.py:474
+msgid "Executed time"
+msgstr "Время выполнения"
+
+#: web/models.py:450 web/models.py:475
+msgid "Start time"
+msgstr "Время начала"
+
+#: web/models.py:451 web/models.py:476
+msgid "End time"
+msgstr "Время завершения"
+
+#: web/models.py:452
+msgid "Completed for user/team"
+msgstr "Завершено для пользователя/команды"
+
+#: web/models.py:477
+msgid "Count of used hints"
+msgstr "Количество использованных подсказок"
+
+#: web/models.py:478
+msgid "Is task completed for user or team"
+msgstr "Задание завершено для пользователя или команды"
+
+#: web/models.py:479
+msgid "Task started"
+msgstr "Задание начато"
+
+#: web/models.py:480
+msgid "Task is correctly answered"
+msgstr "Ответ на задание правильный"
+
+#: web/views.py:61 web/views.py:120
+msgid "You are already registered!"
+msgstr "Вы уже зарегистрированы!"
+
+#: web/views.py:89
+msgid "Registration complete on GetQuests.com!"
+msgstr "Регистрация завершена на сайте GetQuests.com"
+
+#: web/views.py:90
+#, python-brace-format
+msgid ""
+"Hello! You was registered on site GetQuests.com. \n"
+"\n"
+"                    Your login {login} \n"
+" Your password {password} \n"
+" Your email {email} \n"
+"\n"
+"                    Thank you!"
+msgstr ""
+"Здравствуйте! Вы зарегистрировались на сайте GetQuests.com. \n"
+"\n"
+"                    Ваш логин {login} \n"
+" Ваш пароль {password} \n"
+" Ваш email {email} \n"
+"\n"
+"                    Спасибо!"
+
+#: web/views.py:97
+msgid "Error creating new user"
+msgstr "Ошибка при создании пользователя"
+
+#: web/views.py:101
+msgid "You was succesfully registered!"
+msgstr "Вы успешно зарегистрировались!"
+
+#: web/views.py:104
+msgid "Password and confirm password doesn't match"
+msgstr "Пароль и подтверждение не совпадают"
+
+#: web/views.py:133
+msgid "Your password was reseted on Getquests.com"
+msgstr "Ваш пароль на сайте GetQuests.com был сброшен"
+
+#: web/views.py:134
+#, python-brace-format
+msgid ""
+"Hello! \n"
+" Your new password to getquests.com is {password} \n"
+"\n"
+"                                Thank you!"
+msgstr ""
+"Здравствуйте! \n"
+" Ваш новый пароль на сайте getquests.com - {password} \n"
+"\n"
+"                                Спасибо!"
+
+#: web/views.py:137
+msgid "Your password sent to your email"
+msgstr "Ваш пароль был отправлен вам на email"
+
+#: web/views.py:140
+msgid "User with this email not found"
+msgstr "Пользователь с таким email не найден"
+
+#: web/views.py:237
+#, python-format
+msgid "You was succesfully registered to event %s"
+msgstr "Вы успешно зарегистрировались на событие %s"
+
+#: web/views.py:241
+#, python-format
+msgid "Player was registered to your event %s"
+msgstr "Игрок был успешно арегистрирован на ваше событие %s"
+
+#: web/views.py:242
+#, python-brace-format
+msgid "Player {player} was registered to your event {event}"
+msgstr "Игрок {player} был успешно зарегистрирован на ваше событие {event}"
+
+#: web/views.py:254
+#, python-brace-format
+msgid "Your team {team} was registered to event {event}"
+msgstr "Ваша команда {team} была зарегистрирована на событие {event}"
+
+#: web/views.py:259
+msgid "Team was registered to your event."
+msgstr "Команда зарегистрировалась на ваше событие."
+
+#: web/views.py:260
+#, python-brace-format
+msgid "Team {team} was registered to your event {event}"
+msgstr "Команда {team} была зарегистрирована на ваше событие {event}"
+
+#: web/views.py:264
+msgid "You doesn't have any team"
+msgstr "У вас нет команды"
+
+#: web/views.py:293
+#, python-format
+msgid "You are creator of team %s"
+msgstr "Вы капитан команды %s"
+
+#: web/views.py:306
+msgid "You created team on Getquests.com"
+msgstr "Вы создали команду на сайте GetQuests.com"
+
+#: web/views.py:307
+#, python-format
+msgid "You created team %s on GetQuest.com"
+msgstr "Вы создали команду %s на сайте GetQuest.com"
+
+#: web/views.py:309
+msgid "Error create team!"
+msgstr "Ошибка при создании команды"
+
+#: web/views.py:317
+#, python-brace-format
+msgid "You created team {team} on Getquests.com. This team join event {event}"
+msgstr ""
+"Вы создали команду {team} на сайте Getquests.com. Эта команда "
+"зарегистрировалась на событие {event}"
+
+#: web/views.py:321
+#, python-format
+msgid "On event %s was registered team."
+msgstr "На событие %s была зарегистрирована команда."
+
+#: web/views.py:322
+#, python-brace-format
+msgid "On event {event} was registered team {team}"
+msgstr "На событие {event} была зарегистрирована команда {team}"
+
+#: web/views.py:348
+msgid " "
+msgstr " "
+
+#: web/views.py:353
+msgid "Player joined your team"
+msgstr "Игрок присоединился к вашей команде"
+
+#: web/views.py:354
+#, python-brace-format
+msgid "Player {player} joined your team {team}"
+msgstr "Игрок {player} присоединился к вашей команде {team}"
+
+#: web/views.py:416 web/views.py:946
+msgid "Your profile updated successfully!"
+msgstr "Ваш профиль успешно обновлен!"
+
+#: web/views.py:456
+msgid "You are not creator of this event"
+msgstr "Вы не являетесь организатором данного события"
+
+#: web/views.py:548
+msgid "Event undefined!"
+msgstr "Событие не определено"
+
+#: web/views.py:738
+msgid "You are not owner of photo"
+msgstr "Вы не владелец фото"
+
+#: web/views.py:756
+msgid "Event is not started!"
+msgstr "Событие не началось!"
+
+#: web/views.py:770
+msgid "You are not registered to this event"
+msgstr "Вы не зарегистрированы на это событие"
+
+#: web/views.py:807
+msgid "Your team member answered for this task"
+msgstr "Член вашей команды ответил на это задание"
+
+#: web/views.py:812 web/views.py:846
+msgid "You are answered for this task"
+msgstr "Вы ответили на это задание"
+
+#: web/views.py:871
+msgid "This task isn't started"
+msgstr "Задание не началось"
+
+#: web/views.py:904
+msgid "User completed event"
+msgstr "Пользователь завершил событие"
+
+#: web/views.py:905
+#, python-brace-format
+msgid "User {user} completed event {event}"
+msgstr "Пользователь {user} завершил событие {event}"
+
+#: web/views.py:909
+msgid "You are not started this event"
+msgstr "Вы не завершили это событие"
+
+#~ msgid ""
+#~ "\n"
+#~ "                                Task: %(task_t)s Score: %(score_t)s "
+#~ "Answer: %(answer_t)s Time: %(time_t)s Hint: %(hints_t)s\n"
+#~ "                            "
+#~ msgstr ""
+#~ "\n"
+#~ "                               Задание: %(task_t)s Очки: %(score_t)s "
+#~ "Ответ: %(answer_t)s Время: %(time_t)s Подсказка: %(hints_t)s\n"
+#~ "                            "
+
+#~ msgid ""
+#~ "\n"
+#~ "                            %(title_t)s Task core: %(score_t)s Task time: "
+#~ "%(time_t)s Your score: %(statscore)s Your time: %(stattime)s\n"
+#~ "                        "
+#~ msgstr ""
+#~ "\n"
+#~ "                            %(title_t)s Очки задания: %(score_t)s Время "
+#~ "задания: %(time_t)s Выши очки: %(statscore)s Ваше время: %(stattime)s\n"
+#~ "                        "

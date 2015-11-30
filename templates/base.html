@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load tags %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,15 +34,34 @@
             </div>
             <div class="collapse navbar-collapse" id="idNavbar">
                 <ul class="nav navbar-nav">
-                    <li><a href="{% url 'index' %}">Home</a> </li>
-                    <li><a href="{% url 'events' %}">Events</a></li>
-                    <li><a href="{% url 'players' %}">Players</a> </li>
-                    <li><a href="{% url 'organizers' %}">Organizers</a></li>
+                    <li><a href="{% url 'index' %}">{% trans "Home" %}</a> </li>
+                    <li><a href="{% url 'events' %}">{% trans "Events" %}</a></li>
+                    <li><a href="{% url 'players' %}">{% trans "Players" %}</a> </li>
+                    <li><a href="{% url 'organizers' %}">{% trans "Organizers" %}</a></li>
                     <li><a href="{% url 'faq' %}">F.A.Q.</a></li>
-                    <li><a href="{% url 'pages' 'about' %}">About</a></li>
-                    <li><a href="{% url 'contacts' 'contacts' %}">Contact us</a></li>
+                    <li><a href="{% url 'pages' 'about' %}">{% trans "About us" %}</a></li>
+                    <li><a href="{% url 'contacts' 'contacts' %}">{% trans "Contact us" %}</a></li>
+                    <li>
+
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li>
+                         <form action="{% url 'set_language' %}" method="post">
+                            {% csrf_token %}
+                            <input name="next" type="hidden" value="{{ redirect_to }}" />
+                            <input type="hidden" value="ru" name="language">
+                            <input type="submit" value="RU" class="btn btn-default navbar-btn">
+                        </form>
+                    </li>
+                    <li>
+                        <form action="{% url 'set_language' %}" method="post">
+                            {% csrf_token %}
+                            <input name="next" type="hidden" value="{{ redirect_to }}" />
+                            <input type="hidden" value="en" name="language">
+                            <input type="submit" value="EN" class="btn btn-default navbar-btn">
+                        </form>
+                    </li>
                     {% if user.is_authenticated %}
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -54,19 +74,19 @@
                                     {% else %}
                                         <a href="{% url 'player_profile' %}">
                                     {% endif %}
-                                    Profile</a>
+                                    {% trans "Profile" %}</a>
                                 </li>
-                                <li><a href="{% url 'logout' %}">Logout</a> </li>
+                                <li><a href="{% url 'logout' %}">{% trans "Logout" %}</a> </li>
                             </ul>
                         </li>
                     {% else %}
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                Login/register<span class="caret"></span>
+                                {% trans "Login/register" %}<span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="{% url 'login' %}">Login</a> </li>
-                                <li><a href="{% url 'register' %}">Register</a> </li>
+                                <li><a href="{% url 'login' %}">{% trans "Login" %}</a> </li>
+                                <li><a href="{% url 'register' %}">{% trans "Register" %}</a> </li>
                             </ul>
                         </li>
                     {% endif %}
@@ -89,7 +109,7 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <footer>
-                            <h4>Created and designed by IT25</h4>
+                            <h4>&copy; Getquests.com</h4>
                         </footer>
                     </div>
                 </div>

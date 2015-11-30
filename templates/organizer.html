@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load tags %}
+{% load i18n %}
 {% block title %}
     {{ object.user.username }} {% show_title_page %}
 {% endblock %}
@@ -16,7 +17,7 @@
                 {% endif %}
 
                 <button class="btn btn-primary" data-toggle="modal" data-target="#SendMessageModal">
-                    Send message
+                    {% blocktrans %}Send message{% endblocktrans %}
                 </button>
                 <div class="modal fade" id="SendMessageModal" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog">
@@ -25,7 +26,7 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                     &times;
                                 </button>
-                                <h4 class="modal-title">Send new message</h4>
+                                <h4 class="modal-title">{% blocktrans %}Send new message{% endblocktrans %}</h4>
                             </div>
                             <div class="modal-body">
                                 <div id="modal_error"></div>
@@ -33,32 +34,34 @@
                                     {% csrf_token %}
                                     <input type="hidden" name="sender" value="{{ user.username }}">
                                     <input type="hidden" name="receiver" value="{{ object.user.username }}">
-                                    <textarea name="text" class="form-control" placeholder="Enter message"></textarea>
-                                    <input type="submit" value="Send" class="btn btn-primary">
+                                    <textarea name="text" class="form-control" placeholder="{% trans 'Enter message' %}"></textarea>
+                                    <input type="submit" value="{% trans 'Send' %}" class="btn btn-primary">
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal" id="id_editCloseButton{{ task.pk }}">Close</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal" id="id_editCloseButton{{ task.pk }}">
+                                    {% trans 'Close' %}
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <p>City: {{ object.user.contacts.city }}</p>
-                <p>Street: {{ object.user.contacts.street }}</p>
-                <p>Phone: {{ object.user.contacts.phone }}</p>
-                <p>Skype: {{ object.user.contacts.skype }}</p>
+                <p>{% trans 'City' %}: {{ object.user.contacts.city }}</p>
+                <p>{% trans 'Street' %}: {{ object.user.contacts.street }}</p>
+                <p>{% trans 'Phone' %}: {{ object.user.contacts.phone }}</p>
+                <p>{% trans 'Skype' %}: {{ object.user.contacts.skype }}</p>
                 <p>Web-site: {{ object.user.contacts.site }}</p>
             </div>
             <div class="col-xs-8">
                 <div class="row">
                     <div class="col-xs-12">
-                        <h2>About:</h2>
+                        <h2>{% trans 'About us' %}:</h2>
                         {{ object.description }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <h2>Photo:</h2>
+                        <h2>{% trans 'Photo' %}:</h2>
                         {% for photo in object.user.photos_set.all %}
                             {% if photo.image.url != None %}
                                 <img src="{{ photo.image.url }}" class="img-rounded index_avatar">
@@ -70,7 +73,7 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <h2>Events today</h2>
+                <h2>{% trans 'Events today' %}</h2>
                 {% for event in object.get_current_events %}
                     <h3>{{ event.title }}</h3>
                 {% endfor %}
@@ -78,38 +81,38 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <h2>Future events:</h2>
+                <h2>{% trans 'Future events' %}:</h2>
                 {% for event in object.get_future_events %}
-                    <p class="text_on_1_line">Title: {{ event.title }}</p>
-                    <p class="text_on_1_line">Date: {{ event.start_date }}</p>
+                    <p class="text_on_1_line">{% trans 'Title' %}: {{ event.title }}</p>
+                    <p class="text_on_1_line">{% trans 'Date' %}: {{ event.start_date }}</p>
                     <p class="text_on_1_line">
                         Cost:
                         {% if event.price == 0.0 %}
-                            <span class="free_event"> Free</span>
+                            <span class="free_event"> {% trans 'Free' %}</span>
                         {% else %}
                             {{ event.price }}
                         {% endif %}
                     </p>
                     {% if user.is_authenticated %}
                         {% if user in object.registered_players.all or user.username|check_user_in_registered_team:object.pk %}
-                            <p class="text_on_1_line">You are already joined this event</p>
+                            <p class="text_on_1_line">{% blocktrans %}You are already joined this event{% endblocktrans %}</p>
                         {% else %}
-                            <a href="{% url 'confirm_join' event.pk %}" class="btn btn-primary">Join!</a>
+                            <a href="{% url 'confirm_join' event.pk %}" class="btn btn-primary">{% trans 'Join!' %}</a>
                         {% endif %}
                     {% else %}
-                        <a href="{% url 'login' %}" class="btn btn-primary">Login to join!</a>
+                        <a href="{% url 'login' %}" class="btn btn-primary">{% blocktrans %}Login to join!{% endblocktrans %}</a>
                     {% endif %}
                 {% endfor %}
             </div>
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <h2>Completed events:</h2>
+                <h2>{% blocktrans %}Completed events:{% endblocktrans %}</h2>
                 {% for event in object.get_completed_events %}
-                    <p class="text_on_1_line">Title: {{ event.title }}</p>
-                    <p class="text_on_1_line">End date: {{ event.end_date }}</p>
-                    <p class="text_on_1_line">Winner: {{ event.get_event_winner }}</p>
-                    <p class="text_on_1_line">Max score: {{ event.get_event_score }}</p>
+                    <p class="text_on_1_line">{% trans 'Title' %}: {{ event.title }}</p>
+                    <p class="text_on_1_line">{% trans 'End date' %}: {{ event.end_date }}</p>
+                    <p class="text_on_1_line">{% trans 'Winner' %}: {{ event.get_event_winner }}</p>
+                    <p class="text_on_1_line">{% trans 'Max score' %}: {{ event.get_event_score }}</p>
                 {% endfor %}
             </div>
         </div>

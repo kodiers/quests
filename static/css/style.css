@@ -84,6 +84,20 @@ body {
 .star {
     color: gray;
 }
+.ruFlag {
+    background-image: url("../images/ru.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 35px;
+    height: 35px;
+}
+.enFlag {
+    background-image: url("../images/english.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 35px;
+    height: 35px;
+}
 
 @media only screen and (max-width: 560px) {
     #index_carousel {

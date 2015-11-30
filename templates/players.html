@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% load tags %}
+{% load i18n %}
 {% block title %}
-    Players | {% show_title_page %}
+    {% trans 'Players' %} | {% show_title_page %}
 {% endblock %}
 {% block scripts %}
 {% endblock %}
@@ -12,13 +13,13 @@
             <div class="col-xs-12">
                 <form method="get" action="{% url 'search_players' %}">
                     <input type="text" name="search" class="form-control">
-                    <input type="submit" value="Search" class="btn btn-primary">
+                    <input type="submit" value="{% trans 'Search' %}" class="btn btn-primary">
                 </form>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <h1 class="page-header">Players</h1>
+                <h1 class="page-header">{% trans 'Players' %}</h1>
                 {% for object in object_list %}
                     <div class="row">
                         <div class="col-xs-2">
@@ -35,13 +36,13 @@
                             <p>{{ object.description }}</p>
                         </div>
                         <div class="col-xs-2">
-                            Total points: {{ object.points }}
+                            {% blocktrans %}Total points{% endblocktrans %}: {{ object.points }}
                             {% if object.show_personal_info %}
-                                <p>Date of birth: {{ object.date_of_birth|date:'d M Y' }}</p>
-                                <p>Sex: {{ object.get_sex_display }}</p>
+                                <p>{% blocktrans %}Date of birth{% endblocktrans %}: {{ object.date_of_birth|date:'d M Y' }}</p>
+                                <p>{% trans 'Sex' %}: {{ object.get_sex_display }}</p>
                                 <p>Email: {{ object.user.email }}</p>
-                                <p>Country: {{ object.user.contacts.country }}</p>
-                                <p>City: {{ object.user.contacts.city }}</p>
+                                <p>{% trans 'Country' %}: {{ object.user.contacts.country }}</p>
+                                <p>{% trans 'City' %}: {{ object.user.contacts.city }}</p>
                                 <p>Site: {{ object.user.contacts.site }}</p>
                             {% endif %}
                         </div>
@@ -49,7 +50,7 @@
                 {% empty %}
                     <div class="row">
                         <div class="col-xs-12">
-                            Sorry, no players found.
+                            {% blocktrans %}Sorry, no players found.{% endblocktrans %}
                         </div>
                     </div>
                 {% endfor %}
@@ -60,21 +61,21 @@
                 {% if is_paginated %}
                     <div class="pagination">
                         {% if page_obj.has_previous %}
-                            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                            <a href="?page={{ page_obj.previous_page_number }}">{% trans 'Previous' %}</a>
                         {% endif %}
                             {{ page_obj.number }} ({{ page_obj.paginator.num_pages }}).
                         {% if page_obj.has_next %}
-                            <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                            <a href="?page={{ page_obj.next_page_number }}">{% trans 'Next' %}</a>
                         {% endif %}
                     </div>
                 {% elif object_list.paginator.num_pages > 1 %}
                     <div class="pagination">
                         {% if object_list.has_previous %}
-                            <a href="?page={{ object_list.previous_page_number }}{% for key, value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">Previous</a>
+                            <a href="?page={{ object_list.previous_page_number }}{% for key, value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">{% trans 'Previous' %}</a>
                         {% endif %}
                         {{ object_list.number }} ({{ object_list.paginator.num_pages }})
                         {% if object_list.has_next %}
-                            <a href="?page={{ object_list.next_page_number }}{% for key, value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">Next</a>
+                            <a href="?page={{ object_list.next_page_number }}{% for key, value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">{% trans 'Next' %}</a>
                         {% endif %}
                     </div>
                 {% endif %}

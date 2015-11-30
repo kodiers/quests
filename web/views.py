@@ -33,7 +33,6 @@ from web.functions import create_password_str, json_wrapper, search_events, send
 
 from web.constants import *
 
-
 # Create your views here.
 
 def index(request):

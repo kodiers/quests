@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% load tags %}
+{% load i18n %}
 {% block title %}
-    Chat with {{ receiver }} | {% show_title_page %}
+    {% blocktrans %}Chat with{% endblocktrans %} {{ receiver }} | {% show_title_page %}
 {% endblock %}
 {% block scripts %}
     <script src="{% static 'js/chat.js' %}"></script>
@@ -51,8 +52,8 @@
                     {% csrf_token %}
                     <input type="hidden" name="sender" value="{{ user.username }}" id="idSender">
                     <input type="hidden" name="chat" value="{{ chat.id }}" id="idChat">
-                    <textarea class="form-control" placeholder="Enter message" id="idText"></textarea>
-                    <input type="submit" value="Send!" class="btn btn-primary" id="idSend">
+                    <textarea class="form-control" placeholder="{% trans 'Enter message' %}" id="idText"></textarea>
+                    <input type="submit" value="{% trans 'Send!' %}" class="btn btn-primary" id="idSend">
                 </form>
             </div>
         </div>

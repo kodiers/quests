@@ -1,16 +1,17 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load i18n %}
 {% block title %}
-    You suggessfully registered!
+    {% blocktrans %}You suggessfully registered!{% endblocktrans %}
 {% endblock %}
 {% block content %}
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
                 <script>redirect();</script>
-                <h1>Welcome {{ user.username }}!</h1>
+                <h1>{% trans 'Welcome' %} {{ user.username }}!</h1>
                 <p>{{ message }}</p>
-                <p>You will be redirected in 5 seconds or click <a href="{% url 'index' %}">here</a> </p>
+                <p>{% blocktrans %}You will be redirected in 5 seconds or click{% endblocktrans %} <a href="{% url 'index' %}">{% trans 'here' %}</a> </p>
             </div>
         </div>
     </div>

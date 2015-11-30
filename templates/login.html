@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% load tags %}
+{% load i18n %}
 {% block title %}
-    Login! {% show_title_page %}
+    {% trans 'Login!' %} {% show_title_page %}
 {% endblock %}
 {% block content %}
     <div class="container">
@@ -15,7 +16,7 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <h1>Login please!</h1>
+                <h1>{% blocktrans %}Login please!{% endblocktrans %}</h1>
                 <form action="{% url 'login' %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="next" value="{{ next_url }}">
@@ -28,7 +29,7 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                Or you can restore your password <a href="{% url 'restore' %}">here.</a>
+                {% blocktrans %}Or you can restore your password {% endblocktrans %}<a href="{% url 'restore' %}">{% trans 'here' %}.</a>
             </div>
         </div>
     </div>

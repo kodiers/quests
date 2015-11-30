@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% load tags %}
+{% load i18n %}
 {% block title %}
-    Contact us | {% show_title_page %}
+    {%  trans "Contact us" %} | {% show_title_page %}
 {% endblock %}
 {% block seo %}
 {% endblock %}
@@ -14,15 +15,15 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                <h1 class="page-header">Our contacts</h1>
+                <h1 class="page-header">{% trans "Our contacts" %}</h1>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <h2>Phone: {{ object.phone }}</h2>
+                <h2>{% trans "Phone" %}: {{ object.phone }}</h2>
                 <h2>Email: {{ object.email }}</h2>
                 {% if object.address != '' %}
-                    <h2>Address: {{ object.address }}</h2>
+                    <h2>{% trans "Address" %}: {{ object.address }}</h2>
                 {% endif %}
                 {% if object.comments != '' %}
                     <p>{{ object.comments|safe }}</p>
@@ -34,18 +35,18 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <h3>You can write to us:</h3>
+                <h3>{% trans "You can write to us" %}:</h3>
                 <div id="result"></div>
                 <form method="post" id="idSendMessage">
                     {% csrf_token %}
                     <input type="hidden" id="token" value="{{ object.url }}">
-                    <label for="idName">Your name:</label>
+                    <label for="idName">{% trans "Your name" %}:</label>
                     <input type="text" name="name" class="form-control" placeholder="Your name" id="idName" required>
-                    <label for="idEmail">Your email:</label>
+                    <label for="idEmail">{% trans "Your email" %}:</label>
                     <input type="text" name="email" class="form-control" placeholder="Email" id="idEmail" required>
-                    <label for="idMessage">Your question:</label>
+                    <label for="idMessage">{% trans "Your question" %}:</label>
                     <textarea class="form-control" name="message" placeholder="Your message" id="idMessage"></textarea>
-                    <input type="submit" value="Send" class="btn btn-primary">
+                    <input type="submit" value="{% trans 'Send' %}" class="btn btn-primary">
                 </form>
             </div>
         </div>

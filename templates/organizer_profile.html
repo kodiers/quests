@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load tags %}
+{% load i18n %}
 {% block title %}
     {{ object.username }} | {% show_title_page %}
 {% endblock %}
@@ -32,13 +33,13 @@
                 {% else %}
                     <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
                 {% endif %}
-                <a href="{% url 'contact_list' %}" class="btn btn-primary">Send message</a>
-                <a href="{% url 'create_event' %}" class="btn btn-primary">Create event</a>
+                <a href="{% url 'contact_list' %}" class="btn btn-primary">{% trans 'Send message' %}</a>
+                <a href="{% url 'create_event' %}" class="btn btn-primary">{% trans 'Create event' %}</a>
                 <form action="." method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <p>Change avatar:</p>
+                    <p>{% trans 'Change avatar' %}:</p>
                     <input id="id_avatar" name="avatar" type="file">
-                    <h2>Change personal info:</h2>
+                    <h2>{% blocktrans %}Change personal info{% endblocktrans %}:</h2>
                         {{ form.email.label }}:
                         {{ form.email|add_class_to_formfield:"form-control" }}
                         {{ form.description.label }}:
@@ -73,15 +74,15 @@
             <div class="col-xs-8">
                 <div class="row">
                     <div class="col-xs-12">
-                        <h1>Today events</h1>
+                        <h1>{% trans 'Today events' %}</h1>
                         {% for event in object.organizers.get_current_events %}
-                            <a href="#">{{ event.title }} {{ event.start_date|date:'d m Y H i' }}</a>
+                            <a href="{% url 'event' event.pk %}">{{ event.title }} {{ event.start_date|date:'d m Y H i' }}</a>
                         {% endfor %}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <h2>Photos</h2>
+                        <h2>{% trans 'Photos' %}</h2>
                         {% if object.organizers.get_organizers_photo %}
                             <div id="profile_corousel" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner" role="listbox">
@@ -89,28 +90,28 @@
                                         {% if forloop.first %}
                                             <div class="item active" style="text-align: center">
                                                 <img src="{{ photo.image.url }}" class="img-rounded photos">
-                                                <a onclick="delete_photo({{ photo.pk }})" class="btn btn-danger">Delete</a>
+                                                <a onclick="delete_photo({{ photo.pk }})" class="btn btn-danger">{% trans 'Delete' %}</a>
                                             </div>
                                         {% else %}
                                             <div class="item" style="text-align: center">
                                                 <img src="{{ photo.image.url }}" class="img-rounded photos">
-                                                <a onclick="delete_photo({{ photo.pk }})" class="btn btn-danger">Delete</a>
+                                                <a onclick="delete_photo({{ photo.pk }})" class="btn btn-danger">{% trans 'Delete' %}</a>
                                             </div>
                                         {% endif %}
                                     {% endfor %}
                                 </div>
                                 <a class="left carousel-control" href="#profile_corousel" role="button" data-slide="prev">
                                     <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                    <span class="sr-only">Previous</span>
+                                    <span class="sr-only">{% trans 'Previous' %}</span>
                                 </a>
                                 <a class="right carousel-control" href="#profile_corousel" role="button" data-slide="next">
                                     <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
+                                    <span class="sr-only">{% trans 'Next' %}</span>
                                 </a>
                             </div>
                         {% endif %}
                         <button class="btn btn-primary" data-toggle="modal" data-target="#addPhotoModal">
-                            Add photos
+                            {% blocktrans %}Add photos{% endblocktrans %}
                         </button>
                         <!-- Add photos modal -->
                         <div class="modal fade" id="addPhotoModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -120,26 +121,26 @@
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                             &times;
                                         </button>
-                                        <h4>Add photo</h4>
+                                        <h4>{% blocktrans %}Add photo{% endblocktrans %}</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <h4>Select photo</h4>
+                                        <h4>{% blocktrans %}Select photo{% endblocktrans %}</h4>
                                         <form method="post" enctype="multipart/form-data" id="addPhotoForm">
                                             {% csrf_token %}
-                                            <label for="id_photo_title">Title</label>
-                                            <input type="text" name="title" class="form-control" placeholder="Enter title for image" id="id_photo_title">
-                                            <label for="id_photo_description">Description</label>
-                                            <input type="text" name="description" class="form-control" placeholder="Enter description">
-                                            <label for="id_photo_date">Date</label>
+                                            <label for="id_photo_title">{% trans 'Title' %}</label>
+                                            <input type="text" name="title" class="form-control" placeholder="{% trans 'Enter title for image' %}" id="id_photo_title">
+                                            <label for="id_photo_description">{% trans 'Description' %}</label>
+                                            <input type="text" name="description" class="form-control" placeholder="{% trans 'Enter description' %}">
+                                            <label for="id_photo_date">{% trans 'Date' %}</label>
                                             <input type="text" id="id_photo_date" name="date" class="form-control">
-                                            <label for="id_photo">Choose file</label>
+                                            <label for="id_photo">{% trans 'Choose file' %}</label>
                                             <input type="file" name="photo" id="id_photo" class="form-control">
-                                            <input type="submit" value="Upload" onclick="prevent_refresh_photo()" class="btn btn-primary">
+                                            <input type="submit" value="{% trans 'Upload' %}" onclick="prevent_refresh_photo()" class="btn btn-primary">
                                         </form>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal" id="id_photoCloseButton">
-                                            Close
+                                            {% trans 'Close' %}
                                         </button>
                                     </div>
                                 </div>
@@ -149,19 +150,19 @@
                     </div>
                 </div>
                 <div class="row">
-                    <h2>Future events</h2>
+                    <h2>{% blocktrans %}Future events{% endblocktrans %}</h2>
                     {% for event in object.organizers.get_future_events %}
                         <div id="event{{ event.pk }}">
-                            {{ event.title }} Start date: {{ event.start_date |date:'d m Y H i'}}
+                            {{ event.title }} {% trans 'Start date' %}: {{ event.start_date |date:'d m Y H i'}}
                             {% if event.is_team %}
-                                Team game
+                                {% trans 'Team game' %}
                             {% endif %}
-                            Minimum players/teams: {{ event.min_players }}
-                            Maximum players/teams: {{ event.max_players }}
-                            Registered: {{ event.get_registered_count }}
-                            <a href="{% url 'edit_event' event.pk %}" class="btn btn-primary"> Edit</a>
+                            {% blocktrans %}Minimum players/teams{% endblocktrans %}: {{ event.min_players }}
+                            {% blocktrans %}Maximum players/teams{% endblocktrans %}: {{ event.max_players }}
+                            {% trans 'Registered' %}: {{ event.get_registered_count }}
+                            <a href="{% url 'edit_event' event.pk %}" class="btn btn-primary"> {% trans 'Edit' %}</a>
                             <button class="btn btn-danger" data-toggle="modal" data-target="#deleteEventModal{{ event.pk }}">
-                                Delete
+                                {% trans 'Delete' %}
                             </button>
                             <!-- Modal for delete event -->
                             <div class="modal fade" id="deleteEventModal{{ event.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
@@ -171,18 +172,20 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                                 &times;
                                             </button>
-                                            <h4 class="modal-title">Delete event {{ event.title }}</h4>
+                                            <h4 class="modal-title">{% blocktrans %}Delete event{% endblocktrans %} {{ event.title }}</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <h4> Are you sure? </h4>
+                                            <h4> {% blocktrans %}Are you sure?{% endblocktrans %} </h4>
                                             <form method="post" id="id_deleteEventForm{{ event.pk }}">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="event_id" value="{{ event.pk }}" id="delEventID{{ event.pk }}">
-                                                <input type="submit" value="Delete" class="btn btn-danger" onclick="prevent_refresh_delete({{ event.pk }})">
+                                                <input type="submit" value="{% trans 'Delete' %}" class="btn btn-danger" onclick="prevent_refresh_delete({{ event.pk }})">
                                             </form>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="id_delEventCloseButton{{ event.pk }}">Close</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="id_delEventCloseButton{{ event.pk }}">
+                                                {% trans 'Close' %}
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -192,17 +195,17 @@
                     {% endfor %}
                 </div>
                 <div class="row">
-                    <h2>Completed events</h2>
+                    <h2>{% blocktrans %}Completed events{% endblocktrans %}</h2>
                     {% for event in object.organizers.get_completed_events %}
                         <p>
-                            {{ event.title }} Start date: {{ event.start_date|date:'d m Y H i' }}
+                            {{ event.title }} {% trans 'Start date' %}: {{ event.start_date|date:'d m Y H i' }}
                             {% if event.is_team %}
-                                Team game
-                                Winner: {{ event.get_event_winner }}
+                                {% trans 'Team game' %}
+                                {% trans 'Winner' %}: {{ event.get_event_winner }}
                             {% else %}
-                                Winner: <a href="{% url 'player' event.get_event_winner|get_player_by_username %}">{{ event.get_event_winner }}</a>
+                                {% trans 'Winner' %}: <a href="{% url 'player' event.get_event_winner|get_player_by_username %}">{{ event.get_event_winner }}</a>
                             {% endif %}
-                             Registered: {{ event.get_registered_count }} Winner score: {{ event.get_event_score_by_winner }}
+                             {% trans 'Registered' %}: {{ event.get_registered_count }} {% trans 'Winner score' %}: {{ event.get_event_score_by_winner }}
                         </p>
                     {% endfor %}
                 </div>

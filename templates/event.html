@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load tags %}
+{% load i18n %}
 {% block title %}
     {{ object.title }}. {% show_title_page %}
 {% endblock %}
@@ -15,13 +16,13 @@
         </div>
         <div class="row">
             <div class="col-xs-2">
-                <p>Start date: {{ object.start_date }}</p>
+                <p>{% trans 'Start date' %}: {{ object.start_date }}</p>
             </div>
             <div class="col-xs-2">
-                <p>Place: {{ object.place.city }}</p>
+                <p>{% trans 'Place' %}: {{ object.place.city }}</p>
             </div>
             <div class="col-xs-2">
-                <p>Organizer:
+                <p>{% trans 'Organizer' %}:
                     {% if object.organizer.questsusers.is_organizer %}
                         <a href="{% url 'organizer' object.organizer.username|get_organizer_by_username %}"> {{ object.organizer.username }}</a>
                     {% else %}
@@ -31,54 +32,54 @@
             </div>
             <div class="col-xs-2">
                 {% if object.price != 0.0 %}
-                    <p>Price: {{ object.price }}</p>
+                    <p>{% trans 'Price' %}: {{ object.price }}</p>
                 {% else %}
-                    <p class="free_event">FREE</p>
+                    <p class="free_event">{% trans 'FREE' %}</p>
                 {% endif %}
             </div>
             <div class="col-xs-2">
                 {% if object.is_team %}
-                    <p>TEAM GAME</p>
+                    <p>{% trans 'TEAM GAME' %}</p>
                 {% endif %}
             </div>
             <div class="col-xs-2">
                 {% if user.is_authenticated %}
                     {% if user in object.registered_players.all or user.username|check_user_in_registered_team:object.pk %}
-                        <p>You are already joined this event</p>
+                        <p>{% blocktrans %}You are already joined this event{% endblocktrans %}</p>
                     {% else %}
                         {% if object.get_registered_count >= object.max_players %}
-                            <p>Maximum number of players are registered to this event!</p>
+                            <p>{% blocktrans %}Maximum number of players are registered to this event!{% endblocktrans %}</p>
                         {% else %}
                             {% if user != object.organizer %}
-                                <a href="{% url 'confirm_join' object.pk %}" class="btn btn-primary">Join!</a>
+                                <a href="{% url 'confirm_join' object.pk %}" class="btn btn-primary">{% trans 'Join!' %}</a>
                             {% endif %}
                         {% endif %}
                     {% endif %}
                 {% else %}
                     {% if user == object.organizer %}
-                        <p>You are organizer of this event</p>
+                        <p>{% blocktrans %}You are organizer of this event{% endblocktrans %}</p>
                     {% else %}
-                        <a href="{% url 'login' %}" class="btn btn-primary">Login to join!</a>
+                        <a href="{% url 'login' %}" class="btn btn-primary">{% blocktrans %}Login to join!{% endblocktrans %}</a>
                     {% endif %}
                 {% endif %}
             </div>
         </div>
         <div class="row">
             <div class="col-xs-4">
-                <p>Maximum players/teams: {{ object.max_players }}</p>
+                <p>{% blocktrans %}Maximum players/teams{% endblocktrans %}: {{ object.max_players }}</p>
             </div>
             <div class="col-xs-4">
-                <p>Minimum players/teams: {{ object.min_players }}</p>
+                <p>{% blocktrans %}Minimum players/teams{% endblocktrans %}: {{ object.min_players }}</p>
             </div>
             <div class="col-xs-4">
-                <p>Registered players/teams: {{ object.get_registered_count }}</p>
+                <p>{% blocktrans %}Registered players/teams{% endblocktrans %}: {{ object.get_registered_count }}</p>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <h3>Event description</h3>
+                <h3>{% trans 'Event description' %}</h3>
                 <p>{{ object.description }}</p>
-                <h4>Map:</h4>
+                <h4>{% trans 'Map' %}:</h4>
                 <img src="{{ object.map_link }}">
             </div>
         </div>
@@ -91,24 +92,24 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <h2>Tasks</h2>
+                <h2>{% trans 'Tasks' %}</h2>
             </div>
         </div>
         <div class="row">
             {% for task in object.get_event_tasks %}
                 <div class="col-xs-12">
                     <h3 class="text_on_1_line">{{ task.title }}</h3>
-                    <span>Score: {{ task.score }}</span>
-                    <span>Time: {{ task.time }}</span>
+                    <span>{% trans 'Score' %}: {{ task.score }}</span>
+                    <span>{% trans 'Time' %}: {{ task.time }}</span>
                 </div>
             {% endfor %}
         </div>
         <div class="row">
             <div class="col-xs-12">
                 {% if object.is_team == False %}
-                    <h2>Registered players</h2>
+                    <h2>{% trans 'Registered players' %}</h2>
                 {% else %}
-                    <h2>Registered teams</h2>
+                    <h2>{% trans 'Registered teams' %}</h2>
                 {% endif %}
             </div>
         </div>
@@ -119,13 +120,13 @@
                         <div class="row">
                             <div class="col-xs-6">
                                 <h3 class="text_on_1_line">{{ player.username }}</h3>
-                                <span>Score: {{ player.username|get_player_score }}</span>
+                                <span>{% trans 'Score' %}: {{ player.username|get_player_score }}</span>
                             </div>
                         </div>
                     {% empty %}
                         <div class="row">
                             <div class="col-xs-6">
-                                None registered to this event yet
+                                {% blocktrans %}None registered to this event yet{% endblocktrans %}
                             </div>
                         </div>
                     {% endfor %}
@@ -142,14 +143,14 @@
                             <div class="row">
                                 <div class="col-xs-6">
                                     <h4>{{ player.username }}</h4>
-                                    <p>Score: {{ player.username|get_player_score }}</p>
+                                    <p>{% trans 'Score' %}: {{ player.username|get_player_score }}</p>
                                 </div>
                             </div>
                         {% endfor %}
                     {% empty %}
                         <div class="row">
                             <div class="col-xs-12">
-                                None registered to this event yet
+                                {% blocktrans %}None registered to this event yet{% endblocktrans %}
                             </div>
                         </div>
                     {% endfor %}

@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load tags %}
+{% load i18n %}
 {% block title %}
-    Write message | {% show_title_page %}
+    {% blocktrans %}Write message{% endblocktrans %} | {% show_title_page %}
 {% endblock %}
 {% block scripts %}
     <script src="{% static 'js/jquery.cookie.js' %}"></script>
@@ -19,7 +20,7 @@
                     <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
                 {% endif %}
                 <button class="btn btn-primary" data-toggle="modal" data-target="#SendMessageModal">
-                    Send message
+                    {% blocktrans %}Send message{% endblocktrans %}
                 </button>
                 <div class="modal fade" id="SendMessageModal" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog">
@@ -28,38 +29,40 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                     &times;
                                 </button>
-                                <h4 class="modal-title">Send new message</h4>
+                                <h4 class="modal-title">{% blocktrans %}Send new message{% endblocktrans %}</h4>
                             </div>
                             <div class="modal-body">
                                 <div id="modal_error"></div>
                                 <form action="{% url 'send_message' %}" method="post" id="idSendMessageForm">
                                     {% csrf_token %}
                                     <input type="hidden" name="sender" value="{{ user.username }}">
-                                    <input type="text" name="receiver" class="form-control" placeholder="Enter username" id="idReceiver">
-                                    <textarea name="text" class="form-control" placeholder="Enter message"></textarea>
-                                    <input type="submit" value="Send" class="btn btn-primary">
+                                    <input type="text" name="receiver" class="form-control" placeholder="{% trans 'Enter username' %}" id="idReceiver">
+                                    <textarea name="text" class="form-control" placeholder="{% trans 'Enter message' %}"></textarea>
+                                    <input type="submit" value="{% trans 'Send' %}" class="btn btn-primary">
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal" id="id_editCloseButton{{ task.pk }}">Close</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal" id="id_editCloseButton{{ task.pk }}">
+                                    {% trans 'Close' %}
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-xs-8">
-                <h3>Your contacts</h3>
+                <h3>{% blocktrans %}Your contacts{% endblocktrans %}</h3>
                 {% if chats %}
                     {% for chat in chats %}
                         <p>
                             <a href="{% url 'chat' chat.id %}">{{ chat.partner.username }}</a>
                             {% if chat.have_new_message %}
-                                <span class="new_message"> New </span>
+                                <span class="new_message"> {% trans 'New' %} </span>
                             {% endif %}
                         </p>
                     {% endfor %}
                 {% else %}
-                    <p>You haven't contacts</p>
+                    <p>{% blocktrans %}You haven't contacts{% endblocktrans %}</p>
                 {% endif %}
             </div>
         </div>

@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load tags %}
+{% load i18n %}
 {% block title %}
-    Create your team! | {% show_title_page %}
+    {% trans 'Create your team!' %} | {% show_title_page %}
 {% endblock %}
 {% block content %}
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                <h1 class="page-header">Create your team</h1>
+                <h1 class="page-header">{% blocktrans %}Create your team{% endblocktrans %}</h1>
             </div>
         </div>
         <div class="row">
@@ -19,8 +20,10 @@
                 {% if success %}
                     <script>redirect();</script>
                     <p class="message">
-                        Team was created successfuly! You will be redirected in 5 second.
-                        Or press <a href="{% url 'index' %}"> here</a>
+                        {% blocktrans %}
+                            Team was created successfuly! You will be redirected in 5 second.
+                        {% endblocktrans %}
+                        {% trans 'Or press' %} <a href="{% url 'index' %}"> {% trans 'here' %}</a>
                     </p>
                 {% else %}
                     <form action="." method="post">
@@ -29,7 +32,7 @@
                         {% if event != '' %}
                             <input type="hidden" value="{{ event.pk }}" name="event_pk">
                         {% endif %}
-                        <input type="submit" class="btn btn-primary" value="Submit!">
+                        <input type="submit" class="btn btn-primary" value="{% trans 'Submit!' %}">
                     </form>
                 {% endif %}
             </div>

@@ -51,8 +51,12 @@ def get_score_for_event_by_user(username, event):
     """
     user = User.objects.get(username=username)
     player = Players.objects.get(user=user)
-    stat = EventStatistics.objects.filter(event=event).get(player=user)
-    return stat.score
+    try:
+        stat = EventStatistics.objects.filter(event=event).get(player=user)
+        score = stat.score
+    except EventStatistics.DoesNotExist:
+        score = 0
+    return score
 
 
 @register.filter()

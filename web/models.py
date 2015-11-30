@@ -2,6 +2,8 @@ from django.db import models
 from django.db.models import Max
 from django.contrib.auth.models import User
 
+from django.utils.translation import ugettext_lazy as _
+
 import datetime
 
 from durationfield.db.models.fields.duration import DurationField
@@ -14,13 +16,13 @@ class QuestsUsers(models.Model):
     If is_organizer == True - user is quests organizer
     """
     user = models.OneToOneField(User)
-    is_organizer = models.BooleanField(default=False, verbose_name="Organizer")
-    image = models.ImageField(upload_to='avatars', blank=True, null=True, verbose_name="Avatar")
+    is_organizer = models.BooleanField(default=False, verbose_name=_("Organizer"))
+    image = models.ImageField(upload_to='avatars', blank=True, null=True, verbose_name=_("Avatar"))
 
     def image_tag(self):
         return u'<img src="%s" height=75 width=75 />' % (self.image.url)
 
-    image_tag.short_description = "Current avatar"
+    image_tag.short_description = _("Current avatar")
     image_tag.allow_tags = True
 
     def __str__(self):
@@ -43,10 +45,10 @@ class Contacts(models.Model):
     Model for user and organisator contacts
     """
     user = models.OneToOneField(User)
-    country = models.CharField(max_length=255, null=True, blank=True, verbose_name="Country")
-    city = models.CharField(max_length=255, null=True, blank=True, verbose_name="City")
-    street = models.TextField(verbose_name="Street", null=True, blank=True)
-    phone = models.CharField(verbose_name="Phone number", null=True, blank=True, max_length=128)
+    country = models.CharField(max_length=255, null=True, blank=True, verbose_name=_("Country"))
+    city = models.CharField(max_length=255, null=True, blank=True, verbose_name=_("City"))
+    street = models.TextField(verbose_name=_("Street"), null=True, blank=True)
+    phone = models.CharField(verbose_name=_("Phone number"), null=True, blank=True, max_length=128)
     skype = models.CharField(max_length=255, null=True, blank=True, verbose_name="Skype")
     site = models.CharField(verbose_name="Web site", null=True, blank=True, max_length=128)
 
@@ -63,18 +65,18 @@ class Players(models.Model):
     Model for define players properties.
     """
     SEX = (
-        (0, 'MALE'),
-        (1, 'FEMALE'),
-        (2, 'NOT DEFINED')
+        (0, _('MALE')),
+        (1, _('FEMALE')),
+        (2, _('NOT DEFINED'))
     )
 
     user = models.OneToOneField(User)
-    description = models.TextField(verbose_name="Description", null=True, blank=True)
-    sex = models.IntegerField(choices=SEX, default=2, verbose_name="Sex")
-    date_of_birth = models.DateField(null=True, blank=True, verbose_name="Date of birth")
-    points = models.IntegerField(default=0, verbose_name="Points")
-    rating = models.IntegerField(default=0, verbose_name="Place (rating)")
-    show_personal_info = models.BooleanField(default=False, verbose_name="Show personal info")
+    description = models.TextField(verbose_name=_("Description"), null=True, blank=True)
+    sex = models.IntegerField(choices=SEX, default=2, verbose_name=_("Sex"))
+    date_of_birth = models.DateField(null=True, blank=True, verbose_name=_("Date of birth"))
+    points = models.IntegerField(default=0, verbose_name=_("Points"))
+    rating = models.IntegerField(default=0, verbose_name=_("Place (rating)"))
+    show_personal_info = models.BooleanField(default=False, verbose_name=_("Show personal info"))
 
     def __str__(self):
         return self.user.username
@@ -155,9 +157,9 @@ class Tariffs(models.Model):
     """
     Models for tarifs
     """
-    title = models.CharField(max_length=255, verbose_name="Title")
-    description = models.TextField(null=True, blank=True, verbose_name="Description")
-    price = models.FloatField(default=0.0, verbose_name="Price")
+    title = models.CharField(max_length=255, verbose_name=_("Title"))
+    description = models.TextField(null=True, blank=True, verbose_name=_("Description"))
+    price = models.FloatField(default=0.0, verbose_name=_("Price"))
 
     def __str__(self):
         return self.title
@@ -172,8 +174,8 @@ class TariffsFeature(models.Model):
     """
     Models for tarifs features
     """
-    title = models.TextField(verbose_name="Title")
-    description = models.TextField(null=True, blank=True, verbose_name="Description")
+    title = models.TextField(verbose_name=_("Title"))
+    description = models.TextField(null=True, blank=True, verbose_name=_("Description"))
     tariffs = models.ManyToManyField(Tariffs, verbose_name="Tariff")
 
     def __str__(self):
@@ -189,9 +191,9 @@ class Organizers(models.Model):
     Model for define organizer properties
     """
     user = models.OneToOneField(User)
-    description = models.TextField(verbose_name="Description", null=True, blank=True)
-    tariff = models.ForeignKey(Tariffs, verbose_name="Tariff", null=True, blank=True)
-    show_on_main_page = models.BooleanField(default=False, verbose_name="Best organizer (show on main page)") # If true => show on main page
+    description = models.TextField(verbose_name=_("Description"), null=True, blank=True)
+    tariff = models.ForeignKey(Tariffs, verbose_name=_("Tariff"), null=True, blank=True)
+    show_on_main_page = models.BooleanField(default=False, verbose_name=_("Best organizer (show on main page)")) # If true => show on main page
 
     def __str__(self):
         return self.user.username
@@ -243,10 +245,10 @@ class Teams(models.Model):
     """
     Model for players teams
     """
-    title = models.CharField(max_length=255, verbose_name="Title")
-    creator = models.OneToOneField(User, null=True, blank=True, verbose_name='Creator')
-    players = models.ManyToManyField(User, related_name='team_players', verbose_name='Players')
-    points = models.IntegerField(verbose_name="Total points", default=0)
+    title = models.CharField(max_length=255, verbose_name=_("Title"))
+    creator = models.OneToOneField(User, null=True, blank=True, verbose_name=_('Creator'))
+    players = models.ManyToManyField(User, related_name='team_players', verbose_name=_('Players'))
+    points = models.IntegerField(verbose_name=_("Total points"), default=0)
 
     def __str__(self):
         return self.title
@@ -267,12 +269,12 @@ class EventsPlaces(models.Model):
     """
     Store events and tasks places
     """
-    country = models.CharField(max_length=255, null=True, blank=True, verbose_name="Country")
-    city = models.CharField(max_length=255, null=True, blank=True, verbose_name="City")
-    street = models.TextField(verbose_name="Street", null=True, blank=True)
-    lat = models.FloatField(verbose_name="Latitude", null=True, blank=True)
-    lon = models.FloatField(verbose_name="Longtitude", null=True, blank=True)
-    map_link = models.TextField(verbose_name="Link to map", null=True, blank=True)
+    country = models.CharField(max_length=255, null=True, blank=True, verbose_name=_("Country"))
+    city = models.CharField(max_length=255, null=True, blank=True, verbose_name=_("City"))
+    street = models.TextField(verbose_name=_("Street"), null=True, blank=True)
+    lat = models.FloatField(verbose_name=_("Latitude"), null=True, blank=True)
+    lon = models.FloatField(verbose_name=_("Longtitude"), null=True, blank=True)
+    map_link = models.TextField(verbose_name=_("Link to map"), null=True, blank=True)
 
     class Meta:
         verbose_name = "Event and task place"
@@ -285,29 +287,29 @@ class Events(models.Model):
     If is_team == True, then the this events for teams only.
     If completed == True, then this event is finished
     """
-    title = models.TextField(verbose_name="Title")
-    description = models.TextField(verbose_name="Description")
-    map_link = models.TextField(verbose_name="Link to map", null=True, blank=True)
-    place = models.ForeignKey(EventsPlaces, verbose_name="Place", null=True, blank=True)
-    is_team = models.BooleanField(default=False, verbose_name="Team only")
-    price = models.FloatField(verbose_name="Price", default=0.0)
-    min_players = models.IntegerField(verbose_name="Minimum players", null=True, blank=True)
-    max_players = models.IntegerField(verbose_name="Maximum players", null=True, blank=True)
-    start_date = models.DateTimeField(verbose_name="Start date")
-    end_date = models.DateTimeField(verbose_name="End date")
-    registered_players = models.ManyToManyField(User, verbose_name="Registered users", related_name="regitered_players",
+    title = models.TextField(verbose_name=_("Title"))
+    description = models.TextField(verbose_name=_("Description"))
+    map_link = models.TextField(verbose_name=_("Link to map"), null=True, blank=True)
+    place = models.ForeignKey(EventsPlaces, verbose_name=_("Place"), null=True, blank=True)
+    is_team = models.BooleanField(default=False, verbose_name=_("Team only"))
+    price = models.FloatField(verbose_name=_("Price"), default=0.0)
+    min_players = models.IntegerField(verbose_name=_("Minimum players"), null=True, blank=True)
+    max_players = models.IntegerField(verbose_name=_("Maximum players"), null=True, blank=True)
+    start_date = models.DateTimeField(verbose_name=_("Start date"))
+    end_date = models.DateTimeField(verbose_name=_("End date"))
+    registered_players = models.ManyToManyField(User, verbose_name=_("Registered users"), related_name="regitered_players",
                                                 blank=True)
-    registered_teams = models.ManyToManyField(Teams, verbose_name="Registered teams", blank=True)
-    organizer = models.ForeignKey(User, verbose_name="Organizer", related_name="organizer")
-    completed = models.BooleanField(default=False, verbose_name="Finished")
-    duration = DurationField(verbose_name="Duration", null=True, blank=True)
-    image = models.ImageField(upload_to='images', blank=True, null=True, verbose_name="Image")
-    started = models.BooleanField(verbose_name="Started", default=False)
+    registered_teams = models.ManyToManyField(Teams, verbose_name=_("Registered teams"), blank=True)
+    organizer = models.ForeignKey(User, verbose_name=_("Organizer"), related_name="organizer")
+    completed = models.BooleanField(default=False, verbose_name=_("Finished"))
+    duration = DurationField(verbose_name=_("Duration"), null=True, blank=True)
+    image = models.ImageField(upload_to='images', blank=True, null=True, verbose_name=_("Image"))
+    started = models.BooleanField(verbose_name=_("Started"), default=False)
 
     def image_tag(self):
         return u'<img src="%s" height=75 width=75 />' % (self.image.url)
 
-    image_tag.short_description = "Current image"
+    image_tag.short_description = _("Current image")
     image_tag.allow_tags = True
 
     def __str__(self):
@@ -376,14 +378,14 @@ class Tasks(models.Model):
     """
     Model for event's tasks
     """
-    title = models.TextField(verbose_name="Title")
-    description = models.TextField(verbose_name="Description")
-    map_link = models.TextField(verbose_name="Link to map", null=True, blank=True)
-    place = models.ForeignKey(EventsPlaces, verbose_name="Place", null=True, blank=True)
-    score = models.IntegerField(verbose_name="Score", default=0)
-    answer = models.TextField(null=True, verbose_name="Answer", blank=True)
-    event = models.ForeignKey(Events, verbose_name="Event")
-    time = models.CharField(verbose_name="Time for task", null=True, blank=True, max_length=64)
+    title = models.TextField(verbose_name=_("Title"))
+    description = models.TextField(verbose_name=_("Description"))
+    map_link = models.TextField(verbose_name=_("Link to map"), null=True, blank=True)
+    place = models.ForeignKey(EventsPlaces, verbose_name=_("Place"), null=True, blank=True)
+    score = models.IntegerField(verbose_name=_("Score"), default=0)
+    answer = models.TextField(null=True, verbose_name=_("Answer"), blank=True)
+    event = models.ForeignKey(Events, verbose_name=_("Event"))
+    time = models.CharField(verbose_name=_("Time for task"), null=True, blank=True, max_length=64)
 
     def __str__(self):
         return self.title
@@ -397,8 +399,8 @@ class Hints(models.Model):
     """
     Model for task's hint
     """
-    text = models.TextField(verbose_name="Text")
-    price = models.FloatField(verbose_name="Price", default=0.0)
+    text = models.TextField(verbose_name=_("Text"))
+    price = models.FloatField(verbose_name=_("Price"), default=0.0)
     task = models.OneToOneField(Tasks)
 
     def __str__(self):
@@ -413,17 +415,17 @@ class Photos(models.Model):
     """
     Model for photos.
     """
-    title = models.TextField(verbose_name="Title", null=True, blank=True)
-    description = models.TextField(verbose_name="Descrition", null=True, blank=True)
-    date = models.DateField(verbose_name="Date", null=True, blank=True)
-    event = models.ForeignKey(Events, null=True, blank=True, verbose_name="Event")
-    user = models.ForeignKey(User, null=True, blank=True, verbose_name="User")
+    title = models.TextField(verbose_name=_("Title"), null=True, blank=True)
+    description = models.TextField(verbose_name=_("Descrition"), null=True, blank=True)
+    date = models.DateField(verbose_name=_("Date"), null=True, blank=True)
+    event = models.ForeignKey(Events, null=True, blank=True, verbose_name=_("Event"))
+    user = models.ForeignKey(User, null=True, blank=True, verbose_name=_("User"))
     image = models.ImageField(upload_to='images')
 
     def image_tag(self):
         return u'<img src="%s" height=75 width=75 />' % (self.image.url)
 
-    image_tag.short_description = "Current image"
+    image_tag.short_description = _("Current image")
     image_tag.allow_tags = True
 
     def __str__(self):
@@ -440,14 +442,14 @@ class EventStatistics(models.Model):
     """
     Model for store event's statistic
     """
-    event = models.ForeignKey(Events, verbose_name="Event")
-    team = models.ForeignKey(Teams, verbose_name="Team", null=True, blank=True)
-    player = models.ForeignKey(User, verbose_name="Player", null=True, blank=True)
-    score = models.IntegerField(verbose_name="Score", null=True, blank=True)
-    time = DurationField(verbose_name="Executed time", null=True, blank=True)
-    start_time = models.DateTimeField(verbose_name="Start time", null=True, blank=True)
-    end_time = models.DateTimeField(verbose_name="End time", null=True, blank=True)
-    completed = models.BooleanField(verbose_name="Completed for user/team", default=False)
+    event = models.ForeignKey(Events, verbose_name=_("Event"))
+    team = models.ForeignKey(Teams, verbose_name=_("Team"), null=True, blank=True)
+    player = models.ForeignKey(User, verbose_name=_("Player"), null=True, blank=True)
+    score = models.IntegerField(verbose_name=_("Score"), null=True, blank=True)
+    time = DurationField(verbose_name=_("Executed time"), null=True, blank=True)
+    start_time = models.DateTimeField(verbose_name=_("Start time"), null=True, blank=True)
+    end_time = models.DateTimeField(verbose_name=_("End time"), null=True, blank=True)
+    completed = models.BooleanField(verbose_name=_("Completed for user/team"), default=False)
 
     def __str__(self):
         if self.team != None:
@@ -465,17 +467,17 @@ class TaskStatistics(models.Model):
     """
     Model for store task's statistic.
     """
-    task = models.ForeignKey(Tasks, verbose_name="Task")
-    team = models.ForeignKey(Teams, verbose_name="Team", null=True, blank=True)
-    player = models.ForeignKey(User, verbose_name="Player", null=True, blank=True)
-    score = models.IntegerField(verbose_name="Score", null=True, blank=True)
-    time = models.IntegerField(verbose_name="Executed time", null=True, blank=True)
-    start_time = models.DateTimeField(verbose_name="Start time", null=True, blank=True)
-    end_time = models.DateTimeField(verbose_name="End time", null=True, blank=True)
-    used_hints = models.IntegerField(default=0, verbose_name="Count of used hints")
-    completed = models.BooleanField(default=False, verbose_name="Is task completed for user or team")
-    started = models.BooleanField(default=False, verbose_name="Task started")
-    answered = models.BooleanField(default=False, verbose_name="Task is correctly answered")
+    task = models.ForeignKey(Tasks, verbose_name=_("Task"))
+    team = models.ForeignKey(Teams, verbose_name=_("Team"), null=True, blank=True)
+    player = models.ForeignKey(User, verbose_name=_("Player"), null=True, blank=True)
+    score = models.IntegerField(verbose_name=_("Score"), null=True, blank=True)
+    time = models.IntegerField(verbose_name=_("Executed time"), null=True, blank=True)
+    start_time = models.DateTimeField(verbose_name=_("Start time"), null=True, blank=True)
+    end_time = models.DateTimeField(verbose_name=_("End time"), null=True, blank=True)
+    used_hints = models.IntegerField(default=0, verbose_name=_("Count of used hints"))
+    completed = models.BooleanField(default=False, verbose_name=_("Is task completed for user or team"))
+    started = models.BooleanField(default=False, verbose_name=_("Task started"))
+    answered = models.BooleanField(default=False, verbose_name=_("Task is correctly answered"))
     # TODO: add fields for executed time in days, seconds, minutes, hours and add handler for this
 
     def __str__(self):
