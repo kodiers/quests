@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-01 12:28+0000\n"
+"POT-Creation-Date: 2015-12-01 15:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -206,7 +206,7 @@ msgid "You want to join event"
 msgstr "Вы хотите присодиниться к событию"
 
 #: templates/confirm_join_event.html:27 templates/event.html:19
-#: templates/events.html:47 templates/index.html:62
+#: templates/events.html:47 templates/index.html:106
 #: templates/organizer_profile.html:156 templates/organizer_profile.html:201
 #: templates/organizers.html:40 web/models.py:298
 msgid "Start date"
@@ -596,42 +596,121 @@ msgid "Sorry, no events found."
 msgstr "Извините, событий не найдено."
 
 #: templates/events.html:72 templates/events.html.py:82
-#: templates/index.html:38 templates/organizer_profile.html:105
-#: templates/organizers.html:66 templates/organizers.html.py:76
-#: templates/player_profile.html:245 templates/players.html:64
-#: templates/players.html.py:74
+#: templates/organizer_profile.html:105 templates/organizers.html:66
+#: templates/organizers.html.py:76 templates/player_profile.html:245
+#: templates/players.html:64 templates/players.html.py:74
 msgid "Previous"
 msgstr "Предыдущий"
 
 #: templates/events.html:76 templates/events.html.py:86
-#: templates/index.html:42 templates/organizer_profile.html:109
-#: templates/organizers.html:70 templates/organizers.html.py:80
-#: templates/player_profile.html:249 templates/players.html:68
-#: templates/players.html.py:78
+#: templates/organizer_profile.html:109 templates/organizers.html:70
+#: templates/organizers.html.py:80 templates/player_profile.html:249
+#: templates/players.html:68 templates/players.html.py:78
 msgid "Next"
 msgstr "Следующий"
 
-#: templates/index.html:13
+#: templates/index.html:15
 msgid " Create your own quest! "
 msgstr " Создай свой квест!"
 
-#: templates/index.html:50
+#: templates/index.html:17
+msgid ""
+"\n"
+"                        You are on the site, which has everything to do with "
+"quests.\n"
+"                        You can find all the quest of all the organizers of "
+"Moscow.\n"
+"                        You can try your hand and create your own adventure, "
+"using the gaming capabilities of the site.\n"
+"                        But most importantly! Make friends, meet new people "
+"and spend time with like-minded people!\n"
+"                    "
+msgstr ""
+"\n"
+"                        Вы на сайте, где есть все, что связано с квестами.\n"
+"                        Вы можете найти любой квест от всех организаторов "
+"Москвы.\n"
+"                        Можете попробовать свои силы и создать собственный "
+"квест, используя игровые возможности сайта.\n"
+"                        Но главное! Находите друзей, знакомьтесь с новыми "
+"людьми и проводите время с единомышленниками!\n"
+"                    "
+
+#: templates/index.html:28
+msgid "Choose a quest"
+msgstr "Выберите квест"
+
+#: templates/index.html:30
+msgid ""
+"\n"
+"                        Choose a quest what you want! Choose your "
+"adventure!\n"
+"                    "
+msgstr ""
+"\n"
+"                        Выберите квест, который вам нравиться! Выберите свое "
+"приключение!\n"
+"                    "
+
+#: templates/index.html:36
+msgid "Find friends"
+msgstr "Найдите друзей"
+
+#: templates/index.html:38
+msgid ""
+"\n"
+"                        Find your friends! Join your adventure with your "
+"friends!\n"
+"                    "
+msgstr ""
+"\n"
+"                        Найдите своих друзей! Насладитесь приключением "
+"вместе со своими друзьями!\n"
+"                    "
+
+#: templates/index.html:44
+msgid "Create quest"
+msgstr "Создать событие"
+
+#: templates/index.html:46
+msgid ""
+"\n"
+"                        Create quest by yourself! Complete it with your "
+"friends!\n"
+"                    "
+msgstr ""
+"\n"
+"                        Создайте квест сами! Пройдите квест вместе со своими "
+"друзьями!\n"
+"                    "
+
+#: templates/index.html:55
+msgid ""
+"\n"
+"                        Join adventure with your friends!\n"
+"                    "
+msgstr ""
+"\n"
+"                        Испытай приключение со своими друзьями!\n"
+"                    "
+
+#: templates/index.html:94
 msgid "Nearest events!"
 msgstr "Ближайшие события"
 
-#: templates/index.html:67
+#: templates/index.html:111
 msgid "Comming soon..."
 msgstr "Ожидаются в ближайшее время"
 
-#: templates/index.html:76
+#: templates/index.html:120
 msgid "Best players"
 msgstr "Лучшие игроки"
 
-#: templates/index.html:98
+#: templates/index.html:142
 msgid "Best organizers"
 msgstr "Лучшие организаторы"
 
-#: templates/index.html:121
+#: templates/index.html:165
 msgid "No planned events for this organizer"
 msgstr "У данного организатора нет запланированных событий"
 
@@ -1418,6 +1497,9 @@ msgstr "Пользователь {user} завершил событие {event}"
 #: web/views.py:909
 msgid "You are not started this event"
 msgstr "Вы не завершили это событие"
+
+#~ msgid "Why?"
+#~ msgstr "Зачем?"
 
 #~ msgid ""
 #~ "\n"

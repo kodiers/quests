@@ -5,128 +5,137 @@
 {% block title %}
     {% show_title_page %}
 {% endblock %}
+{% block scripts %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="row">
+    <div class="container-fluid">
+        <div class="row index-header">
             <div class="col-xs-12">
-                <div class="page-header">
-                    <h1>{% blocktrans %} Create your own quest! {% endblocktrans %}</h1>
-                </div>
+                <h1>{% blocktrans %} Create your own quest! {% endblocktrans %}</h1>
+                <p class="header-text">
+                    {% blocktrans %}
+                        You are on the site, which has everything to do with quests.
+                        You can find all the quest of all the organizers of Moscow.
+                        You can try your hand and create your own adventure, using the gaming capabilities of the site.
+                        But most importantly! Make friends, meet new people and spend time with like-minded people!
+                    {% endblocktrans %}
+                </p>
+            </div>
+        </div>
+        <div class="row index-buttons-row">
+            <div class="col-md-4 index-buttons-block">
+                <a href="{% url 'events' %}" class="btn btn-primary">{% trans 'Choose a quest' %}</a>
+                <p>
+                    {% blocktrans %}
+                        Choose a quest what you want! Choose your adventure!
+                    {% endblocktrans %}
+                </p>
+            </div>
+            <div class="col-md-4 index-buttons-block">
+                <a href="{% url 'events_registered' %}" class="btn btn-primary">{% trans 'Find friends' %}</a>
+                <p>
+                    {% blocktrans %}
+                        Find your friends! Join your adventure with your friends!
+                    {% endblocktrans %}
+                </p>
+            </div>
+            <div class="col-md-4 index-buttons-block">
+                <a href="{% url 'create_event' %}" class="btn btn-primary">{% trans 'Create quest' %}</a>
+                <p>
+                    {% blocktrans %}
+                        Create quest by yourself! Complete it with your friends!
+                    {% endblocktrans %}
+                </p>
             </div>
         </div>
         <div class="row">
-            <!-- Slider block -->
-            <div class="col-xs-12">
-                <div id="index_carousel" class="carousel slide" data-ride="carousel">
-                    <!-- Indicators -->
-                    <ol class="carousel-indicators">
-                        <li data-target="#index_carousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#index_carousel" data-slide-to="1"></li>
-                    </ol>
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner" role="listbox">
-                        <div class="item active">
-                            <img src="{% static 'images/slide1.jpg' %}">
-                        </div>
-                        <div class="item">
-                            <img src="{% static 'images/slide2.png' %}">
-                        </div>
-                    </div>
-                    <!-- Controls -->
-                    <a class="left carousel-control" href="#index_carousel" role="button" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                        <span class="sr-only">{% blocktrans %}Previous{% endblocktrans %}</span>
-                    </a>
-                    <a class="right carousel-control" href="#index_carousel" role="button" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                        <span class="sr-only">{% blocktrans %}Next{% endblocktrans %}</span>
-                    </a>
-                </div>
+            <div class="col-xs-12 banner">
+                <p class="banner_text">
+                    {% blocktrans %}
+                        Join adventure with your friends!
+                    {% endblocktrans %}
+                </p>
             </div>
         </div>
-        <div class="row">
+        <div class="row index-content-row">
             <!-- Events block -->
             <div class="col-xs-12">
-                <h1>{% trans "Nearest events!" %}</h1>
-                <div class="row">
-                    {% for event in nearest_events %}
-                        <div class="col-xs-4">
-                            <a href="{% url 'event' event.pk %}">
-                                {% if event.image.url != None %}
-                                    <img src="{{ event.image.url }}" class="img-responsive img-rounded index_avatar">
-                                {% else %}
-                                    <img src="{% static 'images/no_item_image.jpg' %}" class="img-responsive img-rounded index_avatar">
-                                {% endif %}
-                                <h3>{{ event.title }}</h3>
-                            </a>
-                            <p>{% trans "Start date" %}: {{ event.start_date|date:'d M Y' }}</p>
-                            <p>{{ event.description }}</p>
-                        </div>
-                    {% empty %}
-                        <div class="col-xs-12">
-                            <h2>{% trans "Comming soon..." as CommingSoon %}{{ CommingSoon }}</h2>
-                        </div>
-                    {% endfor %}
-                </div>
+                <h1 class="index-buttons-block">{% trans "Nearest events!" %}</h1>
             </div>
         </div>
         <div class="row">
+            {% for event in nearest_events %}
+                <div class="col-md-3 index-content-block">
+                    <a href="{% url 'event' event.pk %}">
+                        {% if event.image.url != None %}
+                            <img src="{{ event.image.url }}" class="img-responsive img-rounded index_avatar">
+                        {% else %}
+                            <img src="{% static 'images/no_item_image.jpg' %}" class="img-responsive img-rounded index_avatar">
+                        {% endif %}
+                        <h3>{{ event.title }}</h3>
+                    </a>
+                    <p>{% trans "Start date" %}: {{ event.start_date|date:'d M Y' }}</p>
+                    <p>{{ event.description }}</p>
+                    <p><a href="{% url 'event' event.pk %}" class="btn btn-primary">{% trans 'More...' %}</a> </p>
+                </div>
+            {% empty %}
+                <div class="col-xs-12">
+                    <h2>{% trans "Comming soon..." %}</h2>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row index-content-row">
             <!-- Players block -->
             <div class="col-xs-12">
-                <h1>{% trans "Best players" %}</h1>
-                <div class="row">
-                    {% for player in best_players %}
-                        <div class="col-xs-4">
-                            <a href="{% url 'player' player.pk %}">
-                                {% if player.user.questsusers.image.url != None %}
-                                    <img src="{{ player.user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
-                                {% else %}
-                                    <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
-                                {% endif %}
-                                <h3>{{ player.user.username }}</h3>
-                            </a>
-                            <p>{{ player.points }}</p>
-                        </div>
-                    {% empty %}
-                        <h2>{{ CommingSoon }}</h2>
-                    {% endfor %}
-                </div>
+                <h1 class="index-buttons-block">{% trans "Best players" %}</h1>
             </div>
         </div>
         <div class="row">
+            {% for player in best_players %}
+                <div class="col-md-4 index-content-block">
+                    <a href="{% url 'player' player.pk %}">
+                        {% if player.user.questsusers.image.url != None %}
+                            <img src="{{ player.user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
+                        {% else %}
+                            <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
+                        {% endif %}
+                        <h3>{{ player.user.username }}</h3>
+                    </a>
+                    <p>{% trans 'Score' %}:{{ player.points }}</p>
+                </div>
+            {% empty %}
+                <h2>{% trans "Comming soon..." %}</h2>
+            {% endfor %}
+        </div>
+        <div class="row index-content-row">
             <!-- Organizers block -->
-            <h1>{% trans "Best organizers" %}</h1>
-            <div class="row">
-                {% for organizer in best_organizers %}
-                    <div class="col-xs-4">
-                        <a href="{% url 'organizer' organizer.pk %}">
-                            {% if organizer.user.questsusers.image.url != None %}
-                                <img src="{{ organizer.user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
-                            {% else %}
-                                <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
-                            {% endif %}
-                            <h3>{{ organizer.user.username }}</h3>
-                        </a>
-                        <p>{{ organizer.description }}</p>
-                        {% for event in organizer.get_three_future_events %}
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <h4><a href="{% url 'event' event.pk %}"> {{ event.title }} </a></h4>
-                                    <p>{{ event.start_date|date:'d M Y' }}</p>
-                                </div>
-                            </div>
-                        {% empty %}
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <p>{% trans "No planned events for this organizer" %}</p>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% empty %}
-                    <h2>{{ CommingSoon }}</h2>
-                {% endfor %}
+            <div class="col-xs-12">
+                <h1 class="index-buttons-block">{% trans "Best organizers" %}</h1>
             </div>
+        </div>
+        <div class="row">
+            {% for organizer in best_organizers %}
+                <div class="col-md-4 index-content-block">
+                    <a href="{% url 'organizer' organizer.pk %}">
+                        {% if organizer.user.questsusers.image.url != None %}
+                            <img src="{{ organizer.user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
+                        {% else %}
+                            <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
+                        {% endif %}
+                        <h3>{{ organizer.user.username }}</h3>
+                    </a>
+                    <p>{{ organizer.description }}</p>
+                    {% for event in organizer.get_three_future_events %}
+                        <h4><a href="{% url 'event' event.pk %}"> {{ event.title }} </a></h4>
+                        <p>{% trans 'Start date' %}:{{ event.start_date|date:'d M Y' }}</p>
+                    {% empty %}
+                        <p>{% trans "No planned events for this organizer" %}</p>
+                    {% endfor %}
+                </div>
+            {% empty %}
+                <h2>{% trans "Comming soon..." %}</h2>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

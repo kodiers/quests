@@ -42,7 +42,7 @@ def index(request):
     :return: HttpResponse
     """
     today = datetime.date.today()
-    nearest_events = Events.objects.filter(start_date__gte=today).order_by('start_date')[:3]
+    nearest_events = Events.objects.filter(start_date__gte=today).order_by('start_date')[:4]
     best_players = Players.objects.filter(points__gt=0).order_by('-points')[:3]
     best_organizers = Organizers.objects.filter(show_on_main_page=True)[:3]
     return render_to_response('index.html', {'nearest_events': nearest_events,
@@ -1081,3 +1081,25 @@ def search_organizers_view(request):
     except EmptyPage:
         object_list = paginator.page(paginator.num_pages)
     return render_to_response('organizers.html', {'object_list': object_list}, context_instance=RequestContext(request))
+
+
+def events_registered_view(request):
+    """
+    Show all events, that start date > today and which have registered players or teams.
+    :param request: HttpRequest
+    :return: HttpResponse object
+    """
+    future_events = Events.objects.filter(start_date__gte=datetime.datetime.now())
+    events = []
+    for event in future_events:
+        if event.get_registered_count() > 0:
+            events.append(event)
+    paginator = Paginator(events, 20)
+    page = request.GET.get('page')
+    try:
+        object_list = paginator.page(page)
+    except PageNotAnInteger:
+        object_list = paginator.page(1)
+    except EmptyPage:
+        object_list = paginator.page(paginator.num_pages)
+    return render_to_response('events.html', {'object_list': object_list}, context_instance=RequestContext(request))

@@ -1,0 +1,100 @@
+.banner {
+    background: url("../images/index-banner_cropped.jpg") no-repeat;
+    height: 300px;
+    text-align: center;
+}
+.banner_text {
+    margin-top: 100px;
+    margin-bottom: 100px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 400%;
+}
+.index-header {
+    text-align: center;
+    text-transform: uppercase;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(207, 207, 207, 0.48);
+    background-color: #f8f8f8;
+}
+.header-text {
+    margin-right: 200px;
+    margin-left: 200px;
+    margin-top: 10px;
+}
+.index-buttons-row {
+    height: 200px;
+    text-align: center;
+}
+.index-buttons-block {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.index-content-row {
+    height: 150px;
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(207, 207, 207, 0.48);
+    background-color: #f8f8f8;
+}
+.index-content-block {
+    text-align: center;
+}
+@media screen and (max-width: 480px) {
+    .banner {
+        background: none;
+    }
+    .banner_text {
+        margin-top: 50px;
+        margin-bottom: 50px;
+        font-size: 200%;
+    }
+    .header-text {
+        display: none;
+    }
+    .index-buttons-row {
+        height: auto;
+    }
+    .index-buttons-block {
+        margin-top: 5px;
+    }
+    .index-content-row {
+        height: auto;
+    }
+    .index_avatar {
+        display: none;
+    }
+}
+@media screen and (min-width: 568px) and (max-width: 768px){
+    .banner_text {
+        font-size: 200%;
+    }
+    .header-text {
+        margin-right: 50px;
+        margin-left: 50px;
+    }
+    .index-buttons-row {
+        height: auto;
+    }
+    .index-buttons-block {
+        margin-top: 5px;
+    }
+    .index-content-row {
+        height: auto;
+    }
+    .index_avatar {
+        display: none;
+    }
+}
+/*@media screen and (min-width: 800px){*/
+    /*.index-buttons-row {*/
+        /*height: auto;*/
+    /*}*/
+    /*.index-content-row {*/
+        /*height: auto;*/
+    /*}*/
+/*}*/
