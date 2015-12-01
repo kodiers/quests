@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-30 15:46+0000\n"
+"POT-Creation-Date: 2015-12-01 12:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -198,8 +198,6 @@ msgid "Join event"
 msgstr "Присоединиться к событию"
 
 #: templates/confirm_join_event.html:17
-#, fuzzy
-#| msgid "Message from site"
 msgid "Message count"
 msgstr "Количество сообщений"
 
@@ -304,8 +302,6 @@ msgid "Registered players"
 msgstr "Участники события"
 
 #: templates/create_event.html:6
-#, fuzzy
-#| msgid "Nearest events!"
 msgid "Create event!"
 msgstr "Создать событие!"
 
@@ -348,8 +344,6 @@ msgstr ""
 "                                "
 
 #: templates/create_event.html:193
-#, fuzzy
-#| msgid "Save!"
 msgid "Save"
 msgstr "Сохранить"
 
@@ -464,14 +458,10 @@ msgid "You shoul save your event first"
 msgstr "Вы должны сохранить событие"
 
 #: templates/create_team.html:6
-#, fuzzy
-#| msgid " Create your own quest! "
 msgid "Create your team!"
 msgstr "Создай свою команду!"
 
 #: templates/create_team.html:12
-#, fuzzy
-#| msgid " Create your own quest! "
 msgid "Create your team"
 msgstr "Создай свою команду"
 
@@ -772,8 +762,6 @@ msgid "Registered"
 msgstr "Зарегистрировано"
 
 #: templates/organizer_profile.html:175 templates/player_profile.html:201
-#, fuzzy
-#| msgid "Nearest events!"
 msgid "Delete event"
 msgstr "Удалить событие"
 
@@ -792,8 +780,6 @@ msgid "Winner score"
 msgstr "Очки победителя"
 
 #: templates/organizers.html:42
-#, fuzzy
-#| msgid "Nearest events!"
 msgid "No future events"
 msgstr "Нет ближайших событий"
 
@@ -813,7 +799,7 @@ msgstr "Наши контакты"
 msgid "You can write to us"
 msgstr "Вы можете написать нам"
 
-#: templates/pages/contacts.html:43
+#: templates/pages/contacts.html:43 templates/pages/contacts.html.py:44
 msgid "Your name"
 msgstr "Ваше имя"
 
@@ -824,6 +810,10 @@ msgstr "Ваш email"
 #: templates/pages/contacts.html:47
 msgid "Your question"
 msgstr "Ваш вопрос"
+
+#: templates/pages/contacts.html:48
+msgid "Your message"
+msgstr "Ваше сообщение"
 
 #: templates/pages/faq.html:14
 msgid "Frequently Asked Questions"
@@ -870,26 +860,18 @@ msgid "Completed"
 msgstr "Завершено"
 
 #: templates/play_event.html:89
-#, fuzzy
-#| msgid "Max score"
 msgid "Task score"
 msgstr "Очки за задание"
 
 #: templates/play_event.html:89
-#, fuzzy
-#| msgid "Task hint"
 msgid "Task time"
 msgstr "Время на задание"
 
 #: templates/play_event.html:89
-#, fuzzy
-#| msgid "Winner score"
 msgid "Your score"
 msgstr "Ваши очки"
 
 #: templates/play_event.html:89
-#, fuzzy
-#| msgid "Your team"
 msgid "Your time"
 msgstr "Ваше время"
 
@@ -967,8 +949,6 @@ msgid "Unregister"
 msgstr "Отменить регистрацию"
 
 #: templates/player_profile.html:314
-#, fuzzy
-#| msgid "Nearest events!"
 msgid "Unregister event"
 msgstr "Отменить регистрацию на событие"
 
