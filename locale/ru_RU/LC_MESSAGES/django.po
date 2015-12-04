@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-01 15:05+0000\n"
+"POT-Creation-Date: 2015-12-03 10:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -206,9 +206,10 @@ msgid "You want to join event"
 msgstr "Вы хотите присодиниться к событию"
 
 #: templates/confirm_join_event.html:27 templates/event.html:19
-#: templates/events.html:47 templates/index.html:106
-#: templates/organizer_profile.html:156 templates/organizer_profile.html:201
-#: templates/organizers.html:40 web/models.py:298
+#: templates/events.html:47 templates/index.html:82
+#: templates/index.html.py:140 templates/organizer_profile.html:156
+#: templates/organizer_profile.html:201 templates/organizers.html:40
+#: web/models.py:298
 msgid "Start date"
 msgstr "Дата начала"
 
@@ -386,8 +387,9 @@ msgstr "Время на задание (минуты)"
 #: templates/create_event.html:228 templates/create_event.html.py:272
 #: templates/create_event.html:295 templates/event.html:102
 #: templates/event.html.py:123 templates/event.html:146
-#: templates/play_event.html:108 templates/player.html:64 web/models.py:385
-#: web/models.py:448 web/models.py:473
+#: templates/index.html:110 templates/play_event.html:108
+#: templates/player.html:64 web/models.py:385 web/models.py:448
+#: web/models.py:473
 msgid "Score"
 msgstr "Очки"
 
@@ -587,7 +589,8 @@ msgstr "Зарегистрированное число игроков/кома�
 msgid "Team only"
 msgstr "Командная игра"
 
-#: templates/events.html:55
+#: templates/events.html:55 templates/index.html:84
+#: templates/index.html.py:136
 msgid "More..."
 msgstr "Побробнее..."
 
@@ -636,11 +639,11 @@ msgstr ""
 "людьми и проводите время с единомышленниками!\n"
 "                    "
 
-#: templates/index.html:28
+#: templates/index.html:29
 msgid "Choose a quest"
 msgstr "Выберите квест"
 
-#: templates/index.html:30
+#: templates/index.html:31
 msgid ""
 "\n"
 "                        Choose a quest what you want! Choose your "
@@ -652,11 +655,11 @@ msgstr ""
 "приключение!\n"
 "                    "
 
-#: templates/index.html:36
+#: templates/index.html:38
 msgid "Find friends"
 msgstr "Найдите друзей"
 
-#: templates/index.html:38
+#: templates/index.html:40
 msgid ""
 "\n"
 "                        Find your friends! Join your adventure with your "
@@ -668,11 +671,11 @@ msgstr ""
 "вместе со своими друзьями!\n"
 "                    "
 
-#: templates/index.html:44
+#: templates/index.html:47
 msgid "Create quest"
 msgstr "Создать событие"
 
-#: templates/index.html:46
+#: templates/index.html:49
 msgid ""
 "\n"
 "                        Create quest by yourself! Complete it with your "
@@ -684,7 +687,7 @@ msgstr ""
 "друзьями!\n"
 "                    "
 
-#: templates/index.html:55
+#: templates/index.html:58
 msgid ""
 "\n"
 "                        Join adventure with your friends!\n"
@@ -694,23 +697,28 @@ msgstr ""
 "                        Испытай приключение со своими друзьями!\n"
 "                    "
 
-#: templates/index.html:94
+#: templates/index.html:68
 msgid "Nearest events!"
 msgstr "Ближайшие события"
 
-#: templates/index.html:111
+#: templates/index.html:88 templates/index.html.py:114
+#: templates/index.html:146
 msgid "Comming soon..."
 msgstr "Ожидаются в ближайшее время"
 
-#: templates/index.html:120
+#: templates/index.html:96
 msgid "Best players"
 msgstr "Лучшие игроки"
 
-#: templates/index.html:142
+#: templates/index.html:121
 msgid "Best organizers"
 msgstr "Лучшие организаторы"
 
-#: templates/index.html:165
+#: templates/index.html:137
+msgid "Future events:"
+msgstr "Ближайшие события"
+
+#: templates/index.html:142
 msgid "No planned events for this organizer"
 msgstr "У данного организатора нет запланированных событий"
 

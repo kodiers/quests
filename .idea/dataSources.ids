@@ -93,14 +93,8 @@
       <exported-key name="#FAKE_web_teams_players_1" table="web_teams_players" schema="" catalog="" columns="user_id"/>
       <exported-key name="#FAKE_auth_user_groups_2" table="auth_user_groups" schema="" catalog="" columns="user_id"/>
       <exported-key name="#FAKE_auth_user_user_permissions_2" table="auth_user_user_permissions" schema="" catalog="" columns="user_id"/>
-      <exported-key name="#FAKE_chat_chat_users_1" table="chat_chat_users" schema="" catalog="" columns="user_id"/>
-      <exported-key name="#FAKE_chat_messages_1" table="chat_messages" schema="" catalog="" columns="sender_id"/>
-      <exported-key name="#FAKE_django_admin_log_1" table="django_admin_log" schema="" catalog="" columns="user_id"/>
       <exported-key name="#FAKE_auth_user_groups_2" table="auth_user_groups" schema="" catalog="" columns="user_id"/>
       <exported-key name="#FAKE_auth_user_user_permissions_2" table="auth_user_user_permissions" schema="" catalog="" columns="user_id"/>
-      <exported-key name="#FAKE_chat_chat_users_1" table="chat_chat_users" schema="" catalog="" columns="user_id"/>
-      <exported-key name="#FAKE_chat_messages_1" table="chat_messages" schema="" catalog="" columns="sender_id"/>
-      <exported-key name="#FAKE_django_admin_log_1" table="django_admin_log" schema="" catalog="" columns="user_id"/>
     </table>
     <table name="auth_user_groups" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
@@ -126,10 +120,6 @@
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="have_new_message" sqlType="BOOL" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <primary-key columns="id"/>
-      <exported-key name="#FAKE_chat_chat_users_2" table="chat_chat_users" schema="" catalog="" columns="chat_id"/>
-      <exported-key name="#FAKE_chat_messages_2" table="chat_messages" schema="" catalog="" columns="chat_id"/>
-      <exported-key name="#FAKE_chat_chat_users_2" table="chat_chat_users" schema="" catalog="" columns="chat_id"/>
-      <exported-key name="#FAKE_chat_messages_2" table="chat_messages" schema="" catalog="" columns="chat_id"/>
       <exported-key name="#FAKE_chat_chat_users_2" table="chat_chat_users" schema="" catalog="" columns="chat_id"/>
       <exported-key name="#FAKE_chat_messages_2" table="chat_messages" schema="" catalog="" columns="chat_id"/>
       <exported-key name="#FAKE_chat_chat_users_2" table="chat_chat_users" schema="" catalog="" columns="chat_id"/>
@@ -183,9 +173,7 @@
       <exported-key name="#FAKE_auth_permission_1" table="auth_permission" schema="" catalog="" columns="content_type_id"/>
       <exported-key name="#FAKE_django_admin_log_2" table="django_admin_log" schema="" catalog="" columns="content_type_id"/>
       <exported-key name="#FAKE_auth_permission_1" table="auth_permission" schema="" catalog="" columns="content_type_id"/>
-      <exported-key name="#FAKE_django_admin_log_2" table="django_admin_log" schema="" catalog="" columns="content_type_id"/>
       <exported-key name="#FAKE_auth_permission_1" table="auth_permission" schema="" catalog="" columns="content_type_id"/>
-      <exported-key name="#FAKE_django_admin_log_2" table="django_admin_log" schema="" catalog="" columns="content_type_id"/>
     </table>
     <table name="django_migrations" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>

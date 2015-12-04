@@ -1,55 +1,94 @@
+[class*="row"] {
+    height: 100%;
+}
 .banner {
     background: url("../images/index-banner_cropped.jpg") no-repeat;
-    height: 300px;
+    height: 500px;
     text-align: center;
 }
 .banner_text {
-    margin-top: 100px;
+    margin-top: 150px;
     margin-bottom: 100px;
     text-transform: uppercase;
     font-weight: bold;
     font-size: 400%;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 .index-header {
+    background: url("../images/header-index-cropped.jpg") no-repeat;
+    opacity: .9;
+    color: #3E0216;
     text-align: center;
     text-transform: uppercase;
     border-bottom: solid;
     border-bottom-width: 1px;
     border-bottom-color: rgba(207, 207, 207, 0.48);
-    background-color: #f8f8f8;
+    /*background-color: #f8f8f8;*/
+    height: 500px;
 }
 .header-text {
     margin-right: 200px;
     margin-left: 200px;
-    margin-top: 10px;
+    margin-top: 100px;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+.header-h1-text {
+    font-size: 400%;
+    opacity: 1!important;
+    color: #3E0216;
+    font-weight: bold;
+    margin-top: 150px;
 }
 .index-buttons-row {
-    height: 200px;
+    height: 300px;
     text-align: center;
 }
 .index-buttons-block {
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    display: inline;
+}
+.index-buttons-p {
+    margin-top: 30px;
 }
 .index-content-row {
-    height: 150px;
+    height: 200px;
+    color: #3E0216;
     text-align: center;
     font-weight: bold;
+    font-size: 300%;
     text-transform: uppercase;
-    border-bottom: solid;
-    border-bottom-width: 1px;
-    border-bottom-color: rgba(207, 207, 207, 0.48);
-    background-color: #f8f8f8;
+    /*border-bottom: solid;*/
+    /*border-bottom-width: 1px;*/
+    /*border-bottom-color: rgba(207, 207, 207, 0.48);*/
+    padding-top: 25px;
+    /*background-color: #f8f8f8;*/
 }
 .index-content-block {
     text-align: center;
 }
+.index-content-icon {
+    display: inline;
+}
+.players-block {
+    background-color: #eef6f4;
+}
 @media screen and (max-width: 480px) {
+    .index-header {
+        height: auto;
+    }
+    .header-h1-text {
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
     .banner {
-        background: none;
+        /*background: none;*/
+        height: auto;
     }
     .banner_text {
-        margin-top: 50px;
+        margin-top: 100px;
         margin-bottom: 50px;
         font-size: 200%;
     }
@@ -69,7 +108,7 @@
         display: none;
     }
 }
-@media screen and (min-width: 568px) and (max-width: 768px){
+@media screen and (min-width: 481px) and (max-width: 1080px){
     .banner_text {
         font-size: 200%;
     }
@@ -90,11 +129,3 @@
         display: none;
     }
 }
-/*@media screen and (min-width: 800px){*/
-    /*.index-buttons-row {*/
-        /*height: auto;*/
-    /*}*/
-    /*.index-content-row {*/
-        /*height: auto;*/
-    /*}*/
-/*}*/

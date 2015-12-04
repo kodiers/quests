@@ -902,7 +902,7 @@ def complete_event(request):
         eventstat.save()
         # Notify organizer
         org_subject = _("User completed event")
-        org_message = _("User {user} completed event {event}".format(user=request.user.email, event=event.title))
+        org_message = _("User {user} completed event {event}".format(user=request.user.username, event=event.title))
         send_user_notification(org_subject, org_message, EMAIL_HOST_USER, event.organizer.email)
         return HttpResponse(json.dumps(SIMPLE_JSON_ANSWER), content_type="application/json")
     else:

@@ -6,6 +6,12 @@ body {
     margin-bottom: 100px;
     /*padding: 0px;*/
 }
+a {
+    color: #3E0216;
+}
+a:hover {
+    color: #3E0216;
+}
 .footer {
     position: absolute;
     bottom: 0;
@@ -26,8 +32,8 @@ body {
     font-style: italic;
 }
 .index_avatar {
-    max-width: 200px;
-    max-height: 200px;
+    width: 200px;
+    height: 200px;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -92,4 +98,42 @@ body {
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
     margin-bottom: 0px !important;
+}
+.mybtn {
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 20px;
+    background: #3E0216;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+}
+.mybtn:hover {
+    background: #8f0735;
+    text-decoration: none;
+    color: #ffffff;
+}
+.icons {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+.text-header {
+    display: block;
+    height: 50px;
+}
+.date {
+    text-decoration: underline;
+    font-weight: bold;
+}
+@media screen and (max-width: 480px) {
+    .date {
+        margin-top: 10px;
+    }
+    .text-header {
+        height: auto;
+    }
 }

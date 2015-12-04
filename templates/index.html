@@ -12,7 +12,7 @@
     <div class="container-fluid">
         <div class="row index-header">
             <div class="col-xs-12">
-                <h1>{% blocktrans %} Create your own quest! {% endblocktrans %}</h1>
+                <h1 class="header-h1-text">{% blocktrans %} Create your own quest! {% endblocktrans %}</h1>
                 <p class="header-text">
                     {% blocktrans %}
                         You are on the site, which has everything to do with quests.
@@ -25,32 +25,35 @@
         </div>
         <div class="row index-buttons-row">
             <div class="col-md-4 index-buttons-block">
-                <a href="{% url 'events' %}" class="btn btn-primary">{% trans 'Choose a quest' %}</a>
-                <p>
+                <img src="{% static 'images/map-icon.png' %}" alt="Choose a quest" class="icons">
+                <a href="{% url 'events' %}" class="mybtn">{% trans 'Choose a quest' %}</a>
+                <p class="index-buttons-p">
                     {% blocktrans %}
                         Choose a quest what you want! Choose your adventure!
                     {% endblocktrans %}
                 </p>
             </div>
             <div class="col-md-4 index-buttons-block">
-                <a href="{% url 'events_registered' %}" class="btn btn-primary">{% trans 'Find friends' %}</a>
-                <p>
+                <img src="{% static 'images/friends-icon.png' %}" alt="Find friends" class="icons">
+                <a href="{% url 'events_registered' %}" class="mybtn">{% trans 'Find friends' %}</a>
+                <p class="index-buttons-p">
                     {% blocktrans %}
                         Find your friends! Join your adventure with your friends!
                     {% endblocktrans %}
                 </p>
             </div>
             <div class="col-md-4 index-buttons-block">
-                <a href="{% url 'create_event' %}" class="btn btn-primary">{% trans 'Create quest' %}</a>
-                <p>
+                <img src="{% static 'images/create-icon.png' %}" alt="Create quest" class="icons">
+                <a href="{% url 'create_event' %}" class="mybtn">{% trans 'Create quest' %}</a>
+                <p class="index-buttons-p">
                     {% blocktrans %}
                         Create quest by yourself! Complete it with your friends!
                     {% endblocktrans %}
                 </p>
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-12 banner">
+        <div class="row banner">
+            <div class="col-xs-12">
                 <p class="banner_text">
                     {% blocktrans %}
                         Join adventure with your friends!
@@ -61,23 +64,24 @@
         <div class="row index-content-row">
             <!-- Events block -->
             <div class="col-xs-12">
+                <img src="{% static 'images/events-icon.png' %}" alt="Nearest events" class="index-content-icon">
                 <h1 class="index-buttons-block">{% trans "Nearest events!" %}</h1>
             </div>
         </div>
         <div class="row">
             {% for event in nearest_events %}
                 <div class="col-md-3 index-content-block">
-                    <a href="{% url 'event' event.pk %}">
-                        {% if event.image.url != None %}
-                            <img src="{{ event.image.url }}" class="img-responsive img-rounded index_avatar">
-                        {% else %}
-                            <img src="{% static 'images/no_item_image.jpg' %}" class="img-responsive img-rounded index_avatar">
-                        {% endif %}
-                        <h3>{{ event.title }}</h3>
-                    </a>
-                    <p>{% trans "Start date" %}: {{ event.start_date|date:'d M Y' }}</p>
-                    <p>{{ event.description }}</p>
-                    <p><a href="{% url 'event' event.pk %}" class="btn btn-primary">{% trans 'More...' %}</a> </p>
+                    {% if event.image.url != None %}
+                        <img src="{{ event.image.url }}" class="img-responsive img-rounded index_avatar">
+                    {% else %}
+                        <img src="{% static 'images/no-events-image.png' %}" class="img-responsive img-rounded index_avatar">
+                    {% endif %}
+                        <a href="{% url 'event' event.pk %}">
+                            <h3 class="text-header">{{ event.title }}</h3>
+                        </a>
+                    <p class="date">{% trans "Start date" %}: {{ event.start_date|date:'d M Y' }}</p>
+                    <p>{{ event.description|truncatewords:35 }}</p>
+                    <p><a href="{% url 'event' event.pk %}" class="mybtn">{% trans 'More...' %}</a> </p>
                 </div>
             {% empty %}
                 <div class="col-xs-12">
@@ -85,24 +89,26 @@
                 </div>
             {% endfor %}
         </div>
-        <div class="row index-content-row">
+        <div class="row index-content-row players-block">
             <!-- Players block -->
             <div class="col-xs-12">
+                <img src="{% static 'images/best-players-icon.png' %}" alt="Best players" class="index-content-icon img-rounded">
                 <h1 class="index-buttons-block">{% trans "Best players" %}</h1>
             </div>
         </div>
-        <div class="row">
+        <div class="row players-block">
             {% for player in best_players %}
                 <div class="col-md-4 index-content-block">
+                    {% if player.user.questsusers.image.url != None %}
+                        <img src="{{ player.user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
+                    {% else %}
+                        <img src="{% static 'images/no-players-image.png' %}" class="img-responsive img-rounded index_avatar">
+                    {% endif %}
                     <a href="{% url 'player' player.pk %}">
-                        {% if player.user.questsusers.image.url != None %}
-                            <img src="{{ player.user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
-                        {% else %}
-                            <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
-                        {% endif %}
-                        <h3>{{ player.user.username }}</h3>
+                        <h3 class="text-header">{{ player.user.username }}</h3>
                     </a>
-                    <p>{% trans 'Score' %}:{{ player.points }}</p>
+                    <p class="date">{% trans 'Score' %}:{{ player.points }}</p>
+                    <p>{{ player.description |truncatewords:30 }}</p>
                 </div>
             {% empty %}
                 <h2>{% trans "Comming soon..." %}</h2>
@@ -111,24 +117,27 @@
         <div class="row index-content-row">
             <!-- Organizers block -->
             <div class="col-xs-12">
+                <img src="{% static 'images/best-organizers.jpg' %}" class="index-content-icon img-rounded" alt="Best organizers">
                 <h1 class="index-buttons-block">{% trans "Best organizers" %}</h1>
             </div>
         </div>
         <div class="row">
             {% for organizer in best_organizers %}
                 <div class="col-md-4 index-content-block">
+                    {% if organizer.user.questsusers.image.url != None %}
+                        <img src="{{ organizer.user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
+                    {% else %}
+                        <img src="{% static 'images/no-organizers-image.png' %}" class="img-responsive img-rounded index_avatar">
+                    {% endif %}
                     <a href="{% url 'organizer' organizer.pk %}">
-                        {% if organizer.user.questsusers.image.url != None %}
-                            <img src="{{ organizer.user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
-                        {% else %}
-                            <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
-                        {% endif %}
-                        <h3>{{ organizer.user.username }}</h3>
+                        <h3 class="text-header">{{ organizer.user.username }}</h3>
                     </a>
-                    <p>{{ organizer.description }}</p>
+                    <p>{{ organizer.description|truncatewords:30 }}</p>
+                    <a href="{% url 'organizer' organizer.pk %}" class="mybtn">{% trans 'More...' %}</a>
+                    <h4>{% trans 'Future events:' %}</h4>
                     {% for event in organizer.get_three_future_events %}
-                        <h4><a href="{% url 'event' event.pk %}"> {{ event.title }} </a></h4>
-                        <p>{% trans 'Start date' %}:{{ event.start_date|date:'d M Y' }}</p>
+                        <h5><a href="{% url 'event' event.pk %}"> {{ event.title }} </a></h5>
+                        <p class="date">{% trans 'Start date' %}: {{ event.start_date|date:'d M Y' }}</p>
                     {% empty %}
                         <p>{% trans "No planned events for this organizer" %}</p>
                     {% endfor %}
