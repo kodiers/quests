@@ -9,26 +9,30 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.datetimepicker.css' %}">
     <script src="{% static 'js/jquery.datetimepicker.js' %}"></script>
     <script src="{% static 'js/calendar_create.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/events.css' %}">
 {% endblock %}
 {% block content %}
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-xs-12">
-                <form method="get" action="{% url 'search_events' %}">
+            <div class="col-md-10 all-events-button-col">
+                <form method="get" action="{% url 'search_events' %}" class="form-inline">
                     <label for="search">{% trans 'Enter word to search' %}:</label>
                     <input type="text" class="form-control" name="search" id="search">
                     <label for="id_start_date">{% trans 'From start date' %}:</label>
                     <input type="datetime" id="id_start_date" class="form-control" name="start_date">
                     <label for="id_end_date">{% trans 'To end date' %}:</label>
                     <input type="datetime" id="id_end_date" class="form-control" name="end_date">
-                    <input type="submit" class="btn btn-primary" value="{% trans 'Search' %}">
+                    <button type="submit" class="mybtn mybtn-small">{% trans 'Search' %}</button>
                 </form>
-                <a href="{% url 'all_events' %}" class="btn btn-primary">{% trans 'All events' %}</a>
+            </div>
+            <div class="col-md-2 all-events-button-col">
+                <a href="{% url 'all_events' %}" class="mybtn mybtn-small text_on_1_line">{% trans 'All events' %}</a>
             </div>
         </div>
-        <div class="row">
+        <div class="row events-h1-row">
             <div class="col-xs-12">
-                <h1 class="page-header">{% trans 'Events' %}</h1>
+                <img src="{% static 'images/events-icon.png' %}" class="index-content-icon" alt="Events">
+                <h1 class="events-page-h1">{% trans 'Events' %}</h1>
                 <p>{% trans 'Today' %}: {% now "j-m-Y" %}</p>
                 {% for object in object_list %}
                     <div class="row">

@@ -13,6 +13,10 @@
         <div class="row index-header">
             <div class="col-xs-12">
                 <h1 class="header-h1-text">{% blocktrans %} Create your own quest! {% endblocktrans %}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
                 <p class="header-text">
                     {% blocktrans %}
                         You are on the site, which has everything to do with quests.
@@ -61,11 +65,13 @@
                 </p>
             </div>
         </div>
-        <div class="row index-content-row">
+        <div class="row index-content-row index-caption-row">
             <!-- Events block -->
-            <div class="col-xs-12">
+            <div class="col-md-4 icon-block">
                 <img src="{% static 'images/events-icon.png' %}" alt="Nearest events" class="index-content-icon">
-                <h1 class="index-buttons-block">{% trans "Nearest events!" %}</h1>
+            </div>
+            <div class="col-md-8 index-caption-block">
+                <h1>{% trans "Nearest events!" %}</h1>
             </div>
         </div>
         <div class="row">
@@ -89,39 +95,16 @@
                 </div>
             {% endfor %}
         </div>
-        <div class="row index-content-row players-block">
-            <!-- Players block -->
-            <div class="col-xs-12">
-                <img src="{% static 'images/best-players-icon.png' %}" alt="Best players" class="index-content-icon img-rounded">
-                <h1 class="index-buttons-block">{% trans "Best players" %}</h1>
-            </div>
-        </div>
-        <div class="row players-block">
-            {% for player in best_players %}
-                <div class="col-md-4 index-content-block">
-                    {% if player.user.questsusers.image.url != None %}
-                        <img src="{{ player.user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
-                    {% else %}
-                        <img src="{% static 'images/no-players-image.png' %}" class="img-responsive img-rounded index_avatar">
-                    {% endif %}
-                    <a href="{% url 'player' player.pk %}">
-                        <h3 class="text-header">{{ player.user.username }}</h3>
-                    </a>
-                    <p class="date">{% trans 'Score' %}:{{ player.points }}</p>
-                    <p>{{ player.description |truncatewords:30 }}</p>
-                </div>
-            {% empty %}
-                <h2>{% trans "Comming soon..." %}</h2>
-            {% endfor %}
-        </div>
-        <div class="row index-content-row">
+        <div class="row index-content-row organizers-block index-caption-row">
             <!-- Organizers block -->
-            <div class="col-xs-12">
-                <img src="{% static 'images/best-organizers.jpg' %}" class="index-content-icon img-rounded" alt="Best organizers">
-                <h1 class="index-buttons-block">{% trans "Best organizers" %}</h1>
+            <div class="col-md-4 icon-block">
+                <img src="{% static 'images/best-organizers_2.png' %}" class="index-content-icon img-rounded" alt="Best organizers">
+            </div>
+            <div class="col-md-8 index-caption-block">
+                <h1>{% trans "Best organizers" %}</h1>
             </div>
         </div>
-        <div class="row">
+        <div class="row organizers-block">
             {% for organizer in best_organizers %}
                 <div class="col-md-4 index-content-block">
                     {% if organizer.user.questsusers.image.url != None %}
@@ -141,6 +124,33 @@
                     {% empty %}
                         <p>{% trans "No planned events for this organizer" %}</p>
                     {% endfor %}
+                </div>
+            {% empty %}
+                <h2>{% trans "Comming soon..." %}</h2>
+            {% endfor %}
+        </div>
+        <div class="row index-content-row index-caption-row">
+            <!-- Players block -->
+            <div class="col-md-4 icon-block">
+                <img src="{% static 'images/best-players-icon-2.png' %}" alt="Best players" class="index-content-icon img-rounded">
+            </div>
+            <div class="col-md-8 index-caption-block">
+                <h1>{% trans "Best players" %}</h1>
+            </div>
+        </div>
+        <div class="row">
+            {% for player in best_players %}
+                <div class="col-md-4 index-content-block">
+                    {% if player.user.questsusers.image.url != None %}
+                        <img src="{{ player.user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
+                    {% else %}
+                        <img src="{% static 'images/no-players-image.png' %}" class="img-responsive img-rounded index_avatar">
+                    {% endif %}
+                    <a href="{% url 'player' player.pk %}">
+                        <h3 class="text-header">{{ player.user.username }}</h3>
+                    </a>
+                    <p class="date">{% trans 'Score' %}:{{ player.points }}</p>
+                    <p>{{ player.description |truncatewords:30 }}</p>
                 </div>
             {% empty %}
                 <h2>{% trans "Comming soon..." %}</h2>

@@ -4,7 +4,6 @@ html {
 }
 body {
     margin-bottom: 100px;
-    /*padding: 0px;*/
 }
 a {
     color: #3E0216;
@@ -128,6 +127,14 @@ a:hover {
 .date {
     text-decoration: underline;
     font-weight: bold;
+}
+.mybtn-small {
+    padding: 5px 10px 5px 10px;
+    box-shadow: none;
+    border: none;
+}
+.index-content-icon {
+    display: inline;
 }
 @media screen and (max-width: 480px) {
     .date {
