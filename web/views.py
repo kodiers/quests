@@ -29,7 +29,7 @@ from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm,
 from quests.settings import EMAIL_HOST_USER, FAIL_EMAIL_SILENTLY, GOOGLE_MAPS_BROWSER_API_KEY, GOOGLE_API_STRING_URL
 
 from web.functions import create_password_str, json_wrapper, search_events, send_user_notification, construct_map_link, \
-    convert_str_to_int
+    convert_str_to_int, check_get_param
 
 from web.constants import *
 
@@ -994,6 +994,7 @@ def search_events_view(request):
         search_string = request.GET['search']
     start_date = None
     end_date = None
+    # Get seaech parameters from query
     if 'start_date' in request.GET:
         if request.GET['start_date'] != '':
             try:
@@ -1008,8 +1009,14 @@ def search_events_view(request):
                 end_date = datetime.datetime.strptime(request.GET['end_date'], "%Y-%m-%d %H:%M")
             except ValueError:
                 end_date = None
+    country = check_get_param('country', request)
+    city = check_get_param('city', request)
+    from_cost = check_get_param('cost_from', request)
+    to_cost = check_get_param('cost_to', request)
+    duration = check_get_param('duration', request)
+    organizer = check_get_param('organizer', request)
     # Search events
-    objects = search_events(search_string, start_date, end_date)
+    objects = search_events(search_string, start_date, end_date, country, city, from_cost, to_cost, duration, organizer)
     paginator = Paginator(objects, 20)
     page = request.GET.get('page')
     try:

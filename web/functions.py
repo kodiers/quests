@@ -2,6 +2,8 @@ __author__ = 'kodiers'
 
 import random
 
+from datetime import timedelta
+
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template.loader import render_to_string
@@ -46,13 +48,20 @@ def json_wrapper(func):
     return decorated_func
 
 
-def search_events(string, start_date, end_date):
+def search_events(string, start_date, end_date, country, city, from_cost, to_cost, duration, organizer):
     """
-    Search string in title or description of events or search events from event.start_date=start_date
-    to event.end_date = end_date
+    Search string in title or description of events or search events by parameters:
+    from start_date to end_date, events in country, in city, where cost is > from_cost and cost < to_cost,
+    where event.duration = duration, end event organizer is organizer
     :param string: String to search
     :param start_date: datetime object (from date)
     :param end_date: datetime object (to date)
+    :param country: string to search events in eventplaces.country
+    :param city: string to search events in eventplaces.city
+    :param from_cost: string -  minimal price of event
+    :param to_cost: string - max price of event
+    :param duration:string -  duration of event
+    :param organizer: string - organizer username of event
     :return: QuerySet object (list of Events)
     """
     if string is not None:
@@ -63,6 +72,19 @@ def search_events(string, start_date, end_date):
         objects = objects.filter(start_date__gte=start_date)
     if end_date is not None:
         objects = objects.filter(end_date__lte=end_date)
+    if country is not None:
+        objects = objects.filter(place__country__icontains=country)
+    if city is not None:
+        objects = objects.filter(place__city__icontains=city)
+    if to_cost is not None:
+        objects = objects.filter(price__lte=convert_str_to_float(to_cost))
+    if from_cost is not None:
+        objects = objects.filter(price__gte=convert_str_to_float(from_cost))
+    if duration is not None:
+        duration_value = timedelta(hours=convert_str_to_int(duration))
+        objects = objects.filter(duration__lte=duration_value)
+    if organizer is not None:
+        objects = objects.filter(organizer__username__icontains=organizer)
     return objects
 
 
@@ -113,12 +135,39 @@ def construct_map_link(url, api_key, country=None, city=None, street=None):
 
 def convert_str_to_int(string):
     """
-    CTry convert string to int. If exception then return 0.
+    Try convert string to int. If exception then return 0.
     :param string: string to convert
     :return: int
     """
     try:
-        integer = int(string)
+        num = int(string)
     except ValueError:
-        integer = 0
-    return integer
+        num = 0
+    return num
+
+
+def check_get_param(param, request):
+    """
+    Check if param in GET request. If True retuen param value els return None
+    :param param: string - param name
+    :param request: HttpRequest object
+    :return: string - param value
+    """
+    if param in request.GET and request.GET[param] != '':
+        paramValue = request.GET[param]
+    else:
+        paramValue = None
+    return paramValue
+
+
+def convert_str_to_float(string):
+    """
+    Try convert string to float. If exception then return 0.0.
+    :param string: string to convert
+    :return: float
+    """
+    try:
+        num = float(string)
+    except ValueError:
+        num = 0.0
+    return num

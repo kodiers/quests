@@ -18,10 +18,35 @@
                 <form method="get" action="{% url 'search_events' %}" class="form-inline">
                     <label for="search">{% trans 'Enter word to search' %}:</label>
                     <input type="text" class="form-control" name="search" id="search">
-                    <label for="id_start_date">{% trans 'From start date' %}:</label>
-                    <input type="datetime" id="id_start_date" class="form-control" name="start_date">
-                    <label for="id_end_date">{% trans 'To end date' %}:</label>
-                    <input type="datetime" id="id_end_date" class="form-control" name="end_date">
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#additionalSeacrhFields" aria-expanded="false" aria-controls="additionalSeacrhFields">
+                        {% trans 'Additional parameters' %}
+                    </button>
+                    <div class="collapse" id="additionalSeacrhFields">
+                        <div class="well">
+                            <label for="id_start_date">{% trans 'From start date' %}:</label>
+                            <input type="datetime" id="id_start_date" class="form-control" name="start_date">
+                            <label for="id_end_date">{% trans 'To end date' %}:</label>
+                            <input type="datetime" id="id_end_date" class="form-control" name="end_date">
+                            <br>
+                            <label for="id_country">{% trans 'Country' %}</label>
+                            <input type="text" class="form-control" name="country" id="id_country">
+                            <label for="id_city">{% trans 'City' %}</label>
+                            <input type="text" class="form-control" name="city" id="id_city">
+                            <br>
+                            <label>{% trans 'Cost' %}</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">{% trans 'From' %}</span>
+                                <input type="number" class="form-control" name="cost_from">
+                                <span class="input-group-addon">{% trans 'To' %}</span>
+                                <input type="number" class="form-control" name="cost_to">
+                            </div>
+                            <br>
+                            <label for="id_duration">{% trans 'Max Duration (hours)' %}</label>
+                            <input type="number" class="form-control" name="duration" id="id_duration">
+                            <label for="id_organizer">{% trans 'Organizer' %}</label>
+                            <input type="text" name="organizer" class="form-control" id="id_organizer">
+                        </div>
+                    </div>
                     <button type="submit" class="mybtn mybtn-small">{% trans 'Search' %}</button>
                 </form>
             </div>
