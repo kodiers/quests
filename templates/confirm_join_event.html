@@ -29,7 +29,7 @@
                     <div class="col-xs-3">
                         <p>{% trans "Place" %}</p>
                         <ul>
-                            <li>{% trans "Country" %}: {{ object.place.country }}</li>
+                            <li>{% trans "Country" %}: {{ object.place.get_country_display }}</li>
                             <li>{% trans "City" %}: {{ object.place.city }}</li>
                             <li>{% trans "Street" %}: {{ object.place.street }}</li>
                         </ul>

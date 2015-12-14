@@ -3,7 +3,7 @@ __author__ = 'kodiers'
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from web.models import Events
+from web.models import Events, COUNTRIES
 
 
 class UserRegistrationForm(forms.Form):
@@ -46,7 +46,7 @@ class PlayerProfileForm(forms.Form):
     description = forms.CharField(widget=forms.Textarea(attrs={'rows': 5}), label=_("About me"), required=False)
     date_of_birth = forms.DateField(label=_("Date of birth"), required=False)
     sex = forms.ChoiceField(choices=SEX, label=_('Sex'), required=False)
-    country = forms.CharField(max_length=255, required=False, label=_("Country"))
+    country = forms.ChoiceField(required=False, label=_("Country"), choices=COUNTRIES, initial='RU')
     city = forms.CharField(max_length=255, required=False, label=_("City"))
     street = forms.CharField(required=False, label=_("Street"), widget=forms.Textarea(attrs={'rows': 1}))
     phone = forms.CharField(required=False, label=_('Phone number'), max_length=15)
@@ -61,7 +61,7 @@ class CreateEventForm(forms.ModelForm):
     Model Form for create event.
     Add fields to create and edit EventPlaces object and generate map.
     """
-    country = forms.CharField(max_length=255, required=False, label=_("Country"))
+    country = forms.ChoiceField(label=_("Country"), choices=COUNTRIES, initial='RU')
     city = forms.CharField(max_length=255, required=False, label=_("City"))
     street = forms.CharField(required=False, label=_("Street"), max_length=255)
     class Meta:
@@ -78,7 +78,7 @@ class OrganizerProfileForm(forms.Form):
     avatar = forms.ImageField(label=_("Avatar"), required=False)
     description = forms.CharField(widget=forms.Textarea(attrs={'rows': 5}), label=_("About me"), required=False)
     date_of_birth = forms.DateField(label=_("Date of birth"), required=False)
-    country = forms.CharField(max_length=255, required=False, label=_("Country"))
+    country = forms.ChoiceField(required=False, label=_("Country"), choices=COUNTRIES, initial='RU')
     city = forms.CharField(max_length=255, required=False, label=_("City"))
     street = forms.CharField(required=False, label=_("Street"), widget=forms.Textarea(attrs={'rows': 1}))
     phone = forms.CharField(required=False, label=_('Phone number'), max_length=15)

@@ -29,7 +29,18 @@
                             <input type="datetime" id="id_end_date" class="form-control" name="end_date">
                             <br>
                             <label for="id_country">{% trans 'Country' %}</label>
-                            <input type="text" class="form-control" name="country" id="id_country">
+                            <select class="form-control" name="country" id="id_country">
+                                {% for country in COUNTRIES %}
+                                    {% if country.0 == 'RU' %}
+                                        <option value="{{ country.0 }}" selected="selected">
+                                            {{ country.1 }}
+                                        </option>
+                                    {% else %}
+                                        <option value="{{ country.0 }}">{{ country.1 }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+{#                            <input type="text" class="form-control" name="country" id="id_country">#}
                             <label for="id_city">{% trans 'City' %}</label>
                             <input type="text" class="form-control" name="city" id="id_city">
                             <br>

@@ -22,7 +22,7 @@ from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from web.models import QuestsUsers, Players, Organizers, Contacts, Events, Teams, Tasks, Hints, EventsPlaces, Photos, \
-    TaskStatistics, EventStatistics
+    TaskStatistics, EventStatistics, COUNTRIES
 from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm, PlayerProfileForm, CreateEventForm, \
     OrganizerProfileForm
 
@@ -419,7 +419,7 @@ def show_my_profile(request):
     # Initialize form fields dictionary
     intial_formdata = {'avatar': user.questsusers.image, 'description': user.players.description,
                        'date_of_birth': user.players.date_of_birth, 'sex': user.players.sex,
-                       'country': '', 'city': '', 'street': '', 'phone':'', 'skype': '', 'site': '',
+                       'country': 'RU', 'city': '', 'street': '', 'phone':'', 'skype': '', 'site': '',
                        'email': user.email, 'show_personal_info': user.players.show_personal_info}
     if Contacts.objects.filter(user=user).exists():
         # Load contacts in form field for user if exists
@@ -451,6 +451,7 @@ def create_event(request, pk=None):
             place = EventsPlaces.objects.get(pk=event.place.pk)
         else:
             place = EventsPlaces()
+            place.country = 'RU'
         # Check that user want edit created by self
         if event.organizer != request.user:
             error = _("You are not creator of this event")
@@ -458,6 +459,7 @@ def create_event(request, pk=None):
     else:
         event = None
         place = EventsPlaces()
+        place.country = 'RU'
     if request.method == 'POST':
         form = CreateEventForm(request.POST, request.FILES, instance=event)
         if form.is_valid():
@@ -479,7 +481,7 @@ def create_event(request, pk=None):
         form = CreateEventForm(initial={'organizer':request.user, 'duration':'1d 00:00:00',
                                         'country': place.country, 'city': place.city,
                                         'street': place.street}, instance=event)
-    return render_to_response('create_event.html', {'form': form, 'event': event, 'error': error},
+    return render_to_response('create_event.html', {'form': form, 'event': event, 'COUNTRIES': COUNTRIES,'error': error},
                               context_instance=RequestContext(request))
 
 
@@ -971,6 +973,11 @@ class EventsListView(ListView):
     template_name = 'events.html'
     queryset = Events.objects.filter(start_date__gte=datetime.datetime.now())
     paginate_by = 20
+
+    def get_context_data(self, **kwargs):
+        context = super(EventsListView, self).get_context_data(**kwargs)
+        context['COUNTRIES'] = COUNTRIES
+        return context
 
 
 class AllEventsListView(ListView):

@@ -233,7 +233,17 @@
                                     <hr>
                                     <h4>{% trans 'Task place' %}:</h4>
                                     <label for="id_taskCountry">{% trans 'Country' %}</label>
-                                    <input type="text" name="taskCountry" class="form-control" id="id_taskCountry">
+                                    <select class="form-control" name="country" id="id_taskCountry">
+                                        {% for country in COUNTRIES %}
+                                            {% if country.0 == 'RU' %}
+                                                <option value="{{ country.0 }}" selected="selected">
+                                                    {{ country.1 }}
+                                                </option>
+                                            {% else %}
+                                                <option value="{{ country.0 }}">{{ country.1 }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
                                     <label for="id_taskCity">{% trans 'City' %}</label>
                                     <input type="text" name="taskCity" class="form-control" id="id_taskCity">
                                     <label for="id_taskStreet">{% trans 'Street' %}</label>
@@ -299,7 +309,18 @@
                                                 <hr>
                                                 <h4>{% trans 'Task place' %}:</h4>
                                                 <label for="id_editTaskCountry{{ task.pk }}">{% trans 'Country' %}</label>
-                                                <input type="text" name="editTaskCountry" class="form-control" id="id_editTaskCountry{{ task.pk }}" value="{{ task.place.country }}">
+                                                <select class="form-control" name="editTaskCountry" id="id_editTaskCountry{{ task.pk }}">
+                                                    {% for country in COUNTRIES %}
+                                                        {% if country.0 == task.place.country %}
+                                                            <option value="{{ country.0 }}" selected="selected">
+                                                                {{ country.1 }}
+                                                            </option>
+                                                        {% else %}
+                                                            <option value="{{ country.0 }}">{{ country.1 }}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </select>
+{#                                                <input type="text" name="editTaskCountry" class="form-control" id="id_editTaskCountry{{ task.pk }}" value="{{ task.place.get_country_display }}">#}
                                                 <label for="id_editTaskCity{{ task.pk }}">{% trans 'City' %}</label>
                                                 <input type="text" name="editTaskCity" class="form-control" id="id_editTaskCity{{ task.pk }}" value="{{ task.place.city }}">
                                                 <label for="id_editTaskStreet{{ task.pk }}">{% trans 'Street' %}</label>

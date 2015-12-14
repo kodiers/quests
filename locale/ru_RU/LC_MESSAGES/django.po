@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-03 10:59+0000\n"
+"POT-Creation-Date: 2015-12-14 16:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,8 +86,8 @@ msgid "Send"
 msgstr "Отправить"
 
 #: chat/templates/contacts_list.html:46 templates/confirm_join_event.html:154
-#: templates/create_event.html:47 templates/create_event.html.py:261
-#: templates/create_event.html:323 templates/create_event.html.py:353
+#: templates/create_event.html:47 templates/create_event.html.py:270
+#: templates/create_event.html:342 templates/create_event.html.py:372
 #: templates/organizer.html:43 templates/organizer_profile.html:143
 #: templates/organizer_profile.html:187 templates/player.html:56
 #: templates/player_profile.html:143 templates/player_profile.html.py:174
@@ -113,8 +113,8 @@ msgid "Question"
 msgstr "Вопрос"
 
 #: pages/models.py:13 templates/create_event.html:230
-#: templates/create_event.html.py:272 templates/create_event.html:297
-#: templates/play_event.html:113 web/models.py:386
+#: templates/create_event.html.py:281 templates/create_event.html:306
+#: templates/play_event.html:113 web/models.py:636
 msgid "Answer"
 msgstr "Ответ"
 
@@ -151,12 +151,12 @@ msgstr "Комментарии"
 msgid "Home"
 msgstr "Домой"
 
-#: templates/base.html:38 templates/events.html:6 templates/events.html.py:31
+#: templates/base.html:38 templates/events.html:6 templates/events.html.py:70
 msgid "Events"
 msgstr "События"
 
 #: templates/base.html:39 templates/players.html:6
-#: templates/players.html.py:22 web/models.py:250
+#: templates/players.html.py:22 web/models.py:500
 msgid "Players"
 msgstr "Игроки"
 
@@ -206,47 +206,48 @@ msgid "You want to join event"
 msgstr "Вы хотите присодиниться к событию"
 
 #: templates/confirm_join_event.html:27 templates/event.html:19
-#: templates/events.html:47 templates/index.html:82
-#: templates/index.html.py:140 templates/organizer_profile.html:156
+#: templates/events.html:86 templates/index.html:88
+#: templates/index.html.py:123 templates/organizer_profile.html:156
 #: templates/organizer_profile.html:201 templates/organizers.html:40
-#: web/models.py:298
+#: web/models.py:548
 msgid "Start date"
 msgstr "Дата начала"
 
 #: templates/confirm_join_event.html:30 templates/event.html:22
-#: web/models.py:293 web/models.py:384
+#: web/models.py:543 web/models.py:634
 msgid "Place"
 msgstr "Место"
 
 #: templates/confirm_join_event.html:32 templates/create_event.html:235
-#: templates/create_event.html.py:301 templates/organizers.html:47
-#: templates/player.html:73 templates/players.html:44 web/forms.py:49
-#: web/forms.py:64 web/forms.py:81 web/models.py:48 web/models.py:272
+#: templates/create_event.html.py:310 templates/events.html:31
+#: templates/organizers.html:47 templates/player.html:73
+#: templates/players.html:44 web/forms.py:49 web/forms.py:64 web/forms.py:81
+#: web/models.py:298 web/models.py:522
 msgid "Country"
 msgstr "Страна"
 
-#: templates/confirm_join_event.html:33 templates/create_event.html:237
-#: templates/create_event.html.py:303 templates/organizer.html:49
-#: templates/organizers.html:48 templates/player.html:74
-#: templates/players.html:45 web/forms.py:50 web/forms.py:65 web/forms.py:82
-#: web/models.py:49 web/models.py:273
+#: templates/confirm_join_event.html:33 templates/create_event.html:246
+#: templates/create_event.html.py:322 templates/events.html:43
+#: templates/organizer.html:49 templates/organizers.html:48
+#: templates/player.html:74 templates/players.html:45 web/forms.py:50
+#: web/forms.py:65 web/forms.py:82 web/models.py:299 web/models.py:523
 msgid "City"
 msgstr "Город"
 
-#: templates/confirm_join_event.html:34 templates/create_event.html:239
-#: templates/create_event.html.py:305 templates/organizer.html:50
+#: templates/confirm_join_event.html:34 templates/create_event.html:248
+#: templates/create_event.html.py:324 templates/organizer.html:50
 #: templates/player.html:75 web/forms.py:51 web/forms.py:66 web/forms.py:83
-#: web/models.py:50 web/models.py:274
+#: web/models.py:300 web/models.py:524
 msgid "Street"
 msgstr "Улица"
 
 #: templates/confirm_join_event.html:38 templates/event.html:25
-#: web/models.py:19 web/models.py:303
+#: templates/events.html:56 web/models.py:269 web/models.py:553
 msgid "Organizer"
 msgstr "Организатор"
 
 #: templates/confirm_join_event.html:42 templates/event.html:35
-#: web/models.py:162 web/models.py:295 web/models.py:403
+#: web/models.py:412 web/models.py:545 web/models.py:653
 msgid "Price"
 msgstr "Цена"
 
@@ -255,7 +256,7 @@ msgid "FREE"
 msgstr "Бесплатно"
 
 #: templates/confirm_join_event.html:61 templates/event.html:112
-#: templates/play_event.html:28 web/models.py:302
+#: templates/play_event.html:28 web/models.py:552
 msgid "Registered teams"
 msgstr "Зарегистрированные команды"
 
@@ -356,12 +357,12 @@ msgstr "Карта события"
 msgid "Add task"
 msgstr "Добавить задание"
 
-#: templates/create_event.html:222 templates/create_event.html.py:289
+#: templates/create_event.html:222 templates/create_event.html.py:298
 #: templates/organizer.html:86 templates/organizer.html.py:112
 #: templates/organizer_profile.html:130 templates/player_profile.html:270
-#: templates/player_profile.html.py:359 web/forms.py:33 web/models.py:160
-#: web/models.py:177 web/models.py:248 web/models.py:290 web/models.py:381
-#: web/models.py:418
+#: templates/player_profile.html.py:359 web/forms.py:33 web/models.py:410
+#: web/models.py:427 web/models.py:498 web/models.py:540 web/models.py:631
+#: web/models.py:668
 msgid "Title"
 msgstr "Название"
 
@@ -369,10 +370,10 @@ msgstr "Название"
 msgid "Enter task title"
 msgstr "Введите название задания"
 
-#: templates/create_event.html:224 templates/create_event.html.py:291
+#: templates/create_event.html:224 templates/create_event.html.py:300
 #: templates/organizer_profile.html:132 templates/player_profile.html:272
-#: templates/player_profile.html.py:361 web/models.py:74 web/models.py:161
-#: web/models.py:178 web/models.py:194 web/models.py:291 web/models.py:382
+#: templates/player_profile.html.py:361 web/models.py:324 web/models.py:411
+#: web/models.py:428 web/models.py:444 web/models.py:541 web/models.py:632
 msgid "Description"
 msgstr "Описание"
 
@@ -380,65 +381,65 @@ msgstr "Описание"
 msgid "Enter description for task"
 msgstr "Введите описание задания"
 
-#: templates/create_event.html:226 templates/create_event.html.py:293
+#: templates/create_event.html:226 templates/create_event.html.py:302
 msgid "Time for task (minutes)"
 msgstr "Время на задание (минуты)"
 
-#: templates/create_event.html:228 templates/create_event.html.py:272
-#: templates/create_event.html:295 templates/event.html:102
+#: templates/create_event.html:228 templates/create_event.html.py:281
+#: templates/create_event.html:304 templates/event.html:102
 #: templates/event.html.py:123 templates/event.html:146
-#: templates/index.html:110 templates/play_event.html:108
-#: templates/player.html:64 web/models.py:385 web/models.py:448
-#: web/models.py:473
+#: templates/index.html:152 templates/play_event.html:108
+#: templates/player.html:64 web/models.py:635 web/models.py:698
+#: web/models.py:723
 msgid "Score"
 msgstr "Очки"
 
-#: templates/create_event.html:234 templates/create_event.html.py:300
+#: templates/create_event.html:234 templates/create_event.html.py:309
 msgid "Task place"
 msgstr "Место задания"
 
-#: templates/create_event.html:253 templates/create_event.html.py:254
-#: templates/create_event.html:314 templates/create_event.html.py:315
+#: templates/create_event.html:262 templates/create_event.html.py:263
+#: templates/create_event.html:333 templates/create_event.html.py:334
 msgid "Task hint"
 msgstr "Подсказка к заданию"
 
-#: templates/create_event.html:255
+#: templates/create_event.html:264
 msgid "Enter hint"
 msgstr "Введите подсказку"
 
-#: templates/create_event.html:256
+#: templates/create_event.html:265
 msgid "Create!"
 msgstr "Создать!"
 
-#: templates/create_event.html:267 templates/event.html:95
+#: templates/create_event.html:276 templates/event.html:95
 msgid "Tasks"
 msgstr "Задания"
 
-#: templates/create_event.html:272 web/models.py:470
+#: templates/create_event.html:281 web/models.py:720
 msgid "Task"
 msgstr "Задание"
 
-#: templates/create_event.html:272 templates/event.html:103
+#: templates/create_event.html:281 templates/event.html:103
 msgid "Time"
 msgstr "Время"
 
-#: templates/create_event.html:272 templates/play_event.html:109
+#: templates/create_event.html:281 templates/play_event.html:109
 msgid "Hint"
 msgstr "Подсказка"
 
-#: templates/create_event.html:274 templates/organizer_profile.html:163
+#: templates/create_event.html:283 templates/organizer_profile.html:163
 msgid "Edit"
 msgstr "Редактировать"
 
-#: templates/create_event.html:284
+#: templates/create_event.html:293
 msgid "Edit task"
 msgstr "Редактировать задание"
 
-#: templates/create_event.html:318 templates/player_profile.html:90
+#: templates/create_event.html:337 templates/player_profile.html:90
 msgid "Save!"
 msgstr "Сохранить!"
 
-#: templates/create_event.html:331 templates/create_event.html.py:348
+#: templates/create_event.html:350 templates/create_event.html.py:367
 #: templates/organizer_profile.html:93 templates/organizer_profile.html:98
 #: templates/organizer_profile.html:165 templates/organizer_profile.html:182
 #: templates/player_profile.html:138 templates/player_profile.html.py:190
@@ -447,15 +448,15 @@ msgstr "Сохранить!"
 msgid "Delete"
 msgstr "Удалить"
 
-#: templates/create_event.html:341
+#: templates/create_event.html:360
 msgid "Delete task"
 msgstr "Удалить задание"
 
-#: templates/create_event.html:344
+#: templates/create_event.html:363
 msgid "Are you sure"
 msgstr "Вы уверены"
 
-#: templates/create_event.html:364
+#: templates/create_event.html:383
 msgid "You shoul save your event first"
 msgstr "Вы должны сохранить событие"
 
@@ -526,12 +527,12 @@ msgstr "Присоединиться!"
 msgid "Login to join!"
 msgstr "Войти чтобы присоединиться!"
 
-#: templates/event.html:69 templates/events.html:49
+#: templates/event.html:69 templates/events.html:88
 #: templates/organizer_profile.html:161
 msgid "Maximum players/teams"
 msgstr "Максимальное число игроков/команд"
 
-#: templates/event.html:72 templates/events.html:50
+#: templates/event.html:72 templates/events.html:89
 #: templates/organizer_profile.html:160
 msgid "Minimum players/teams"
 msgstr "Минимальное число игроков/команд"
@@ -552,60 +553,80 @@ msgstr "Карта"
 msgid "None registered to this event yet"
 msgstr "Еще никто не зарегистрировался на это событие"
 
-#: templates/events.html:18
+#: templates/events.html:19
 msgid "Enter word to search"
 msgstr "Введите слово для поиска"
 
-#: templates/events.html:20
+#: templates/events.html:22
+msgid "Additional parameters"
+msgstr "Дополнительные параметры"
+
+#: templates/events.html:26
 msgid "From start date"
 msgstr "Дата начала"
 
-#: templates/events.html:22
+#: templates/events.html:28
 msgid "To end date"
 msgstr "Дата завершения"
 
-#: templates/events.html:24 templates/organizers.html:16
+#: templates/events.html:46
+msgid "Cost"
+msgstr "Стоимость"
+
+#: templates/events.html:48
+msgid "From"
+msgstr "С"
+
+#: templates/events.html:50
+msgid "To"
+msgstr "До"
+
+#: templates/events.html:54
+msgid "Max Duration (hours)"
+msgstr "Макс. Длительность (часы)"
+
+#: templates/events.html:60 templates/organizers.html:16
 #: templates/players.html:16
 msgid "Search"
 msgstr "Поиск"
 
-#: templates/events.html:26
+#: templates/events.html:64
 msgid "All events"
 msgstr "Все события"
 
-#: templates/events.html:32
+#: templates/events.html:71
 msgid "Today"
 msgstr "Сегодня"
 
-#: templates/events.html:48 templates/organizer.html:113 web/models.py:299
+#: templates/events.html:87 templates/organizer.html:113 web/models.py:549
 msgid "End date"
 msgstr "Дата завершения"
 
-#: templates/events.html:51
+#: templates/events.html:90
 msgid "Regitered players/teams"
 msgstr "Зарегистрированное число игроков/команд"
 
-#: templates/events.html:53 web/models.py:294
+#: templates/events.html:92 web/models.py:544
 msgid "Team only"
 msgstr "Командная игра"
 
-#: templates/events.html:55 templates/index.html:84
-#: templates/index.html.py:136
+#: templates/events.html:94 templates/index.html:90
+#: templates/index.html.py:119
 msgid "More..."
 msgstr "Побробнее..."
 
-#: templates/events.html:61
+#: templates/events.html:100
 msgid "Sorry, no events found."
 msgstr "Извините, событий не найдено."
 
-#: templates/events.html:72 templates/events.html.py:82
+#: templates/events.html:111 templates/events.html.py:121
 #: templates/organizer_profile.html:105 templates/organizers.html:66
 #: templates/organizers.html.py:76 templates/player_profile.html:245
 #: templates/players.html:64 templates/players.html.py:74
 msgid "Previous"
 msgstr "Предыдущий"
 
-#: templates/events.html:76 templates/events.html.py:86
+#: templates/events.html:115 templates/events.html.py:125
 #: templates/organizer_profile.html:109 templates/organizers.html:70
 #: templates/organizers.html.py:80 templates/player_profile.html:249
 #: templates/players.html:68 templates/players.html.py:78
@@ -616,7 +637,7 @@ msgstr "Следующий"
 msgid " Create your own quest! "
 msgstr " Создай свой квест!"
 
-#: templates/index.html:17
+#: templates/index.html:21
 msgid ""
 "\n"
 "                        You are on the site, which has everything to do with "
@@ -639,11 +660,11 @@ msgstr ""
 "людьми и проводите время с единомышленниками!\n"
 "                    "
 
-#: templates/index.html:29
+#: templates/index.html:33
 msgid "Choose a quest"
 msgstr "Выберите квест"
 
-#: templates/index.html:31
+#: templates/index.html:35
 msgid ""
 "\n"
 "                        Choose a quest what you want! Choose your "
@@ -655,11 +676,11 @@ msgstr ""
 "приключение!\n"
 "                    "
 
-#: templates/index.html:38
+#: templates/index.html:42
 msgid "Find friends"
 msgstr "Найдите друзей"
 
-#: templates/index.html:40
+#: templates/index.html:44
 msgid ""
 "\n"
 "                        Find your friends! Join your adventure with your "
@@ -671,11 +692,11 @@ msgstr ""
 "вместе со своими друзьями!\n"
 "                    "
 
-#: templates/index.html:47
+#: templates/index.html:51
 msgid "Create quest"
 msgstr "Создать событие"
 
-#: templates/index.html:49
+#: templates/index.html:53
 msgid ""
 "\n"
 "                        Create quest by yourself! Complete it with your "
@@ -687,7 +708,7 @@ msgstr ""
 "друзьями!\n"
 "                    "
 
-#: templates/index.html:58
+#: templates/index.html:62
 msgid ""
 "\n"
 "                        Join adventure with your friends!\n"
@@ -697,33 +718,33 @@ msgstr ""
 "                        Испытай приключение со своими друзьями!\n"
 "                    "
 
-#: templates/index.html:68
+#: templates/index.html:74
 msgid "Nearest events!"
 msgstr "Ближайшие события"
 
-#: templates/index.html:88 templates/index.html.py:114
-#: templates/index.html:146
+#: templates/index.html:94 templates/index.html.py:129
+#: templates/index.html:156
 msgid "Comming soon..."
 msgstr "Ожидаются в ближайшее время"
 
-#: templates/index.html:96
-msgid "Best players"
-msgstr "Лучшие игроки"
-
-#: templates/index.html:121
+#: templates/index.html:104
 msgid "Best organizers"
 msgstr "Лучшие организаторы"
 
-#: templates/index.html:137
+#: templates/index.html:120
 msgid "Future events:"
 msgstr "Ближайшие события"
 
-#: templates/index.html:142
+#: templates/index.html:125
 msgid "No planned events for this organizer"
 msgstr "У данного организатора нет запланированных событий"
 
-#: templates/join_event.html:14 web/models.py:387 web/models.py:421
-#: web/models.py:445
+#: templates/index.html:138
+msgid "Best players"
+msgstr "Лучшие игроки"
+
+#: templates/join_event.html:14 web/models.py:637 web/models.py:671
+#: web/models.py:695
 msgid "Event"
 msgstr "Событие"
 
@@ -764,7 +785,7 @@ msgstr "Ближайшие события"
 
 #: templates/organizer.html:87 templates/organizer_profile.html:134
 #: templates/player_profile.html:274 templates/player_profile.html.py:363
-#: web/models.py:420
+#: web/models.py:670
 msgid "Date"
 msgstr "Дата"
 
@@ -872,7 +893,7 @@ msgstr "Нет ближайших событий"
 
 #: templates/organizers.html:49
 msgid "Site"
-msgstr "Site"
+msgstr "Сайт"
 
 #: templates/organizers.html:55
 msgid "Sorry, no organizers found."
@@ -938,7 +959,7 @@ msgstr "Завершить"
 msgid "You are completed this event"
 msgstr "Вы завершили это событие"
 
-#: templates/play_event.html:80 web/models.py:305
+#: templates/play_event.html:80 web/models.py:555
 msgid "Duration"
 msgstr "Длительность"
 
@@ -975,7 +996,7 @@ msgid "Date of birth:"
 msgstr "Дата рождения:"
 
 #: templates/player.html:72 templates/players.html:42 web/forms.py:48
-#: web/models.py:75
+#: web/models.py:325
 msgid "Sex"
 msgstr "Пол"
 
@@ -1039,11 +1060,11 @@ msgstr "Отменить регистрацию"
 msgid "Unregister event"
 msgstr "Отменить регистрацию на событие"
 
-#: templates/players.html:39 web/models.py:251
+#: templates/players.html:39 web/models.py:501
 msgid "Total points"
 msgstr "Всего очков"
 
-#: templates/players.html:41 web/forms.py:47 web/forms.py:80 web/models.py:76
+#: templates/players.html:41 web/forms.py:47 web/forms.py:80 web/models.py:326
 msgid "Date of birth"
 msgstr "Дата рождения"
 
@@ -1164,23 +1185,23 @@ msgstr "Подтверждение пароля"
 msgid "Are you organizer?"
 msgstr "Вы организатор?"
 
-#: web/forms.py:41 web/models.py:68
+#: web/forms.py:41 web/models.py:318
 msgid "MALE"
 msgstr "М"
 
-#: web/forms.py:42 web/models.py:69
+#: web/forms.py:42 web/models.py:319
 msgid "FEMALE"
 msgstr "Ж"
 
-#: web/forms.py:43 web/models.py:70
+#: web/forms.py:43 web/models.py:320
 msgid "NOT DEFINED"
 msgstr "Н/А"
 
-#: web/forms.py:45 web/forms.py:78 web/models.py:20
+#: web/forms.py:45 web/forms.py:78 web/models.py:270
 msgid "Avatar"
 msgstr "Автар"
 
-#: web/forms.py:52 web/forms.py:84 web/models.py:51
+#: web/forms.py:52 web/forms.py:84 web/models.py:301
 msgid "Phone number"
 msgstr "Номер телефона"
 
@@ -1188,127 +1209,1112 @@ msgstr "Номер телефона"
 msgid "Show my personal info"
 msgstr "Отображать мою персональную информацию для всех"
 
+#: web/models.py:14
+msgid "United Kingdom"
+msgstr "Великобритания"
+
+#: web/models.py:15
+msgid "Afghanistan"
+msgstr "Афганистан"
+
+#: web/models.py:16
+msgid "Aland Islands"
+msgstr "Аландские острова"
+
+#: web/models.py:17
+msgid "Albania"
+msgstr "Албания"
+
+#: web/models.py:18
+msgid "Algeria"
+msgstr "Алжир"
+
+#: web/models.py:19
+msgid "American Samoa"
+msgstr "Американское Самоа"
+
+#: web/models.py:20
+msgid "Andorra"
+msgstr "Андорра"
+
+#: web/models.py:21
+msgid "Angola"
+msgstr "Ангола"
+
+#: web/models.py:22
+msgid "Anguilla"
+msgstr "Ангилья"
+
+#: web/models.py:23
+msgid "Antarctica"
+msgstr "Антарктика"
+
+#: web/models.py:24
+msgid "Antigua and Barbuda"
+msgstr "Антигуа и Барбуда"
+
 #: web/models.py:25
+msgid "Argentina"
+msgstr "Аргентина"
+
+#: web/models.py:26
+msgid "Armenia"
+msgstr "Армения"
+
+#: web/models.py:27
+msgid "Aruba"
+msgstr "Аруба"
+
+#: web/models.py:28
+msgid "Australia"
+msgstr "Австралия"
+
+#: web/models.py:29
+msgid "Austria"
+msgstr "Австрия"
+
+#: web/models.py:30
+msgid "Azerbaijan"
+msgstr "Азербайджан"
+
+#: web/models.py:31
+msgid "Bahamas"
+msgstr "Багамские острова"
+
+#: web/models.py:32
+msgid "Bahrain"
+msgstr "Бахрейн"
+
+#: web/models.py:33
+msgid "Bangladesh"
+msgstr "Бангладеш"
+
+#: web/models.py:34
+msgid "Barbados"
+msgstr "Барбадос"
+
+#: web/models.py:35
+msgid "Belarus"
+msgstr "Беларусь"
+
+#: web/models.py:36
+msgid "Belgium"
+msgstr "Бельгия"
+
+#: web/models.py:37
+msgid "Belize"
+msgstr "Белиз"
+
+#: web/models.py:38
+msgid "Benin"
+msgstr "Бенин"
+
+#: web/models.py:39
+msgid "Bermuda"
+msgstr "Бермудские острова"
+
+#: web/models.py:40
+msgid "Bhutan"
+msgstr "Бутан"
+
+#: web/models.py:41
+msgid "Bolivia"
+msgstr "Боливия"
+
+#: web/models.py:42
+msgid "Bosnia and Herzegovina"
+msgstr "Босния и Герцеговина"
+
+#: web/models.py:43
+msgid "Botswana"
+msgstr "Ботсвана"
+
+#: web/models.py:44
+msgid "Bouvet Island"
+msgstr "Остров Буве"
+
+#: web/models.py:45
+msgid "Brazil"
+msgstr "Бразилия"
+
+#: web/models.py:46
+msgid "British Indian Ocean Territory"
+msgstr "Британская территория Индийского Океана"
+
+#: web/models.py:47
+msgid "Brunei Darussalam"
+msgstr "Бруней-Даруссалам"
+
+#: web/models.py:48
+msgid "Bulgaria"
+msgstr "Болгария"
+
+#: web/models.py:49
+msgid "Burkina Faso"
+msgstr "Буркина-Фасо"
+
+#: web/models.py:50
+msgid "Burundi"
+msgstr "Бурунди"
+
+#: web/models.py:51
+msgid "Cambodia"
+msgstr "Камбоджа"
+
+#: web/models.py:52
+msgid "Cameroon"
+msgstr "Камерун"
+
+#: web/models.py:53
+msgid "Canada"
+msgstr "Канада"
+
+#: web/models.py:54
+msgid "Cape Verde"
+msgstr "Капе Верде"
+
+#: web/models.py:55
+msgid "Cayman Islands"
+msgstr "Каймановы острова"
+
+#: web/models.py:56
+msgid "Central African Republic"
+msgstr "Центральная Африканская Республика"
+
+#: web/models.py:57
+msgid "Chad"
+msgstr "Чад"
+
+#: web/models.py:58
+msgid "Chile"
+msgstr "Чили"
+
+#: web/models.py:59
+msgid "China"
+msgstr "Китай"
+
+#: web/models.py:60
+msgid "Christmas Island"
+msgstr "Остров Рождества"
+
+#: web/models.py:61
+msgid "Cocos (Keeling) Islands"
+msgstr "Кокосовые острова"
+
+#: web/models.py:62
+msgid "Colombia"
+msgstr "Колумбия"
+
+#: web/models.py:63
+msgid "Comoros"
+msgstr "Коморские острова"
+
+#: web/models.py:64
+msgid "Congo"
+msgstr ""
+
+#: web/models.py:65
+msgid "Congo, The Democratic Republic of the"
+msgstr "Конго"
+
+#: web/models.py:66
+msgid "Cook Islands"
+msgstr "Острова Кука"
+
+#: web/models.py:67
+msgid "Costa Rica"
+msgstr "Коста Рика"
+
+#: web/models.py:68
+msgid "Cote d'Ivoire"
+msgstr "Кот д Ивуар"
+
+#: web/models.py:69
+msgid "Croatia"
+msgstr "Хорватия"
+
+#: web/models.py:70
+msgid "Cuba"
+msgstr "Куба"
+
+#: web/models.py:71
+msgid "Cyprus"
+msgstr "Кипр"
+
+#: web/models.py:72
+msgid "Czech Republic"
+msgstr "Чехия"
+
+#: web/models.py:73
+msgid "Denmark"
+msgstr "Дания"
+
+#: web/models.py:74
+msgid "Djibouti"
+msgstr "Джибути"
+
+#: web/models.py:75
+msgid "Dominica"
+msgstr "Доминика"
+
+#: web/models.py:76
+msgid "Dominican Republic"
+msgstr "Доминиканская республика"
+
+#: web/models.py:77
+msgid "Ecuador"
+msgstr "Эквадор"
+
+#: web/models.py:78
+msgid "Egypt"
+msgstr "Египет"
+
+#: web/models.py:79
+msgid "El Salvador"
+msgstr "Сальвадор"
+
+#: web/models.py:80
+msgid "Equatorial Guinea"
+msgstr "Экваториальная Гвинея"
+
+#: web/models.py:81
+msgid "Eritrea"
+msgstr "Эритрея"
+
+#: web/models.py:82
+msgid "Estonia"
+msgstr "Эстония"
+
+#: web/models.py:83
+msgid "Ethiopia"
+msgstr "Эфиопия"
+
+#: web/models.py:84
+msgid "Falkland Islands (Malvinas)"
+msgstr "Фолклендские острова"
+
+#: web/models.py:85
+msgid "Faroe Islands"
+msgstr "Фарерские острова"
+
+#: web/models.py:86
+msgid "Fiji"
+msgstr "Фиджи"
+
+#: web/models.py:87
+msgid "Finland"
+msgstr "Финляндия"
+
+#: web/models.py:88
+msgid "France"
+msgstr "Франция"
+
+#: web/models.py:89
+msgid "French Guiana"
+msgstr "Французская Гвиана"
+
+#: web/models.py:90
+msgid "French Polynesia"
+msgstr "Французская Полинезия"
+
+#: web/models.py:91
+msgid "French Southern Territories"
+msgstr "Французские Южные территории"
+
+#: web/models.py:92
+msgid "Gabon"
+msgstr "Габон"
+
+#: web/models.py:93
+msgid "Gambia"
+msgstr "Гамбия"
+
+#: web/models.py:94
+msgid "Georgia"
+msgstr "Грузия"
+
+#: web/models.py:95
+msgid "Germany"
+msgstr "Германия"
+
+#: web/models.py:96
+msgid "Ghana"
+msgstr "Гана"
+
+#: web/models.py:97
+msgid "Gibraltar"
+msgstr "Гибралтар"
+
+#: web/models.py:98
+msgid "Greece"
+msgstr "Греция"
+
+#: web/models.py:99
+msgid "Greenland"
+msgstr "Гринландия"
+
+#: web/models.py:100
+msgid "Grenada"
+msgstr "Гренада"
+
+#: web/models.py:101
+msgid "Guadeloupe"
+msgstr "Гваделупе"
+
+#: web/models.py:102
+msgid "Guam"
+msgstr "Гуам"
+
+#: web/models.py:103
+msgid "Guatemala"
+msgstr "Гватемала"
+
+#: web/models.py:104
+msgid "Guernsey"
+msgstr ""
+
+#: web/models.py:105
+msgid "Guinea"
+msgstr "Гвинея"
+
+#: web/models.py:106
+msgid "Guinea-Bissau"
+msgstr "Гвинея-Бисау"
+
+#: web/models.py:107
+msgid "Guyana"
+msgstr "Гайана"
+
+#: web/models.py:108
+msgid "Haiti"
+msgstr "Гаити"
+
+#: web/models.py:109
+msgid "Heard Island and McDonald Islands"
+msgstr "Остров Херд и острова Макдональд"
+
+#: web/models.py:110
+msgid "Holy See (Vatican City State)"
+msgstr "Ватикан"
+
+#: web/models.py:111
+msgid "Honduras"
+msgstr "Гондурас"
+
+#: web/models.py:112
+msgid "Hong Kong"
+msgstr "Гонконг"
+
+#: web/models.py:113
+msgid "Hungary"
+msgstr "Венгрия"
+
+#: web/models.py:114
+msgid "Iceland"
+msgstr "Исландия"
+
+#: web/models.py:115
+msgid "India"
+msgstr "Индия"
+
+#: web/models.py:116
+msgid "Indonesia"
+msgstr "Индонезия"
+
+#: web/models.py:117
+msgid "Iran, Islamic Republic of"
+msgstr "Иран"
+
+#: web/models.py:118
+msgid "Iraq"
+msgstr "Ирак"
+
+#: web/models.py:119
+msgid "Ireland"
+msgstr "Ирландия"
+
+#: web/models.py:120
+msgid "Isle of Man"
+msgstr "Остров Мэн"
+
+#: web/models.py:121
+msgid "Israel"
+msgstr "Израиль"
+
+#: web/models.py:122
+msgid "Italy"
+msgstr "Италия"
+
+#: web/models.py:123
+msgid "Jamaica"
+msgstr "Ямайка"
+
+#: web/models.py:124
+msgid "Japan"
+msgstr "Япония"
+
+#: web/models.py:125
+msgid "Jersey"
+msgstr "Джерси"
+
+#: web/models.py:126
+msgid "Jordan"
+msgstr "Иордания"
+
+#: web/models.py:127
+msgid "Kazakhstan"
+msgstr "Казахстан"
+
+#: web/models.py:128
+msgid "Kenya"
+msgstr "Кения"
+
+#: web/models.py:129
+msgid "Kiribati"
+msgstr "Кирибати"
+
+#: web/models.py:130
+msgid "Korea, Democratic People's Republic of"
+msgstr "КНДР"
+
+#: web/models.py:131
+msgid "Korea, Republic of"
+msgstr "Корея"
+
+#: web/models.py:132
+msgid "Kuwait"
+msgstr "Кувейт"
+
+#: web/models.py:133
+msgid "Kyrgyzstan"
+msgstr "Кыргызстан"
+
+#: web/models.py:134
+msgid "Lao People's Democratic Republic"
+msgstr "Лаосская Народно-Демократическая Республика"
+
+#: web/models.py:135
+msgid "Latvia"
+msgstr "Латвия"
+
+#: web/models.py:136
+msgid "Lebanon"
+msgstr "Ливан"
+
+#: web/models.py:137
+msgid "Lesotho"
+msgstr "Лесото"
+
+#: web/models.py:138
+msgid "Liberia"
+msgstr "Либерия"
+
+#: web/models.py:139
+msgid "Libyan Arab Jamahiriya"
+msgstr "Ливия"
+
+#: web/models.py:140
+msgid "Liechtenstein"
+msgstr "Лихтенштейн"
+
+#: web/models.py:141
+msgid "Lithuania"
+msgstr "Литва"
+
+#: web/models.py:142
+msgid "Luxembourg"
+msgstr "Люксембург"
+
+#: web/models.py:143
+msgid "Macao"
+msgstr "Макао"
+
+#: web/models.py:144
+msgid "Macedonia, The Former Yugoslav Republic of"
+msgstr "Македония"
+
+#: web/models.py:145
+msgid "Madagascar"
+msgstr "Мадагаскар"
+
+#: web/models.py:146
+msgid "Malawi"
+msgstr "Малави"
+
+#: web/models.py:147
+msgid "Malaysia"
+msgstr "Малазия"
+
+#: web/models.py:148
+msgid "Maldives"
+msgstr "Мальдивы"
+
+#: web/models.py:149
+msgid "Mali"
+msgstr "Мали"
+
+#: web/models.py:150
+msgid "Malta"
+msgstr "Мальта"
+
+#: web/models.py:151
+msgid "Marshall Islands"
+msgstr "Маршаловы острова"
+
+#: web/models.py:152
+msgid "Martinique"
+msgstr "Мартиника"
+
+#: web/models.py:153
+msgid "Mauritania"
+msgstr "Мавритания"
+
+#: web/models.py:154
+msgid "Mauritius"
+msgstr "Маврикий"
+
+#: web/models.py:155
+msgid "Mayotte"
+msgstr "Майотта"
+
+#: web/models.py:156
+msgid "Mexico"
+msgstr "Мексика"
+
+#: web/models.py:157
+msgid "Micronesia, Federated States of"
+msgstr "Микронезия"
+
+#: web/models.py:158
+msgid "Moldova"
+msgstr "Молдова"
+
+#: web/models.py:159
+msgid "Monaco"
+msgstr "Монако"
+
+#: web/models.py:160
+msgid "Mongolia"
+msgstr "Монголия"
+
+#: web/models.py:161
+msgid "Montenegro"
+msgstr "Черногория"
+
+#: web/models.py:162
+msgid "Montserrat"
+msgstr "Монтсеррат"
+
+#: web/models.py:163
+msgid "Morocco"
+msgstr "Морокко"
+
+#: web/models.py:164
+msgid "Mozambique"
+msgstr "Мозамбик"
+
+#: web/models.py:165
+msgid "Myanmar"
+msgstr "Мьянма"
+
+#: web/models.py:166
+msgid "Namibia"
+msgstr "Намибия"
+
+#: web/models.py:167
+msgid "Nauru"
+msgstr "Науру"
+
+#: web/models.py:168
+msgid "Nepal"
+msgstr "Непал"
+
+#: web/models.py:169
+msgid "Netherlands"
+msgstr "Нидерланды"
+
+#: web/models.py:170
+msgid "Netherlands Antilles"
+msgstr "Нидерландские Антильские острова"
+
+#: web/models.py:171
+msgid "New Caledonia"
+msgstr "Новая Каледония"
+
+#: web/models.py:172
+msgid "New Zealand"
+msgstr "Новая Зеландия"
+
+#: web/models.py:173
+msgid "Nicaragua"
+msgstr "Никарагуа"
+
+#: web/models.py:174
+msgid "Niger"
+msgstr "Нигер"
+
+#: web/models.py:175
+msgid "Nigeria"
+msgstr "Нигерия"
+
+#: web/models.py:176
+msgid "Niue"
+msgstr "Ниуэ"
+
+#: web/models.py:177
+msgid "Norfolk Island"
+msgstr "Остров Норфолк"
+
+#: web/models.py:178
+msgid "Northern Mariana Islands"
+msgstr "Северные Марианские острова"
+
+#: web/models.py:179
+msgid "Norway"
+msgstr "Норвегия"
+
+#: web/models.py:180
+msgid "Oman"
+msgstr "Оман"
+
+#: web/models.py:181
+msgid "Pakistan"
+msgstr "Пакистан"
+
+#: web/models.py:182
+msgid "Palau"
+msgstr "Палау"
+
+#: web/models.py:183
+msgid "Palestinian Territory, Occupied"
+msgstr "Палестина"
+
+#: web/models.py:184
+msgid "Panama"
+msgstr "Панама"
+
+#: web/models.py:185
+msgid "Papua New Guinea"
+msgstr "Папуа Новая Гвинея"
+
+#: web/models.py:186
+msgid "Paraguay"
+msgstr "Парагвай"
+
+#: web/models.py:187
+msgid "Peru"
+msgstr "Перу"
+
+#: web/models.py:188
+msgid "Philippines"
+msgstr "Филиппины"
+
+#: web/models.py:189
+msgid "Pitcairn"
+msgstr "Питкэрн"
+
+#: web/models.py:190
+msgid "Poland"
+msgstr "Польша"
+
+#: web/models.py:191
+msgid "Portugal"
+msgstr "Португалия"
+
+#: web/models.py:192
+msgid "Puerto Rico"
+msgstr "Пуэрто Рико"
+
+#: web/models.py:193
+#| msgid "Avatar"
+msgid "Qatar"
+msgstr "Катар"
+
+#: web/models.py:194
+msgid "Reunion"
+msgstr "Реюньон"
+
+#: web/models.py:195
+msgid "Romania"
+msgstr "Румыния"
+
+#: web/models.py:196
+msgid "Russian Federation"
+msgstr "Россия"
+
+#: web/models.py:197
+msgid "Rwanda"
+msgstr "Руанда"
+
+#: web/models.py:198
+msgid "Saint Barthelemy"
+msgstr "Сен-Бартельми"
+
+#: web/models.py:199
+msgid "Saint Helena"
+msgstr "Остров Святой Елены"
+
+#: web/models.py:200
+msgid "Saint Kitts and Nevis"
+msgstr "Сент-Китс и Невис"
+
+#: web/models.py:201
+msgid "Saint Lucia"
+msgstr "Санкт-Люсия"
+
+#: web/models.py:202
+msgid "Saint Martin"
+msgstr "Сен-Мартен"
+
+#: web/models.py:203
+msgid "Saint Pierre and Miquelon"
+msgstr "Сен-Пьер и Микелон"
+
+#: web/models.py:204
+msgid "Saint Vincent and the Grenadines"
+msgstr "Святой Винсент и Гренадины"
+
+#: web/models.py:205
+msgid "Samoa"
+msgstr "Самоа"
+
+#: web/models.py:206
+msgid "San Marino"
+msgstr "Сан Марино"
+
+#: web/models.py:207
+msgid "Sao Tome and Principe"
+msgstr "Сан-Томе и Принсипи"
+
+#: web/models.py:208
+msgid "Saudi Arabia"
+msgstr "Саудовская Аравия"
+
+#: web/models.py:209
+msgid "Senegal"
+msgstr "Сенегал"
+
+#: web/models.py:210
+msgid "Serbia"
+msgstr "Сербия"
+
+#: web/models.py:211
+msgid "Seychelles"
+msgstr "Сейшелы"
+
+#: web/models.py:212
+msgid "Sierra Leone"
+msgstr "Сьерра Леоне"
+
+#: web/models.py:213
+msgid "Singapore"
+msgstr "Сингапур"
+
+#: web/models.py:214
+msgid "Slovakia"
+msgstr "Словакия"
+
+#: web/models.py:215
+msgid "Slovenia"
+msgstr "Словения"
+
+#: web/models.py:216
+msgid "Solomon Islands"
+msgstr "Соломоновы острова"
+
+#: web/models.py:217
+msgid "Somalia"
+msgstr "Сомали"
+
+#: web/models.py:218
+msgid "South Africa"
+msgstr "ЮАР"
+
+#: web/models.py:219
+msgid "South Georgia and the South Sandwich Islands"
+msgstr "Южная Джорджия и Южные Сандвичевы острова"
+
+#: web/models.py:220
+msgid "Spain"
+msgstr "Испания"
+
+#: web/models.py:221
+msgid "Sri Lanka"
+msgstr "Шра Ланка"
+
+#: web/models.py:222
+msgid "Sudan"
+msgstr "Судан"
+
+#: web/models.py:223
+msgid "Suriname"
+msgstr "Суринам"
+
+#: web/models.py:224
+msgid "Svalbard and Jan Mayen"
+msgstr "Шпицберген и Ян-Майен"
+
+#: web/models.py:225
+msgid "Swaziland"
+msgstr "Свазиленд"
+
+#: web/models.py:226
+msgid "Sweden"
+msgstr "Швеция"
+
+#: web/models.py:227
+msgid "Switzerland"
+msgstr "Швейцария"
+
+#: web/models.py:228
+msgid "Syrian Arab Republic"
+msgstr "Сирия"
+
+#: web/models.py:229
+msgid "Taiwan, Province of China"
+msgstr "Тайвань"
+
+#: web/models.py:230
+msgid "Tajikistan"
+msgstr "Таджикистан"
+
+#: web/models.py:231
+msgid "Tanzania, United Republic of"
+msgstr "Танзания"
+
+#: web/models.py:232
+msgid "Thailand"
+msgstr "Тайланд"
+
+#: web/models.py:233
+msgid "Timor-Leste"
+msgstr "Тимор-Лешти"
+
+#: web/models.py:234
+msgid "Togo"
+msgstr "Того"
+
+#: web/models.py:235
+msgid "Tokelau"
+msgstr "Токелау"
+
+#: web/models.py:236
+msgid "Tonga"
+msgstr "Тонга"
+
+#: web/models.py:237
+msgid "Trinidad and Tobago"
+msgstr "Тринидад и Тобаго"
+
+#: web/models.py:238
+msgid "Tunisia"
+msgstr "Тунис"
+
+#: web/models.py:239
+msgid "Turkey"
+msgstr "Турция"
+
+#: web/models.py:240
+msgid "Turkmenistan"
+msgstr "Туркменистан"
+
+#: web/models.py:241
+msgid "Turks and Caicos Islands"
+msgstr "Теркс и Кайкос острова"
+
+#: web/models.py:242
+msgid "Tuvalu"
+msgstr "Тувалу"
+
+#: web/models.py:243
+msgid "Uganda"
+msgstr "Уганда"
+
+#: web/models.py:244
+msgid "Ukraine"
+msgstr "Украина"
+
+#: web/models.py:245
+msgid "United Arab Emirates"
+msgstr "ОАЭ"
+
+#: web/models.py:246
+msgid "United States"
+msgstr "США"
+
+#: web/models.py:247
+msgid "United States Minor Outlying Islands"
+msgstr "Внешние малые острова США"
+
+#: web/models.py:248
+msgid "Uruguay"
+msgstr "Уругвай"
+
+#: web/models.py:249
+msgid "Uzbekistan"
+msgstr "Узбекистан"
+
+#: web/models.py:250
+msgid "Vanuatu"
+msgstr "Вануату"
+
+#: web/models.py:251
+msgid "Venezuela"
+msgstr "Венесуэла"
+
+#: web/models.py:252
+msgid "Viet Nam"
+msgstr "Вьетнам"
+
+#: web/models.py:253
+msgid "Virgin Islands, British"
+msgstr "Британские Виргинские острова"
+
+#: web/models.py:254
+msgid "Virgin Islands, U.S."
+msgstr "Виргинские острова"
+
+#: web/models.py:255
+msgid "Wallis and Futuna"
+msgstr "Уоллис и Футуна"
+
+#: web/models.py:256
+msgid "Western Sahara"
+msgstr "Западная Сахара"
+
+#: web/models.py:257
+msgid "Yemen"
+msgstr "Йемен"
+
+#: web/models.py:258
+msgid "Zambia"
+msgstr "Замбия"
+
+#: web/models.py:259
+msgid "Zimbabwe"
+msgstr "Зимбабве"
+
+#: web/models.py:275
 msgid "Current avatar"
 msgstr "Текущий аватар"
 
-#: web/models.py:77
+#: web/models.py:327
 msgid "Points"
 msgstr "Очки"
 
-#: web/models.py:78
+#: web/models.py:328
 msgid "Place (rating)"
 msgstr "Место (рейтинг)"
 
-#: web/models.py:79
+#: web/models.py:329
 msgid "Show personal info"
 msgstr "Отображать мою персональную информацию для всех"
 
-#: web/models.py:195
+#: web/models.py:445
 msgid "Tariff"
 msgstr "Тариф"
 
-#: web/models.py:196
+#: web/models.py:446
 msgid "Best organizer (show on main page)"
 msgstr "Лучший организатор (показывать на главной)"
 
-#: web/models.py:249
+#: web/models.py:499
 msgid "Creator"
 msgstr "Капитан"
 
-#: web/models.py:275
+#: web/models.py:525
 msgid "Latitude"
 msgstr "Широта"
 
-#: web/models.py:276
+#: web/models.py:526
 msgid "Longtitude"
 msgstr "Долгота"
 
-#: web/models.py:277 web/models.py:292 web/models.py:383
+#: web/models.py:527 web/models.py:542 web/models.py:633
 msgid "Link to map"
 msgstr "Ссылка на карту"
 
-#: web/models.py:296
+#: web/models.py:546
 msgid "Minimum players"
 msgstr "Минимальное число участников"
 
-#: web/models.py:297
+#: web/models.py:547
 msgid "Maximum players"
 msgstr "Максимальное число участников"
 
-#: web/models.py:300
+#: web/models.py:550
 msgid "Registered users"
 msgstr "Зарегистрированные пользователи"
 
-#: web/models.py:304
+#: web/models.py:554
 msgid "Finished"
 msgstr "Завершено"
 
-#: web/models.py:306
+#: web/models.py:556
 msgid "Image"
 msgstr "Изображение"
 
-#: web/models.py:307
+#: web/models.py:557
 msgid "Started"
 msgstr "Началось"
 
-#: web/models.py:312 web/models.py:428
+#: web/models.py:562 web/models.py:678
 msgid "Current image"
 msgstr "Текущее изображение"
 
-#: web/models.py:388
+#: web/models.py:638
 msgid "Time for task"
 msgstr "Время на задание"
 
-#: web/models.py:402
+#: web/models.py:652
 msgid "Text"
 msgstr "Текст"
 
-#: web/models.py:419
+#: web/models.py:669
 msgid "Descrition"
 msgstr "Описание"
 
-#: web/models.py:422
+#: web/models.py:672
 msgid "User"
 msgstr "Пользователь"
 
-#: web/models.py:446 web/models.py:471
+#: web/models.py:696 web/models.py:721
 msgid "Team"
 msgstr "Команда"
 
-#: web/models.py:447 web/models.py:472
+#: web/models.py:697 web/models.py:722
 msgid "Player"
 msgstr "Игрок"
 
-#: web/models.py:449 web/models.py:474
+#: web/models.py:699 web/models.py:724
 msgid "Executed time"
 msgstr "Время выполнения"
 
-#: web/models.py:450 web/models.py:475
+#: web/models.py:700 web/models.py:725
 msgid "Start time"
 msgstr "Время начала"
 
-#: web/models.py:451 web/models.py:476
+#: web/models.py:701 web/models.py:726
 msgid "End time"
 msgstr "Время завершения"
 
-#: web/models.py:452
+#: web/models.py:702
 msgid "Completed for user/team"
 msgstr "Завершено для пользователя/команды"
 
-#: web/models.py:477
+#: web/models.py:727
 msgid "Count of used hints"
 msgstr "Количество использованных подсказок"
 
-#: web/models.py:478
+#: web/models.py:728
 msgid "Is task completed for user or team"
 msgstr "Задание завершено для пользователя или команды"
 
-#: web/models.py:479
+#: web/models.py:729
 msgid "Task started"
 msgstr "Задание начато"
 
-#: web/models.py:480
+#: web/models.py:730
 msgid "Task is correctly answered"
 msgstr "Ответ на задание правильный"
 
@@ -1457,52 +2463,52 @@ msgstr "Игрок присоединился к вашей команде"
 msgid "Player {player} joined your team {team}"
 msgstr "Игрок {player} присоединился к вашей команде {team}"
 
-#: web/views.py:416 web/views.py:946
+#: web/views.py:416 web/views.py:948
 msgid "Your profile updated successfully!"
 msgstr "Ваш профиль успешно обновлен!"
 
-#: web/views.py:456
+#: web/views.py:457
 msgid "You are not creator of this event"
 msgstr "Вы не являетесь организатором данного события"
 
-#: web/views.py:548
+#: web/views.py:550
 msgid "Event undefined!"
 msgstr "Событие не определено"
 
-#: web/views.py:738
+#: web/views.py:740
 msgid "You are not owner of photo"
 msgstr "Вы не владелец фото"
 
-#: web/views.py:756
+#: web/views.py:758
 msgid "Event is not started!"
 msgstr "Событие не началось!"
 
-#: web/views.py:770
+#: web/views.py:772
 msgid "You are not registered to this event"
 msgstr "Вы не зарегистрированы на это событие"
 
-#: web/views.py:807
+#: web/views.py:809
 msgid "Your team member answered for this task"
 msgstr "Член вашей команды ответил на это задание"
 
-#: web/views.py:812 web/views.py:846
+#: web/views.py:814 web/views.py:848
 msgid "You are answered for this task"
 msgstr "Вы ответили на это задание"
 
-#: web/views.py:871
+#: web/views.py:873
 msgid "This task isn't started"
 msgstr "Задание не началось"
 
-#: web/views.py:904
+#: web/views.py:906
 msgid "User completed event"
 msgstr "Пользователь завершил событие"
 
-#: web/views.py:905
+#: web/views.py:907
 #, python-brace-format
 msgid "User {user} completed event {event}"
 msgstr "Пользователь {user} завершил событие {event}"
 
-#: web/views.py:909
+#: web/views.py:911
 msgid "You are not started this event"
 msgstr "Вы не завершили это событие"
 
