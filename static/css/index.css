@@ -49,35 +49,15 @@
 .index-buttons-block {
     margin-top: 10px;
     margin-bottom: 20px;
-    /*display: inline;*/
 }
 .index-buttons-p {
     margin-top: 30px;
-}
-.index-content-row {
-    height: 200px;
-    color: #3E0216;
-    text-align: center;
-    font-weight: bold;
-    font-size: 300%;
-    text-transform: uppercase;
-    padding-top: 25px;
 }
 .index-content-block {
     text-align: center;
 }
 .organizers-block {
     background-color: #eef6f4;
-}
-.index-caption-row {
-    display: flex;
-    align-items: center;
-}
-.icon-block {
-    text-align: right;
-}
-.index-caption-block {
-    text-align: left;
 }
 @media screen and (max-width: 480px) {
     .index-header {
@@ -104,17 +84,8 @@
     .index-buttons-block {
         margin-top: 5px;
     }
-    .index-content-row {
-        height: auto;
-    }
     .index_avatar {
         display: none;
-    }
-    .icon-block {
-        display: none;
-    }
-    .index-caption-block {
-        text-align: center;
     }
 }
 @media screen and (min-width: 481px) and (max-width: 1080px){
@@ -130,9 +101,6 @@
     }
     .index-buttons-block {
         margin-top: 5px;
-    }
-    .index-content-row {
-        height: auto;
     }
     .index_avatar {
         display: none;

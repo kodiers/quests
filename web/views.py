@@ -988,6 +988,11 @@ class AllEventsListView(ListView):
     model = Events
     paginate_by = 20
 
+    def get_context_data(self, **kwargs):
+        context = super(AllEventsListView, self).get_context_data(**kwargs)
+        context['COUNTRIES'] = COUNTRIES
+        return context
+
 
 def search_events_view(request):
     """
@@ -1032,7 +1037,8 @@ def search_events_view(request):
         object_list = paginator.page(1)
     except EmptyPage:
         object_list = paginator.page(paginator.num_pages)
-    return render_to_response('events.html', {'object_list': object_list}, context_instance=RequestContext(request))
+    return render_to_response('events.html', {'object_list': object_list, 'COUNTRIES': COUNTRIES},
+                              context_instance=RequestContext(request))
 
 
 class PlayersListView(ListView):

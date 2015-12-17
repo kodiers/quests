@@ -13,117 +13,164 @@
 {% endblock %}
 {% block content %}
     <div class="container-fluid">
-        <div class="row">
+        <div class="row all-events-button-row">
             <div class="col-md-10 all-events-button-col">
                 <form method="get" action="{% url 'search_events' %}" class="form-inline">
                     <label for="search">{% trans 'Enter word to search' %}:</label>
                     <input type="text" class="form-control" name="search" id="search">
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#additionalSeacrhFields" aria-expanded="false" aria-controls="additionalSeacrhFields">
+                    <button type="submit" class="mybtn mybtn-small">{% trans 'Search' %}</button>
+                    <a class="tooltips additional-link" data-toggle="collapse" href="#additionalSeacrhFields" aria-expanded="false" aria-controls="additionalSeacrhFields">
                         {% trans 'Additional parameters' %}
-                    </button>
+                    </a><span class="glyphicon glyphicon-chevron-down tooltips"></span>
+                    <a href="{% url 'all_events' %}" class="tooltips all-events-link">{% trans 'All events' %}</a>
                     <div class="collapse" id="additionalSeacrhFields">
-                        <div class="well">
-                            <label for="id_start_date">{% trans 'From start date' %}:</label>
-                            <input type="datetime" id="id_start_date" class="form-control" name="start_date">
-                            <label for="id_end_date">{% trans 'To end date' %}:</label>
-                            <input type="datetime" id="id_end_date" class="form-control" name="end_date">
-                            <br>
-                            <label for="id_country">{% trans 'Country' %}</label>
-                            <select class="form-control" name="country" id="id_country">
-                                {% for country in COUNTRIES %}
-                                    {% if country.0 == 'RU' %}
-                                        <option value="{{ country.0 }}" selected="selected">
-                                            {{ country.1 }}
-                                        </option>
-                                    {% else %}
-                                        <option value="{{ country.0 }}">{{ country.1 }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
-{#                            <input type="text" class="form-control" name="country" id="id_country">#}
-                            <label for="id_city">{% trans 'City' %}</label>
-                            <input type="text" class="form-control" name="city" id="id_city">
-                            <br>
-                            <label>{% trans 'Cost' %}</label>
-                            <div class="input-group">
-                                <span class="input-group-addon">{% trans 'From' %}</span>
-                                <input type="number" class="form-control" name="cost_from">
-                                <span class="input-group-addon">{% trans 'To' %}</span>
-                                <input type="number" class="form-control" name="cost_to">
+                        <div class="well additional-div">
+                            <div class="row additional-search-parameters">
+                                <div class="col-xs-6">
+                                    <label for="id_start_date">{% trans 'From start date' %}:</label>
+                                    <input type="datetime" id="id_start_date" class="form-control" name="start_date">
+                                </div>
+                                <div class="col-xs-6">
+                                    <label for="id_end_date">{% trans 'To end date' %}:</label>
+                                    <input type="datetime" id="id_end_date" class="form-control" name="end_date">
+                                </div>
                             </div>
-                            <br>
-                            <label for="id_duration">{% trans 'Max Duration (hours)' %}</label>
-                            <input type="number" class="form-control" name="duration" id="id_duration">
-                            <label for="id_organizer">{% trans 'Organizer' %}</label>
-                            <input type="text" name="organizer" class="form-control" id="id_organizer">
+                            <div class="row additional-search-parameters">
+                                <div class="col-xs-6">
+                                    <label for="id_country">{% trans 'Country' %}</label>
+                                    <select class="form-control countries-select" name="country" id="id_country">
+                                        {% for country in COUNTRIES %}
+                                            {% if country.0 == 'RU' %}
+                                                <option value="{{ country.0 }}" selected="selected">
+                                                    {{ country.1 }}
+                                                </option>
+                                            {% else %}
+                                                <option value="{{ country.0 }}">{{ country.1 }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-xs-6">
+                                    <label for="id_city">{% trans 'City' %}</label>
+                                    <input type="text" class="form-control" name="city" id="id_city">
+                                </div>
+                            </div>
+                            <div class="row additional-search-parameters">
+                                <div class="col-xs-12">
+                                    <label>{% trans 'Cost' %}</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">{% trans 'From' %}</span>
+                                        <input type="number" class="form-control" name="cost_from">
+                                        <span class="input-group-addon">{% trans 'To' %}</span>
+                                        <input type="number" class="form-control" name="cost_to">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row additional-search-parameters">
+                                <div class="col-xs-6">
+                                    <label for="id_duration">{% trans 'Max Duration (hours)' %}</label>
+                                    <input type="number" class="form-control" name="duration" id="id_duration">
+                                </div>
+                                <div class="col-xs-6">
+                                    <label for="id_organizer">{% trans 'Organizer' %}</label>
+                                    <input type="text" name="organizer" class="form-control" id="id_organizer">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <button type="submit" class="mybtn mybtn-small">{% trans 'Search' %}</button>
                 </form>
             </div>
-            <div class="col-md-2 all-events-button-col">
-                <a href="{% url 'all_events' %}" class="mybtn mybtn-small text_on_1_line">{% trans 'All events' %}</a>
+        </div>
+        <div class="row content-row caption-row events-block">
+            <div class="col-md-4 icon-block">
+                <img src="{% static 'images/events-icon.png' %}" class="content-icon" alt="{% trans 'Events' %}">
+            </div>
+            <div class="col-md-8 caption-block">
+                <h1 class="events-page-h1">{% trans 'Events' %}</h1>
             </div>
         </div>
-        <div class="row events-h1-row">
+        <div class="row today-block">
             <div class="col-xs-12">
-                <img src="{% static 'images/events-icon.png' %}" class="index-content-icon" alt="Events">
-                <h1 class="events-page-h1">{% trans 'Events' %}</h1>
                 <p>{% trans 'Today' %}: {% now "j-m-Y" %}</p>
-                {% for object in object_list %}
-                    <div class="row">
-                        <div class="col-xs-2">
-                            {% if object.image.url != None %}
-                                <img src="{{ object.image.url }}" class="img-responsive img-rounded index_avatar" alt="{{ object.title }}">
-                            {% else %}
-                                <img src="{% static 'images/no_item_image.jpg' %}" class="img-responsive img-rounded index_avatar">
-                            {% endif %}
-                        </div>
-                        <div class="col-xs-8">
-                            <h2>{{ object.title }}</h2>
-                            <p>{{ object.description }}</p>
-                        </div>
-                        <div class="col-xs-2">
-                            <p>{% trans 'Start date' %}: {{ object.start_date|date:'j-m-Y' }}</p>
-                            <p>{% trans 'End date' %}: {{ object.end_date|date:'j-m-Y' }}</p>
-                            <p>{% trans 'Maximum players/teams' %}: {{ object.max_players }}</p>
-                            <p>{% trans 'Minimum players/teams' %}: {{ object.min_players }}</p>
-                            <p>{% trans 'Regitered players/teams' %}: {{ object.get_registered_count }}</p>
-                            {% if object.is_team %}
-                                <p>{% trans 'Team only' %}</p>
-                            {% endif %}
-                            <a href="{% url 'event' object.pk %}" class="btn btn-primary">{% trans 'More...' %}</a>
-                        </div>
-                    </div>
-                {% empty %}
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {% blocktrans %}Sorry, no events found.{% endblocktrans %}
-                        </div>
-                    </div>
-                {% endfor %}
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12">
+            {% for object in object_list %}
+                <div class="col-md-6 show-hided-block">
+                    <div class="row caption-row content-row">
+                        <div class="col-ms-4">
+                            {% if object.image.url != None %}
+                                <img src="{{ object.image.url }}" class="img-responsive img-rounded content-icon events-icon" alt="{{ object.title }}">
+                            {% else %}
+                                <img src="{% static 'images/no-events-image.png' %}" class="img-responsive img-rounded content-icon events-icon" alt="{{ object.title }}">
+                            {% endif %}
+                        </div>
+                        <div class="col-ms-8 events-h1-row">
+                            <h2>{{ object.title }}</h2>
+                        </div>
+                    </div>
+                    <div class="row events-description-row">
+                        <div class="col-md-12">
+                            <p>{{ object.description|truncatewords:30 }}</p>
+                        </div>
+                    </div>
+                    <div class="hided-hovered-block">
+                        <p>{% trans 'Start date' %}: {{ object.start_date|date:'j-m-Y' }}</p>
+                        <p>{% trans 'End date' %}: {{ object.end_date|date:'j-m-Y' }}</p>
+                        <p>{% trans 'Maximum players/teams' %}: {{ object.max_players }}</p>
+                        <p>{% trans 'Minimum players/teams' %}: {{ object.min_players }}</p>
+                        <p>{% trans 'Regitered players/teams' %}: {{ object.get_registered_count }}</p>
+                        {% if object.is_team %}
+                            <p>
+                                {% trans 'Team only' %}
+                                <span style="margin-left: 20px">
+                                    <a href="{% url 'event' object.pk %}" class="mybtn mybtn-small">{% trans 'More...' %}</a>
+                                    <a href="{% url 'confirm_join' object.pk %}" class="mybtn mybtn-small">{% trans 'Join!' %}</a>
+                                </span>
+                            </p>
+                        {% else %}
+                            <a href="{% url 'event' object.pk %}" class="mybtn mybtn-small">{% trans 'More...' %}</a>
+                            <a href="{% url 'confirm_join' object.pk %}" class="mybtn mybtn-small">{% trans 'Join!' %}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <div class="row">
+                    <div class="col-xs-12">
+                        {% blocktrans %}Sorry, no events found.{% endblocktrans %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row today-block">
+            <div class="col-md-12">
                 {% if is_paginated %}
                     <div class="pagination">
                         {% if page_obj.has_previous %}
-                            <a href="?page={{ page_obj.previous_page_number }}">{% trans 'Previous' %}</a>
+                            <a href="?page={{ page_obj.previous_page_number }}">
+                                <span class="glyphicon glyphicon-menu-left"></span> {% trans 'Previous' %}
+                            </a>
                         {% endif %}
-                            {{ page_obj.number }} ({{ page_obj.paginator.num_pages }}).
+                            {{ page_obj.number }} {% trans "Of" %} {{ page_obj.paginator.num_pages }}.
                         {% if page_obj.has_next %}
-                            <a href="?page={{ page_obj.next_page_number }}">{% trans 'Next' %}</a>
+                            <a href="?page={{ page_obj.next_page_number }}">
+                                {% trans 'Next' %} <span class="glyphicon glyphicon-menu-right"></span>
+                            </a>
                         {% endif %}
                     </div>
                 {% elif object_list.paginator.num_pages > 1 %}
                     <div class="pagination">
                         {% if object_list.has_previous %}
-                            <a href="?page={{ object_list.previous_page_number }}{% for key, value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">{% trans 'Previous' %}</a>
+                            <a href="?page={{ object_list.previous_page_number }}{% for key, value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">
+                                <span class="glyphicon glyphicon-menu-left"></span>{% trans 'Previous' %}
+                            </a>
                         {% endif %}
-                        {{ object_list.number }} ({{ object_list.paginator.num_pages }})
+                        {{ object_list.number }} {% trans "Of" %} {{ object_list.paginator.num_pages }}
                         {% if object_list.has_next %}
-                            <a href="?page={{ object_list.next_page_number }}{% for key, value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">{% trans 'Next' %}</a>
+                            <a href="?page={{ object_list.next_page_number }}{% for key, value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">
+                                {% trans 'Next' %}
+                                <span class="glyphicon glyphicon-menu-right"></span>
+                            </a>
                         {% endif %}
                     </div>
                 {% endif %}

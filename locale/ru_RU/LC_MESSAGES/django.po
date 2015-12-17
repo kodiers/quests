@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-14 16:38+0000\n"
+"POT-Creation-Date: 2015-12-17 16:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,8 +86,8 @@ msgid "Send"
 msgstr "Отправить"
 
 #: chat/templates/contacts_list.html:46 templates/confirm_join_event.html:154
-#: templates/create_event.html:47 templates/create_event.html.py:270
-#: templates/create_event.html:342 templates/create_event.html.py:372
+#: templates/create_event.html:47 templates/create_event.html.py:271
+#: templates/create_event.html:344 templates/create_event.html.py:374
 #: templates/organizer.html:43 templates/organizer_profile.html:143
 #: templates/organizer_profile.html:187 templates/player.html:56
 #: templates/player_profile.html:143 templates/player_profile.html.py:174
@@ -113,7 +113,7 @@ msgid "Question"
 msgstr "Вопрос"
 
 #: pages/models.py:13 templates/create_event.html:230
-#: templates/create_event.html.py:281 templates/create_event.html:306
+#: templates/create_event.html.py:282 templates/create_event.html:307
 #: templates/play_event.html:113 web/models.py:636
 msgid "Answer"
 msgstr "Ответ"
@@ -151,7 +151,8 @@ msgstr "Комментарии"
 msgid "Home"
 msgstr "Домой"
 
-#: templates/base.html:38 templates/events.html:6 templates/events.html.py:70
+#: templates/base.html:38 templates/events.html:6 templates/events.html.py:86
+#: templates/events.html:89
 msgid "Events"
 msgstr "События"
 
@@ -206,7 +207,7 @@ msgid "You want to join event"
 msgstr "Вы хотите присодиниться к событию"
 
 #: templates/confirm_join_event.html:27 templates/event.html:19
-#: templates/events.html:86 templates/index.html:88
+#: templates/events.html:118 templates/index.html:88
 #: templates/index.html.py:123 templates/organizer_profile.html:156
 #: templates/organizer_profile.html:201 templates/organizers.html:40
 #: web/models.py:548
@@ -219,30 +220,30 @@ msgid "Place"
 msgstr "Место"
 
 #: templates/confirm_join_event.html:32 templates/create_event.html:235
-#: templates/create_event.html.py:310 templates/events.html:31
+#: templates/create_event.html.py:311 templates/events.html:40
 #: templates/organizers.html:47 templates/player.html:73
 #: templates/players.html:44 web/forms.py:49 web/forms.py:64 web/forms.py:81
 #: web/models.py:298 web/models.py:522
 msgid "Country"
 msgstr "Страна"
 
-#: templates/confirm_join_event.html:33 templates/create_event.html:246
-#: templates/create_event.html.py:322 templates/events.html:43
+#: templates/confirm_join_event.html:33 templates/create_event.html:247
+#: templates/create_event.html.py:324 templates/events.html:54
 #: templates/organizer.html:49 templates/organizers.html:48
 #: templates/player.html:74 templates/players.html:45 web/forms.py:50
 #: web/forms.py:65 web/forms.py:82 web/models.py:299 web/models.py:523
 msgid "City"
 msgstr "Город"
 
-#: templates/confirm_join_event.html:34 templates/create_event.html:248
-#: templates/create_event.html.py:324 templates/organizer.html:50
+#: templates/confirm_join_event.html:34 templates/create_event.html:249
+#: templates/create_event.html.py:326 templates/organizer.html:50
 #: templates/player.html:75 web/forms.py:51 web/forms.py:66 web/forms.py:83
 #: web/models.py:300 web/models.py:524
 msgid "Street"
 msgstr "Улица"
 
 #: templates/confirm_join_event.html:38 templates/event.html:25
-#: templates/events.html:56 web/models.py:269 web/models.py:553
+#: templates/events.html:75 web/models.py:269 web/models.py:553
 msgid "Organizer"
 msgstr "Организатор"
 
@@ -357,7 +358,7 @@ msgstr "Карта события"
 msgid "Add task"
 msgstr "Добавить задание"
 
-#: templates/create_event.html:222 templates/create_event.html.py:298
+#: templates/create_event.html:222 templates/create_event.html.py:299
 #: templates/organizer.html:86 templates/organizer.html.py:112
 #: templates/organizer_profile.html:130 templates/player_profile.html:270
 #: templates/player_profile.html.py:359 web/forms.py:33 web/models.py:410
@@ -370,7 +371,7 @@ msgstr "Название"
 msgid "Enter task title"
 msgstr "Введите название задания"
 
-#: templates/create_event.html:224 templates/create_event.html.py:300
+#: templates/create_event.html:224 templates/create_event.html.py:301
 #: templates/organizer_profile.html:132 templates/player_profile.html:272
 #: templates/player_profile.html.py:361 web/models.py:324 web/models.py:411
 #: web/models.py:428 web/models.py:444 web/models.py:541 web/models.py:632
@@ -381,12 +382,12 @@ msgstr "Описание"
 msgid "Enter description for task"
 msgstr "Введите описание задания"
 
-#: templates/create_event.html:226 templates/create_event.html.py:302
+#: templates/create_event.html:226 templates/create_event.html.py:303
 msgid "Time for task (minutes)"
 msgstr "Время на задание (минуты)"
 
-#: templates/create_event.html:228 templates/create_event.html.py:281
-#: templates/create_event.html:304 templates/event.html:102
+#: templates/create_event.html:228 templates/create_event.html.py:282
+#: templates/create_event.html:305 templates/event.html:102
 #: templates/event.html.py:123 templates/event.html:146
 #: templates/index.html:152 templates/play_event.html:108
 #: templates/player.html:64 web/models.py:635 web/models.py:698
@@ -394,52 +395,52 @@ msgstr "Время на задание (минуты)"
 msgid "Score"
 msgstr "Очки"
 
-#: templates/create_event.html:234 templates/create_event.html.py:309
+#: templates/create_event.html:234 templates/create_event.html.py:310
 msgid "Task place"
 msgstr "Место задания"
 
-#: templates/create_event.html:262 templates/create_event.html.py:263
-#: templates/create_event.html:333 templates/create_event.html.py:334
+#: templates/create_event.html:263 templates/create_event.html.py:264
+#: templates/create_event.html:335 templates/create_event.html.py:336
 msgid "Task hint"
 msgstr "Подсказка к заданию"
 
-#: templates/create_event.html:264
+#: templates/create_event.html:265
 msgid "Enter hint"
 msgstr "Введите подсказку"
 
-#: templates/create_event.html:265
+#: templates/create_event.html:266
 msgid "Create!"
 msgstr "Создать!"
 
-#: templates/create_event.html:276 templates/event.html:95
+#: templates/create_event.html:277 templates/event.html:95
 msgid "Tasks"
 msgstr "Задания"
 
-#: templates/create_event.html:281 web/models.py:720
+#: templates/create_event.html:282 web/models.py:720
 msgid "Task"
 msgstr "Задание"
 
-#: templates/create_event.html:281 templates/event.html:103
+#: templates/create_event.html:282 templates/event.html:103
 msgid "Time"
 msgstr "Время"
 
-#: templates/create_event.html:281 templates/play_event.html:109
+#: templates/create_event.html:282 templates/play_event.html:109
 msgid "Hint"
 msgstr "Подсказка"
 
-#: templates/create_event.html:283 templates/organizer_profile.html:163
+#: templates/create_event.html:284 templates/organizer_profile.html:163
 msgid "Edit"
 msgstr "Редактировать"
 
-#: templates/create_event.html:293
+#: templates/create_event.html:294
 msgid "Edit task"
 msgstr "Редактировать задание"
 
-#: templates/create_event.html:337 templates/player_profile.html:90
+#: templates/create_event.html:339 templates/player_profile.html:90
 msgid "Save!"
 msgstr "Сохранить!"
 
-#: templates/create_event.html:350 templates/create_event.html.py:367
+#: templates/create_event.html:352 templates/create_event.html.py:369
 #: templates/organizer_profile.html:93 templates/organizer_profile.html:98
 #: templates/organizer_profile.html:165 templates/organizer_profile.html:182
 #: templates/player_profile.html:138 templates/player_profile.html.py:190
@@ -448,15 +449,15 @@ msgstr "Сохранить!"
 msgid "Delete"
 msgstr "Удалить"
 
-#: templates/create_event.html:360
+#: templates/create_event.html:362
 msgid "Delete task"
 msgstr "Удалить задание"
 
-#: templates/create_event.html:363
+#: templates/create_event.html:365
 msgid "Are you sure"
 msgstr "Вы уверены"
 
-#: templates/create_event.html:383
+#: templates/create_event.html:385
 msgid "You shoul save your event first"
 msgstr "Вы должны сохранить событие"
 
@@ -519,7 +520,8 @@ msgstr "Вы уже присоединились к событию"
 msgid "Maximum number of players are registered to this event!"
 msgstr "Максимальное число участников уже присоединилось к событию"
 
-#: templates/event.html:54 templates/organizer.html:100
+#: templates/event.html:54 templates/events.html:128
+#: templates/events.html.py:133 templates/organizer.html:100
 msgid "Join!"
 msgstr "Присоединиться!"
 
@@ -527,12 +529,12 @@ msgstr "Присоединиться!"
 msgid "Login to join!"
 msgstr "Войти чтобы присоединиться!"
 
-#: templates/event.html:69 templates/events.html:88
+#: templates/event.html:69 templates/events.html:120
 #: templates/organizer_profile.html:161
 msgid "Maximum players/teams"
 msgstr "Максимальное число игроков/команд"
 
-#: templates/event.html:72 templates/events.html:89
+#: templates/event.html:72 templates/events.html:121
 #: templates/organizer_profile.html:160
 msgid "Minimum players/teams"
 msgstr "Минимальное число игроков/команд"
@@ -557,76 +559,80 @@ msgstr "Еще никто не зарегистрировался на это с
 msgid "Enter word to search"
 msgstr "Введите слово для поиска"
 
-#: templates/events.html:22
-msgid "Additional parameters"
-msgstr "Дополнительные параметры"
-
-#: templates/events.html:26
-msgid "From start date"
-msgstr "Дата начала"
-
-#: templates/events.html:28
-msgid "To end date"
-msgstr "Дата завершения"
-
-#: templates/events.html:46
-msgid "Cost"
-msgstr "Стоимость"
-
-#: templates/events.html:48
-msgid "From"
-msgstr "С"
-
-#: templates/events.html:50
-msgid "To"
-msgstr "До"
-
-#: templates/events.html:54
-msgid "Max Duration (hours)"
-msgstr "Макс. Длительность (часы)"
-
-#: templates/events.html:60 templates/organizers.html:16
+#: templates/events.html:21 templates/organizers.html:16
 #: templates/players.html:16
 msgid "Search"
 msgstr "Поиск"
 
-#: templates/events.html:64
+#: templates/events.html:23
+msgid "Additional parameters"
+msgstr "Дополнительные параметры"
+
+#: templates/events.html:25
 msgid "All events"
 msgstr "Все события"
 
+#: templates/events.html:30
+msgid "From start date"
+msgstr "Дата начала"
+
+#: templates/events.html:34
+msgid "To end date"
+msgstr "Дата завершения"
+
+#: templates/events.html:60
+msgid "Cost"
+msgstr "Стоимость"
+
+#: templates/events.html:62
+msgid "From"
+msgstr "С"
+
+#: templates/events.html:64
+msgid "To"
+msgstr "До"
+
 #: templates/events.html:71
+msgid "Max Duration (hours)"
+msgstr "Макс. Длительность(час)"
+
+#: templates/events.html:94
 msgid "Today"
 msgstr "Сегодня"
 
-#: templates/events.html:87 templates/organizer.html:113 web/models.py:549
+#: templates/events.html:119 templates/organizer.html:113 web/models.py:549
 msgid "End date"
 msgstr "Дата завершения"
 
-#: templates/events.html:90
+#: templates/events.html:122
 msgid "Regitered players/teams"
 msgstr "Зарегистрированное число игроков/команд"
 
-#: templates/events.html:92 web/models.py:544
+#: templates/events.html:125 web/models.py:544
 msgid "Team only"
 msgstr "Командная игра"
 
-#: templates/events.html:94 templates/index.html:90
-#: templates/index.html.py:119
+#: templates/events.html:127 templates/events.html.py:132
+#: templates/index.html:90 templates/index.html.py:119
 msgid "More..."
 msgstr "Побробнее..."
 
-#: templates/events.html:100
+#: templates/events.html:140
 msgid "Sorry, no events found."
 msgstr "Извините, событий не найдено."
 
-#: templates/events.html:111 templates/events.html.py:121
+#: templates/events.html:151 templates/events.html.py:165
 #: templates/organizer_profile.html:105 templates/organizers.html:66
 #: templates/organizers.html.py:76 templates/player_profile.html:245
 #: templates/players.html:64 templates/players.html.py:74
 msgid "Previous"
 msgstr "Предыдущий"
 
-#: templates/events.html:115 templates/events.html.py:125
+#: templates/events.html:154 templates/events.html.py:168
+msgid "Of"
+msgstr "из"
+
+#: templates/events.html:157 templates/events.html.py:171
 #: templates/organizer_profile.html:109 templates/organizers.html:70
 #: templates/organizers.html.py:80 templates/player_profile.html:249
 #: templates/players.html:68 templates/players.html.py:78
@@ -1411,11 +1417,11 @@ msgstr "Коморские острова"
 
 #: web/models.py:64
 msgid "Congo"
-msgstr ""
+msgstr "Конго"
 
 #: web/models.py:65
 msgid "Congo, The Democratic Republic of the"
-msgstr "Конго"
+msgstr "Демократическа республика Конго"
 
 #: web/models.py:66
 msgid "Cook Islands"
@@ -1926,7 +1932,6 @@ msgid "Puerto Rico"
 msgstr "Пуэрто Рико"
 
 #: web/models.py:193
-#| msgid "Avatar"
 msgid "Qatar"
 msgstr "Катар"
 
