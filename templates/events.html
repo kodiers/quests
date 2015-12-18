@@ -98,14 +98,14 @@
             {% for object in object_list %}
                 <div class="col-md-6 show-hided-block">
                     <div class="row caption-row content-row">
-                        <div class="col-ms-4">
+                        <div class="col-md-4">
                             {% if object.image.url != None %}
                                 <img src="{{ object.image.url }}" class="img-responsive img-rounded content-icon events-icon" alt="{{ object.title }}">
                             {% else %}
                                 <img src="{% static 'images/no-events-image.png' %}" class="img-responsive img-rounded content-icon events-icon" alt="{{ object.title }}">
                             {% endif %}
                         </div>
-                        <div class="col-ms-8 events-h1-row">
+                        <div class="col-md-8 events-h1-row">
                             <h2>{{ object.title }}</h2>
                         </div>
                     </div>
@@ -125,8 +125,8 @@
                                 {% trans 'Team only' %}
                                 <span style="margin-left: 20px">
                                     <a href="{% url 'event' object.pk %}" class="mybtn mybtn-small">{% trans 'More...' %}</a>
-                                    <a href="{% url 'confirm_join' object.pk %}" class="mybtn mybtn-small">{% trans 'Join!' %}</a>
                                 </span>
+                                <a href="{% url 'confirm_join' object.pk %}" class="mybtn mybtn-small">{% trans 'Join!' %}</a>
                             </p>
                         {% else %}
                             <a href="{% url 'event' object.pk %}" class="mybtn mybtn-small">{% trans 'More...' %}</a>

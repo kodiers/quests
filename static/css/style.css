@@ -155,6 +155,10 @@ a:hover {
     text-transform: uppercase;
     padding-top: 25px;
 }
+.show-hided-block {
+    height: 300px;
+    margin-bottom: 20px;
+}
 .hided-hovered-block {
     display: none;
     position: absolute;
@@ -204,6 +208,15 @@ a:hover {
         background: none;
         text-decoration: none;
     }
+    .show-hided-block {
+        height: auto;
+    }
+    .show-hided-block:hover {
+        background-color: transparent;
+    }
+    .show-hided-block:hover > .hided-hovered-block {
+        color: black;
+    }
 }
 @media screen and (min-width: 481px) and (max-width: 1080px){
     .content-row {
@@ -212,6 +225,9 @@ a:hover {
     .caption-block {
         text-align: center;
     }
+    .show-hided-block {
+        height: 500px;
+    }
     .hided-hovered-block {
         display: block;
         position: relative;
@@ -219,5 +235,11 @@ a:hover {
         padding-top: 0px;
         top: 0px;
         height: auto;
+    }
+    .show-hided-block:hover {
+        background-color: transparent;
+    }
+    .show-hided-block:hover > .hided-hovered-block {
+        color: black;
     }
 }
