@@ -1,30 +1,11 @@
-.all-events-button-row {
-    background-color: #eef6f4;
-}
 .all-events-button-col {
     padding-top: 20px;
     padding-bottom: 10px;
     height: auto;
 }
-.additional-link {
-    margin-left: 20px;
-}
-.additional-search-parameters {
-    margin-top: 10px;
-}
-.additional-div {
-    width: 500px;
-    margin-left: 400px;
-}
-.events-page-h1 {
-    display: inline;
-}
 .events-h1-row {
     text-align: left;
     color: #3E0216;
-}
-.countries-select {
-    width: 180px !important;
 }
 .all-events-link {
     margin-left: 30px;
@@ -32,49 +13,13 @@
 .events-block {
     background: url("../images/calendar-cropped.jpg") no-repeat;
 }
-.today-block {
-    color: #3E0216;
-    text-align: center;
-    text-decoration-line: underline;
-    text-transform: uppercase;
-    background-color: #eef6f4;
-    padding-top: 10px;
-}
 .events-description-row {
     margin-top: 10px;
     text-align: center;
 }
-.events-icon {
-    width: auto;
-    height: auto;
-}
 @media screen and (max-width: 480px) {
-    .additional-div {
-        width: auto;
-        margin-left: auto;
-    }
-    .additional-link {
-        margin-left: auto;
-    }
     .all-events-link {
         display: block;
-        margin-left: auto;
-    }
-    .events-page-h1 {
-        margin-left: 50px;
-    }
-    .events-icon {
-        /*width: 50px;*/
-        /*height: 50px;*/
-        display: none;
-    }
-}
-@media screen and (min-width: 481px) and (max-width: 1080px){
-    .additional-div {
-        width: auto;
-        margin-left: auto;
-    }
-    .all-events-link {
         margin-left: auto;
     }
 }

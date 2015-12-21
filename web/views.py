@@ -29,7 +29,7 @@ from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm,
 from quests.settings import EMAIL_HOST_USER, FAIL_EMAIL_SILENTLY, GOOGLE_MAPS_BROWSER_API_KEY, GOOGLE_API_STRING_URL
 
 from web.functions import create_password_str, json_wrapper, search_events, send_user_notification, construct_map_link, \
-    convert_str_to_int, check_get_param
+    convert_str_to_int, check_get_param, searh_players
 
 from web.constants import *
 
@@ -1049,6 +1049,11 @@ class PlayersListView(ListView):
     template_name = "players.html"
     paginate_by = 20
 
+    def get_context_data(self, **kwargs):
+        context = super(PlayersListView, self).get_context_data(**kwargs)
+        context['COUNTRIES'] = COUNTRIES
+        return context
+
 
 def search_players_view(request):
     """
@@ -1056,10 +1061,10 @@ def search_players_view(request):
     :param request: HttpRequest (with search parameter - or without it)
     :return: HttpResponse object
     """
-    if 'search' not in request.GET or request.GET['search'] != '':
-        objects = Players.objects.filter(Q(user__username__icontains=request.GET['search'])|Q(description__icontains=request.GET['search']))
-    else:
-        objects = Players.objects.all()
+    search_string = check_get_param('search', request)
+    country = check_get_param('country', request)
+    city = check_get_param('city', request)
+    objects = searh_players(search_string, country, city)
     objects = objects.order_by('user__username')
     paginator = Paginator(objects, 20)
     page = request.GET.get('page')
@@ -1069,7 +1074,8 @@ def search_players_view(request):
         object_list = paginator.page(1)
     except EmptyPage:
         object_list = paginator.page(paginator.num_pages)
-    return render_to_response('players.html', {'object_list': object_list}, context_instance=RequestContext(request))
+    return render_to_response('players.html', {'object_list': object_list, 'COUNTRIES': COUNTRIES},
+                              context_instance=RequestContext(request))
 
 
 class OrganizerListView(ListView):

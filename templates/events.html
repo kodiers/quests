@@ -13,7 +13,7 @@
 {% endblock %}
 {% block content %}
     <div class="container-fluid">
-        <div class="row all-events-button-row">
+        <div class="row all-button-row">
             <div class="col-md-10 all-events-button-col">
                 <form method="get" action="{% url 'search_events' %}" class="form-inline">
                     <label for="search">{% trans 'Enter word to search' %}:</label>
@@ -86,10 +86,10 @@
                 <img src="{% static 'images/events-icon.png' %}" class="content-icon" alt="{% trans 'Events' %}">
             </div>
             <div class="col-md-8 caption-block">
-                <h1 class="events-page-h1">{% trans 'Events' %}</h1>
+                <h1 class="page-h1">{% trans 'Events' %}</h1>
             </div>
         </div>
-        <div class="row today-block">
+        <div class="row helper-block">
             <div class="col-xs-12">
                 <p>{% trans 'Today' %}: {% now "j-m-Y" %}</p>
             </div>
@@ -98,11 +98,11 @@
             {% for object in object_list %}
                 <div class="col-md-6 show-hided-block">
                     <div class="row caption-row content-row">
-                        <div class="col-md-4">
+                        <div class="col-md-4 icon-block">
                             {% if object.image.url != None %}
-                                <img src="{{ object.image.url }}" class="img-responsive img-rounded content-icon events-icon" alt="{{ object.title }}">
+                                <img src="{{ object.image.url }}" class="img-responsive img-rounded content-icon block-icon" alt="{{ object.title }}">
                             {% else %}
-                                <img src="{% static 'images/no-events-image.png' %}" class="img-responsive img-rounded content-icon events-icon" alt="{{ object.title }}">
+                                <img src="{% static 'images/no-events-image.png' %}" class="img-responsive img-rounded content-icon block-icon" alt="{{ object.title }}">
                             {% endif %}
                         </div>
                         <div class="col-md-8 events-h1-row">
@@ -142,7 +142,7 @@
                 </div>
             {% endfor %}
         </div>
-        <div class="row today-block">
+        <div class="row helper-block">
             <div class="col-md-12">
                 {% if is_paginated %}
                     <div class="pagination">

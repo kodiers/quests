@@ -14,7 +14,7 @@ from django.db.models import Q
 from django.core.mail import EmailMultiAlternatives
 
 from web.constants import *
-from web.models import Events
+from web.models import Events, Players
 
 from quests.settings import FAIL_EMAIL_SILENTLY
 
@@ -73,7 +73,7 @@ def search_events(string, start_date, end_date, country, city, from_cost, to_cos
     if end_date is not None:
         objects = objects.filter(end_date__lte=end_date)
     if country is not None:
-        objects = objects.filter(place__country__icontains=country)
+        objects = objects.filter(place__country=country)
     if city is not None:
         objects = objects.filter(place__city__icontains=city)
     if to_cost is not None:
@@ -171,3 +171,23 @@ def convert_str_to_float(string):
     except ValueError:
         num = 0.0
     return num
+
+
+def searh_players(search_string, country, city):
+    """
+    Search string in username or description of players or search players by parameters:
+    players in country or in city
+    :param search_string: string to search
+    :param country: country
+    :param city: city
+    :return: QuerySet object of players
+    """
+    if search_string is not None:
+        objects = Players.objects.filter(Q(user__username__icontains=search_string)|Q(description__icontains=search_string))
+    else:
+        objects = Players.objects.all()
+    if country is not None:
+        objects = objects.filter(user__contacts__country=country)
+    if city is not None:
+        objects = objects.filter(user__contacts__city__icontains=city)
+    return objects

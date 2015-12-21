@@ -1,0 +1,31 @@
+.players-block {
+    background: url("../images/different-people-cropped.jpg") no-repeat;
+}
+.content-row {
+    text-align: left;
+}
+.point-block {
+    font-size: 0.4em;
+    font-weight: normal;
+    text-align: center;
+    text-transform: none;
+}
+.set-to-bottom {
+    margin-top: 200px;
+}
+@media screen and (max-width: 480px) {
+    .set-to-bottom {
+        margin-top: 10px;
+    }
+    .point-block {
+        position: relative;
+    }
+}
+@media screen and (min-width: 481px) and (max-width: 1080px){
+    .set-to-bottom {
+        margin-top: 10px;
+    }
+    .point-block {
+        margin-left: 15px;
+    }
+}

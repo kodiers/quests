@@ -175,6 +175,37 @@ a:hover {
     display: block;
     color: white;
 }
+.all-button-row {
+    background-color: #eef6f4;
+}
+.additional-link {
+    margin-left: 20px;
+}
+.additional-div {
+    width: 500px;
+    margin-left: 400px;
+}
+.additional-search-parameters {
+    margin-top: 10px;
+}
+.countries-select {
+    width: 180px !important;
+}
+.page-h1 {
+    display: inline;
+}
+.block-icon {
+    width: auto;
+    height: auto;
+}
+.helper-block {
+    color: #3E0216;
+    text-align: center;
+    text-decoration-line: underline;
+    text-transform: uppercase;
+    background-color: #eef6f4;
+    padding-top: 10px;
+}
 @media screen and (max-width: 480px) {
     .date {
         margin-top: 10px;
@@ -217,16 +248,31 @@ a:hover {
     .show-hided-block:hover > .hided-hovered-block {
         color: black;
     }
+    .additional-link {
+        margin-left: auto;
+    }
+    .additional-div {
+        width: auto;
+        margin-left: auto;
+    }
+    .page-h1 {
+        margin-left: 50px;
+    }
+    .block-icon {
+        display: none;
+    }
 }
 @media screen and (min-width: 481px) and (max-width: 1080px){
     .content-row {
         height: auto;
     }
     .caption-block {
-        text-align: center;
+        text-align: left;
     }
     .show-hided-block {
-        height: 500px;
+        /*height: 500px;*/
+        height: auto;
+        min-height: 200px;
     }
     .hided-hovered-block {
         display: block;
@@ -241,5 +287,22 @@ a:hover {
     }
     .show-hided-block:hover > .hided-hovered-block {
         color: black;
+    }
+    .all-events-link {
+        margin-left: auto;
+    }
+    .additional-div {
+        width: auto;
+        margin-left: auto;
+    }
+    .player_avatar {
+        max-width: 100px;
+        max-height: 100px;
+    }
+    .players-h2 {
+        font-size: 20px !important;
+    }
+    .username-block {
+        margin-left: -10px;
     }
 }
