@@ -171,7 +171,7 @@
       <column name="skype" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="true" jdbcType="12"/>
       <column name="site" sqlType="VARCHAR(128)" precision="0" scale="-1" nullable="true" jdbcType="12"/>
       <column name="user_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
-      <column name="country" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="country" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_web_contacts_1" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
     </table>
@@ -225,7 +225,7 @@
       <column name="lat" sqlType="REAL" precision="0" scale="-1" nullable="true" jdbcType="6"/>
       <column name="lon" sqlType="REAL" precision="0" scale="-1" nullable="true" jdbcType="6"/>
       <column name="map_link" sqlType="TEXT" precision="0" scale="-1" nullable="true" jdbcType="12"/>
-      <column name="country" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="country" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <primary-key columns="id"/>
     </table>
     <table name="web_eventstatistics" schema="" catalog="" type="TABLE">

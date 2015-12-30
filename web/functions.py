@@ -173,19 +173,20 @@ def convert_str_to_float(string):
     return num
 
 
-def searh_players(search_string, country, city):
+def searh_users(search_string, country, city, model):
     """
-    Search string in username or description of players or search players by parameters:
+    Search string in username or description of players or organizers or search players by parameters:
     players in country or in city
     :param search_string: string to search
     :param country: country
     :param city: city
+    :param model: class(model) of objects(Players or Organizers) to search
     :return: QuerySet object of players
     """
     if search_string is not None:
-        objects = Players.objects.filter(Q(user__username__icontains=search_string)|Q(description__icontains=search_string))
+        objects = model.objects.filter(Q(user__username__icontains=search_string)|Q(description__icontains=search_string))
     else:
-        objects = Players.objects.all()
+        objects = model.objects.all()
     if country is not None:
         objects = objects.filter(user__contacts__country=country)
     if city is not None:

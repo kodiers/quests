@@ -295,7 +295,7 @@ class Contacts(models.Model):
     Model for user and organisator contacts
     """
     user = models.OneToOneField(User)
-    country = models.CharField(max_length=255, null=True, blank=True, verbose_name=_("Country"), choices=COUNTRIES)
+    country = models.CharField(max_length=255, verbose_name=_("Country"), choices=COUNTRIES, default='RU')
     city = models.CharField(max_length=255, null=True, blank=True, verbose_name=_("City"))
     street = models.TextField(verbose_name=_("Street"), null=True, blank=True)
     phone = models.CharField(verbose_name=_("Phone number"), null=True, blank=True, max_length=128)
@@ -519,7 +519,7 @@ class EventsPlaces(models.Model):
     """
     Store events and tasks places
     """
-    country = models.CharField(max_length=255, null=True, blank=True, verbose_name=_("Country"), choices=COUNTRIES)
+    country = models.CharField(max_length=255, verbose_name=_("Country"), choices=COUNTRIES, default='RU')
     city = models.CharField(max_length=255, null=True, blank=True, verbose_name=_("City"))
     street = models.TextField(verbose_name=_("Street"), null=True, blank=True)
     lat = models.FloatField(verbose_name=_("Latitude"), null=True, blank=True)

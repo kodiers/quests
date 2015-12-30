@@ -29,7 +29,7 @@ from web.forms import UserRegistrationForm, RestorePasswordForm, CreateTeamForm,
 from quests.settings import EMAIL_HOST_USER, FAIL_EMAIL_SILENTLY, GOOGLE_MAPS_BROWSER_API_KEY, GOOGLE_API_STRING_URL
 
 from web.functions import create_password_str, json_wrapper, search_events, send_user_notification, construct_map_link, \
-    convert_str_to_int, check_get_param, searh_players
+    convert_str_to_int, check_get_param, searh_users
 
 from web.constants import *
 
@@ -86,6 +86,9 @@ def registration(request):
                         player = Players()
                         player.user = new_user
                         player.save()
+                    new_user_contacts = Contacts()
+                    new_user_contacts.user = new_user
+                    new_user_contacts.save()
                     email_subject = _("Registration complete on GetQuests.com!")
                     email_message = _("""Hello! You was registered on site GetQuests.com. \n
                     Your login {login} \n Your password {password} \n Your email {email} \n
@@ -451,7 +454,6 @@ def create_event(request, pk=None):
             place = EventsPlaces.objects.get(pk=event.place.pk)
         else:
             place = EventsPlaces()
-            place.country = 'RU'
         # Check that user want edit created by self
         if event.organizer != request.user:
             error = _("You are not creator of this event")
@@ -459,7 +461,6 @@ def create_event(request, pk=None):
     else:
         event = None
         place = EventsPlaces()
-        place.country = 'RU'
     if request.method == 'POST':
         form = CreateEventForm(request.POST, request.FILES, instance=event)
         if form.is_valid():
@@ -1064,7 +1065,7 @@ def search_players_view(request):
     search_string = check_get_param('search', request)
     country = check_get_param('country', request)
     city = check_get_param('city', request)
-    objects = searh_players(search_string, country, city)
+    objects = searh_users(search_string, country, city, Players)
     objects = objects.order_by('user__username')
     paginator = Paginator(objects, 20)
     page = request.GET.get('page')
@@ -1086,6 +1087,11 @@ class OrganizerListView(ListView):
     template_name = 'organizers.html'
     paginate_by = 20
 
+    def get_context_data(self, **kwargs):
+        context = super(OrganizerListView, self).get_context_data(**kwargs)
+        context['COUNTRIES'] = COUNTRIES
+        return context
+
 
 def search_organizers_view(request):
     """
@@ -1093,10 +1099,10 @@ def search_organizers_view(request):
     :param request: HttpRequest (with search parameter - or without it)
     :return: HttpResponse object
     """
-    if 'search' not in request.GET or request.GET['search'] != '':
-        objects = Organizers.objects.filter(Q(user__username__icontains=request.GET['search'])|Q(description__icontains=request.GET['search']))
-    else:
-        objects = Organizers.objects.all()
+    search_string = check_get_param('search', request)
+    country = check_get_param('country', request)
+    city = check_get_param('city', request)
+    objects = searh_users(search_string, country, city, Organizers)
     objects = objects.order_by('user__username')
     paginator = Paginator(objects, 20)
     page = request.GET.get('page')
@@ -1106,7 +1112,8 @@ def search_organizers_view(request):
         object_list = paginator.page(1)
     except EmptyPage:
         object_list = paginator.page(paginator.num_pages)
-    return render_to_response('organizers.html', {'object_list': object_list}, context_instance=RequestContext(request))
+    return render_to_response('organizers.html', {'object_list': object_list, 'COUNTRIES': COUNTRIES},
+                              context_instance=RequestContext(request))
 
 
 def events_registered_view(request):
@@ -1128,4 +1135,5 @@ def events_registered_view(request):
         object_list = paginator.page(1)
     except EmptyPage:
         object_list = paginator.page(paginator.num_pages)
-    return render_to_response('events.html', {'object_list': object_list}, context_instance=RequestContext(request))
+    return render_to_response('events.html', {'object_list': object_list, 'COUNTRIES': COUNTRIES},
+                              context_instance=RequestContext(request))

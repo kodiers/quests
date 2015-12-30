@@ -1,0 +1,36 @@
+.organizers-background {
+    background: url("../images/organizers-cropped.jpg") no-repeat;
+}
+.hided-hovered-block {
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-right: 10px;
+    width: 100%;
+}
+.hided-hovered-block a {
+    color: white;
+    text-decoration: underline;
+}
+.hided-hovered-block h3 {
+    margin-top: -5px;
+}
+.events-icon {
+    max-width: 200px;
+    max-height: 200px;
+}
+@media screen and (max-width: 480px) {
+    .hided-hovered-block a {
+        color: #3E0216;
+    }
+    .organizers-events-list {
+        margin-top: 10px;
+    }
+    .page-h1 {
+        margin-left: 0px;
+    }
+}
+@media screen and (min-width: 481px) and (max-width: 1080px) {
+    .organizers-events-list {
+        margin-top: 10px;
+    }
+}

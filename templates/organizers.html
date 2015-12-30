@@ -6,78 +6,133 @@
     {% trans 'Organizers' %} | {% show_title_page %}
 {% endblock %}
 {% block scripts %}
+    <link href="{% static 'css/organizers.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <form method="get" action="{% url 'search_organizers' %}">
-                    <input type="text" name="search" class="form-control">
-                    <input type="submit" value="{% trans 'Search' %}" class="btn btn-primary">
+    <div class="container-fluid">
+        <div class="row all-button-row">
+            <div class="col-md-6">
+                <form method="get" action="{% url 'search_organizers' %}" class="form-inline">
+                    <label for="id_search">{% trans 'Enter word to search' %}:</label>
+                    <input type="text" name="search" class="form-control" id="id_search">
+                    <button type="submit" class="mybtn mybtn-small">
+                        {% trans 'Search' %}
+                    </button>
+                    <a class="tooltips additional-link" data-toggle="collapse" href="#additionalSearchFields" aria-expanded="false" aria-controls="additionalSearchFields">
+                        {% trans 'Additional parameters' %}
+                    </a><span class="glyphicon glyphicon-chevron-down tooltips"></span>
+                    <div class="collapse" id="additionalSearchFields">
+                        <div class="well additional-div">
+                            <div class="row additional-search-parameters">
+                                <div class="col-xs-6">
+                                    <label for="id_country">{% trans 'Country' %}</label>
+                                    <select class="form-control countries-select" name="country" id="id_country">
+                                        {% for country in COUNTRIES %}
+                                            {% if country.0 == 'RU' %}
+                                                <option value="{{ country.0 }}" selected="selected">
+                                                    {{ country.1 }}
+                                                </option>
+                                            {% else %}
+                                                <option value="{{ country.0 }}">{{ country.1 }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-xs-6">
+                                    <label for="id_city">{% trans 'City' %}</label>
+                                    <input type="text" class="form-control" name="city" id="id_city">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
+        <div class="row content-row caption-row organizers-background">
+            <div class="col-md-4 icon-block">
+                <img src="{% static 'images/best-organizers_2.png' %}" class="content-icon" alt="{% trans 'Organizers' %}">
+            </div>
+            <div class="col-md-8 caption-block">
+                <h1 class="page-h1">{% trans 'Organizers' %}</h1>
+            </div>
+        </div>
         <div class="row">
-            <div class="col-xs-12">
-                <h1 class="page-header">{% trans 'Organizers' %}</h1>
-                {% for object in object_list %}
-                    <div class="row">
-                        <div class="col-xs-2">
+            {% for object in object_list %}
+                <div class="col-md-6 show-hided-block">
+                    <div class="row caption-row content-row">
+                        <div class="col-md-4 icon-block">
                             {% if object.user.questsusers.image.url != None %}
-                                <img src="{{ object.user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
+                                <img src="{{ object.user.questsusers.image.url }}" class="img-responsive img-rounded content-icon block-icon events-icon" alt="{{ object.user.username }}">
                             {% else %}
-                                <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
+                                <img src="{% static 'images/no-organizers-image.png' %}" class="img-responsive img-rounded content-icon block-icon events-icon" alt="{{ object.user.username }}">
                             {% endif %}
                         </div>
-                        <div class="col-xs-4">
+                        <div class="col-md-8">
                             <a href="{% url 'organizer' object.pk %}"> <h2>{{ object.user.username }}</h2></a>
-                            <p>{{ object.description }}</p>
                         </div>
-                        <div class="col-xs-4">
-                            <h3>{% blocktrans %}Future events{% endblocktrans %}</h3>
-                            {% for event in object.get_future_events %}
+                    </div>
+                    {% if object.description != None%}
+                        <div class="row description-row">
+                            <div class="col-md-12">
+                                <p>{{ object.description|truncatewords:30 }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="hided-hovered-block">
+                        <div class="col-md-4">
+                            <p>Email: {{ object.user.email }}</p>
+                            <p>{% trans 'Country' %}: {{ object.user.contacts.get_country_display }}</p>
+                            <p>{% trans 'City' %}: {{ object.user.contacts.city }}</p>
+                            <p>{% trans 'Site' %}: {{ object.user.contacts.site }}</p>
+                            <a href="{% url 'organizer' object.pk %}" class="mybtn mybtn-small">
+                                {% trans 'More...' %}
+                            </a>
+                        </div>
+                        <div class="col-md-8 organizers-events-list">
+                            <h3>{% blocktrans %}Future events{% endblocktrans %}:</h3>
+                            {% for event in object.get_three_future_events %}
                                 <h4><a href="{% url 'event' event.pk %}"> {{ event.title }} </a></h4>
                                 <p>{% trans 'Start date' %}: {{ event.start_date }}</p>
                             {% empty %}
                                 {% blocktrans %}No future events{% endblocktrans %}
                             {% endfor %}
                         </div>
-                        <div class="col-xs-2">
-                            <p>Email: {{ object.user.email }}</p>
-                            <p>{% trans 'Country' %}: {{ object.user.contacts.country }}</p>
-                            <p>{% trans 'City' %}: {{ object.user.contacts.city }}</p>
-                            <p>{% trans 'Site' %}: {{ object.user.contacts.site }}</p>
-                        </div>
                     </div>
-                {% empty %}
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {% blocktrans %}Sorry, no organizers found.{% endblocktrans %}
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
+                </div>
+            {% empty %}
+                <div class="col-xs-12">
+                    {% blocktrans %}Sorry, no organizers found.{% endblocktrans %}
+                </div>
+            {% endfor %}
         </div>
-        <div class="row">
+        <div class="row helper-block">
             <div class="col-xs-12">
                 {% if is_paginated %}
                     <div class="pagination">
                         {% if page_obj.has_previous %}
-                            <a href="?page={{ page_obj.previous_page_number }}">{% trans 'Previous' %}</a>
+                            <a href="?page={{ page_obj.previous_page_number }}">
+                                <span class="glyphicon glyphicon-menu-left"></span>{% trans 'Previous' %}
+                            </a>
                         {% endif %}
-                            {{ page_obj.number }} ({{ page_obj.paginator.num_pages }}).
+                            {{ page_obj.number }} {% trans "Of" %} {{ page_obj.paginator.num_pages }}.
                         {% if page_obj.has_next %}
-                            <a href="?page={{ page_obj.next_page_number }}">{% trans 'Next' %}</a>
+                            <a href="?page={{ page_obj.next_page_number }}">
+                                {% trans 'Next' %}<span class="glyphicon glyphicon-menu-right"></span>
+                            </a>
                         {% endif %}
                     </div>
                 {% elif object_list.paginator.num_pages > 1 %}
                     <div class="pagination">
                         {% if object_list.has_previous %}
-                            <a href="?page={{ object_list.previous_page_number }}{% for key, value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">{% trans 'Previous' %}</a>
+                            <a href="?page={{ object_list.previous_page_number }}{% for key, value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">
+                                <span class="glyphicon glyphicon-menu-left"></span>{% trans 'Previous' %}
+                            </a>
                         {% endif %}
                         {{ object_list.number }} ({{ object_list.paginator.num_pages }})
                         {% if object_list.has_next %}
-                            <a href="?page={{ object_list.next_page_number }}{% for key, value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">{% trans 'Next' %}</a>
+                            <a href="?page={{ object_list.next_page_number }}{% for key, value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">
+                                {% trans 'Next' %}<span class="glyphicon glyphicon-menu-right"></span>
+                            </a>
                         {% endif %}
                     </div>
                 {% endif %}
