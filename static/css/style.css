@@ -213,6 +213,10 @@ a:hover {
 .faq-background {
     background: url("../images/Question-cropped.jpg") no-repeat;
 }
+.page-header-background {
+    background-color: #eef6f4;
+    margin-bottom: 10px;
+}
 @media screen and (max-width: 480px) {
     .date {
         margin-top: 10px;

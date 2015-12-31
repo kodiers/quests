@@ -11,14 +11,16 @@
 {% block scripts %}
 {% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
+    <div class="container-fluid">
+        <div class="row content-row caption-row page-header-background">
+            <div class="col-md-12">
                 <h1 class="page-header">{{ object.title }}</h1>
             </div>
         </div>
+    </div>
+    <div class="container">
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-md-12">
                 {{ object.content|safe }}
             </div>
         </div>
