@@ -8,17 +8,36 @@
 {% block scripts %}
 {% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <h1 class="page-header">{% trans "Frequently Asked Questions" %}</h1>
-                {% for object in object_list %}
-                    <h2>{{ object.question }}</h2>
-                    <p>{{ object.answer }}</p>
-                {% empty %}
-                    {% trans "No questions." %}
-                {% endfor %}
+    <div class="container-fluid">
+        <div class="row content-row caption-row faq-background">
+            <div class="col-md-4 icon-block">
+                <img src="{% static 'images/faq.png' %}" class="content-icon" alt="{% trans "Frequently Asked Questions" %}">
+            </div>
+            <div class="col-md-8 caption-block">
+                <h1 class="page-h1">{% trans "Frequently Asked Questions" %}</h1>
             </div>
         </div>
+    </div>
+    <div class="container">
+        {% for object in object_list %}
+            <div class="row">
+                <div class="col-md-12">
+                    <a data-toggle="collapse" href="#question{{ object.pk }}" aria-expanded="false" aria-controls="question{{ object.pk }}">
+                        <h2><span class="glyphicon glyphicon-comment"></span> {{ object.question }}</h2>
+                    </a>
+                    <div class="collapse" id="question{{ object.pk }}">
+                        <div class="well">
+                            <p>{{ object.answer }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="row">
+                <div class="col-md-12">
+                    {% trans "No questions." %}
+                </div>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}

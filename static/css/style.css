@@ -210,6 +210,9 @@ a:hover {
     margin-top: 10px;
     text-align: center;
 }
+.faq-background {
+    background: url("../images/Question-cropped.jpg") no-repeat;
+}
 @media screen and (max-width: 480px) {
     .date {
         margin-top: 10px;
