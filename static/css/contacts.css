@@ -1,0 +1,18 @@
+.contacts-background {
+    background: url("../images/contacts.jpg") no-repeat;
+}
+.contacts-text-block {
+    margin-top: 10px;
+    font-size: 200%;
+    color: #3E0216;
+}
+.contacts-text-bold {
+    font-weight: bold;
+}
+.contacts-form-block {
+    margin-top: 10px;
+    color: #3E0216;
+}
+.contacts-comment-row {
+    margin-top: 10px;
+}

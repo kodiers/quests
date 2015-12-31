@@ -10,32 +10,41 @@
 {% block scripts %}
     <script src="{% static 'js/jquery.cookie.js' %}"></script>
     <script src="{% static 'js/send_email.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/contacts.css' %}">
 {% endblock %}
 {% block content %}
+    <div class="container-fluid">
+        <div class="row content-row caption-row contacts-background">
+            <div class="col-md-4 icon-block">
+                <img src="{% static 'images/contacts-icon.png' %}" class="content-icon" alt="{% trans "Our contacts" %}">
+            </div>
+            <div class="col-md-8 caption-block">
+                <h1 class="page-h1">{% trans "Our contacts" %}</h1>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
-                <h1 class="page-header">{% trans "Our contacts" %}</h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <h2>{% trans "Phone" %}: {{ object.phone }}</h2>
-                <h2>Email: {{ object.email }}</h2>
+            <div class="col-md-6 contacts-text-block">
+                <p class="contacts-text-bold">
+                    <span class="glyphicon glyphicon-phone-alt"></span> {% trans "Phone" %}:
+                </p>
+                <p>{{ object.phone }}</p>
+                <p class="contacts-text-bold">
+                    <span class="glyphicon glyphicon-envelope"></span> Email:
+                </p>
+                <p>{{ object.email }}</p>
                 {% if object.address != '' %}
-                    <h2>{% trans "Address" %}: {{ object.address }}</h2>
-                {% endif %}
-                {% if object.comments != '' %}
-                    <p>{{ object.comments|safe }}</p>
-                {% endif %}
-                {% if object.map != '' %}
-                    <p>{{ object.map|safe }}</p>
+                    <p class="contacts-text-bold">
+                        <span class="glyphicon glyphicon-home"></span> {% trans "Address" %}:
+                    </p>
+                    <p>{{ object.address }}</p>
                 {% endif %}
             </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <h3>{% trans "You can write to us" %}:</h3>
+            <div class="col-md-6 contacts-form-block">
+                <h2>
+                    <span class="glyphicon glyphicon-send"></span> {% trans "You can write to us" %}:
+                </h2>
                 <div id="result"></div>
                 <form method="post" id="idSendMessage">
                     {% csrf_token %}
@@ -46,8 +55,20 @@
                     <input type="text" name="email" class="form-control" placeholder="Email" id="idEmail" required>
                     <label for="idMessage">{% trans "Your question" %}:</label>
                     <textarea class="form-control" name="message" placeholder="{% trans 'Your message' %}" id="idMessage"></textarea>
-                    <input type="submit" value="{% trans 'Send' %}" class="btn btn-primary">
+                    <input type="submit" value="{% trans 'Send' %}" class="mybtn mybtn-small">
                 </form>
+            </div>
+        </div>
+        <div class="row contacts-comment-row">
+            <div class="col-md-6">
+                {% if object.comments != '' %}
+                    <p>{{ object.comments|safe }}</p>
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                {% if object.map != '' %}
+                    <p>{{ object.map|safe }}</p>
+                {% endif %}
             </div>
         </div>
     </div>
