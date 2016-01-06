@@ -317,4 +317,7 @@ a:hover {
     .username-block {
         margin-left: -10px;
     }
+    .form_align_center {
+        text-align: center !important;
+    }
 }

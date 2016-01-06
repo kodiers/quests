@@ -6,40 +6,50 @@
     {% blocktrans %}Register new user{% endblocktrans %} | {% show_title_page %}
 {% endblock %}
 {% block content %}
-    <div class="container">
+    <div class="container-fluid">
+        <div class="row content-row caption-row page-header-background">
+            <div class="col-md-12">
+                <h1 class="page-header">{% trans 'Registration' %}</h1>
+            </div>
+        </div>
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-md-12 text-center">
                 {% if error %}
                     <p class="error">{{ error }}</p>
                 {% endif %}
             </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <h1>{% trans 'Registration' %}</h1>
-                    <form action="." method="post">
-                        {% csrf_token %}
+        </div>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <form action="." method="post" class="form-horizontal">
+                    {% csrf_token %}
+                    <div class="form-group">
                         {% for field in form %}
-                            <div class="row">
-                                <div class="col-xs-2">
-                                    {{ field.label_tag }}
-                                </div>
-                                <div class="col-xs-2">
-                                    {{ field|add_class_to_formfield:"form-control"}}
-                                </div>
-                                <div class="col-xs-4">
-                                    <span class="error"> {{ field.errors.as_text}}</span>
-                                </div>
+                            <div class="col-md-2 control-label form_align_center">
+                                {{ field.label_tag }}
+                            </div>
+                            <div class="col-md-10 form_align_center">
+                                <span class="error"> {{ field.errors.as_text}}</span>
+                                {% if field.html_name == "password1" %}
+                                    <span class="tooltips">
+                                        {% blocktrans %}Your password should be 8 symbols.{% endblocktrans %}
+                                    </span>
+                                {% endif %}
+                                {{ field|add_class_to_formfield:"form-control"}}
+                                <br>
                             </div>
                         {% endfor %}
-                        <p class="tooltips">{% blocktrans %}Your password should be 8 symbols.{% endblocktrans %}</p>
-                        <br>
-                        <input type="submit" value="{% trans 'Register!' %}" class="btn btn-primary">
-                    </form>
-                    <p>{% blocktrans %}Clicking Register I accept {% endblocktrans %}
-                        <a href="#">{% blocktrans %}Terms of Service{% endblocktrans %}</a>
+                    </div>
+                    <p class="text-center">
+                        <input type="submit" value="{% trans 'Register!' %}" class="mybtn mybtn-small">
                     </p>
-                </div>
+                </form>
+                <p class="text-center">{% blocktrans %}Clicking Register I accept {% endblocktrans %}
+                    <a href="#">{% blocktrans %}Terms of Service{% endblocktrans %}</a>
+                </p>
             </div>
+            <div class="col-md-2"></div>
         </div>
     </div>
 {% endblock %}
