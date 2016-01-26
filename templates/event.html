@@ -5,44 +5,68 @@
 {% block title %}
     {{ object.title }}. {% show_title_page %}
 {% endblock %}
+{% block seo %}
+    <meta name="description" content="{{ object.title }}">
+    <meta name="keywords" content="{{ object.title }}">
+{% endblock %}
+{% block scripts %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/event.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/elastic/elastislide.css' %}">
+    <script src="{% static 'js/elastic/modernizr.custom.17475.js' %}"></script>
+{% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="page-header">
-                    <h1>{{ object.title }}</h1>
-                </div>
+    <div class="container-fluid">
+        <div class="row content-row caption-row page-header-background">
+            <div class="col-md-4 icon-block">
+                {% if object.image.url != None %}
+                    <img src="{{ object.image.url }}" class="img-responsive img-rounded content-icon block-icon event-image" alt="{{ object.title }}">
+                {% else %}
+                    <img src="{% static 'images/no-events-image.png' %}" class="img-responsive img-rounded content-icon block-icon event-image" alt="{{ object.title }}">
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <h1 class="page-h1">{{ object.title }}</h1>
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-2">
-                <p>{% trans 'Start date' %}: {{ object.start_date }}</p>
-            </div>
-            <div class="col-xs-2">
-                <p>{% trans 'Place' %}: {{ object.place.city }}</p>
-            </div>
-            <div class="col-xs-2">
+    </div>
+    <div class="container">
+        <div class="row event-block-bottom-line">
+            <div class="col-md-4">
+                <p>{% trans 'Start date' %}: <span class="date"> {{ object.start_date }} </span></p>
+                <p>{% trans 'End date' %}: <span class="date"> {{ object.end_date }}</span></p>
+                <p>{% trans 'Place' %}:
+                    <span class="date">
+                        {% if object.place.city != None %}
+                            {{ object.place.get_country_display }} / {{ object.place.city }}
+                        {% else %}
+                            {{ object.place.get_country_display }}
+                        {% endif %}
+                    </span>
+                </p>
                 <p>{% trans 'Organizer' %}:
-                    {% if object.organizer.questsusers.is_organizer %}
-                        <a href="{% url 'organizer' object.organizer.username|get_organizer_by_username %}"> {{ object.organizer.username }}</a>
-                    {% else %}
-                        <a href="{% url 'player' object.organizer.username|get_player_by_username %}">{{ object.organizer.username }}</a>
-                    {% endif %}
+                    <span class="date">
+                        {% if object.organizer.questsusers.is_organizer %}
+                            <a href="{% url 'organizer' object.organizer.username|get_organizer_by_username %}"> {{ object.organizer.username }}</a>
+                        {% else %}
+                            <a href="{% url 'player' object.organizer.username|get_player_by_username %}">{{ object.organizer.username }}</a>
+                        {% endif %}
+                    </span>
                 </p>
             </div>
-            <div class="col-xs-2">
+            <div class="col-md-4">
+                <p>{% blocktrans %}Maximum players/teams{% endblocktrans %}: {{ object.max_players }}</p>
+                <p>{% blocktrans %}Minimum players/teams{% endblocktrans %}: {{ object.min_players }}</p>
+                <p>{% blocktrans %}Registered players/teams{% endblocktrans %}: {{ object.get_registered_count }}</p>
+            </div>
+            <div class="col-md-4">
                 {% if object.price != 0.0 %}
                     <p>{% trans 'Price' %}: {{ object.price }}</p>
                 {% else %}
                     <p class="free_event">{% trans 'FREE' %}</p>
                 {% endif %}
-            </div>
-            <div class="col-xs-2">
                 {% if object.is_team %}
                     <p>{% trans 'TEAM GAME' %}</p>
                 {% endif %}
-            </div>
-            <div class="col-xs-2">
                 {% if user.is_authenticated %}
                     {% if user in object.registered_players.all or user.username|check_user_in_registered_team:object.pk %}
                         <p>{% blocktrans %}You are already joined this event{% endblocktrans %}</p>
@@ -51,7 +75,7 @@
                             <p>{% blocktrans %}Maximum number of players are registered to this event!{% endblocktrans %}</p>
                         {% else %}
                             {% if user != object.organizer %}
-                                <a href="{% url 'confirm_join' object.pk %}" class="btn btn-primary">{% trans 'Join!' %}</a>
+                                <a href="{% url 'confirm_join' object.pk %}" class="mybtn mybtn-small">{% trans 'Join!' %}</a>
                             {% endif %}
                         {% endif %}
                     {% endif %}
@@ -59,37 +83,67 @@
                     {% if user == object.organizer %}
                         <p>{% blocktrans %}You are organizer of this event{% endblocktrans %}</p>
                     {% else %}
-                        <a href="{% url 'login' %}" class="btn btn-primary">{% blocktrans %}Login to join!{% endblocktrans %}</a>
+                        <a href="{% url 'login' %}" class="mybtn mybtn-small">{% blocktrans %}Login to join!{% endblocktrans %}</a>
                     {% endif %}
                 {% endif %}
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-4">
-                <p>{% blocktrans %}Maximum players/teams{% endblocktrans %}: {{ object.max_players }}</p>
-            </div>
-            <div class="col-xs-4">
-                <p>{% blocktrans %}Minimum players/teams{% endblocktrans %}: {{ object.min_players }}</p>
-            </div>
-            <div class="col-xs-4">
-                <p>{% blocktrans %}Registered players/teams{% endblocktrans %}: {{ object.get_registered_count }}</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <h3>{% trans 'Event description' %}</h3>
+        <div class="row event-block-bottom-line">
+            <div class="col-md-12">
+                <h3 class="color-header">{% trans 'Event description' %}</h3>
                 <p>{{ object.description }}</p>
-                <h4>{% trans 'Map' %}:</h4>
-                <img src="{{ object.map_link }}">
+                <h4 class="color-header">{% trans 'Map' %}:</h4>
+                <p class="text-center">
+                    <img src="{{ object.map_link }}" class="map-image">
+                </p>
+                <p class="text-center">
+                    <a href="http://maps.google.com/?q={{ object.place.country }},{{ object.place.city }},{{ object.place.street }}">
+                        {% trans 'View on google maps' %}
+                    </a>
+                </p>
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-12">
-                {% for photo in object.get_event_photos %}
-                    <img src="{{ photo.image.url }}" class="img-rounded index_avatar" alt="{{ photo.title }}">
-                {% endfor %}
+        {% if object.get_event_photos %}
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="color-header">{% trans 'Event photos' %}</h3>
+                </div>
             </div>
-        </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="gallery">
+                        <div class="elastislide-wrapper elastislide-horizontal">
+                            <div class="elastislide-carousel">
+                                <ul id="carousel" class="elastislide-list">
+                                    {% for photo in object.get_event_photos %}
+                                        {% if forloop.first %}
+                                            <li data-preview="{{ photo.image.url }}" class="current-img">
+                                                <a href="#">
+                                                    <img src="{{ photo.image.url }}" alt="{{ photo.title }}">
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li data-preview="{{ photo.image.url }}">
+                                                <a href="#">
+                                                    <img src="{{ photo.image.url }}" alt="{{ photo.title }}">
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <nav>
+                                <span class="elastislide-prev" style="display: none;">Previous</span>
+                                <span class="elastislide-next" style="display: none;">Next</span>
+                            </nav>
+                        </div>
+                        <div class="image-preview">
+                            <img src="" id="preview">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
         <div class="row">
             <div class="col-xs-12">
                 <h2>{% trans 'Tasks' %}</h2>
@@ -158,4 +212,29 @@
             {% endif %}
         </div>
     </div>
+    <!-- Add elastislide plugin to page for photo galery -->
+    <script src="{% static 'js/elastic/jquerypp.custom.js' %}"></script>
+    <script src="{% static 'js/elastic/jquery.elastislide.js' %}"></script>
+    <script type="text/javascript">
+        var current = 0, $preview = $( '#preview' ), $carouselEl = $( '#carousel' ), $carouselItems = $carouselEl.children(),
+                carousel = $carouselEl.elastislide( {
+                    current : current,
+					minItems : 4,
+					onClick : function( el, pos, evt ) {
+                        changeImage( el, pos );
+						evt.preventDefault();
+					},
+					onReady : function() {
+						changeImage( $carouselItems.eq( current ), current );
+					}
+				} );
+        function changeImage( el, pos ) {
+            $preview.attr( 'src', el.data( 'preview' ) );
+            $carouselItems.removeClass( 'current-img' );
+            el.addClass( 'current-img' );
+            carousel.setCurrent( pos );
+        }
+
+    </script>
+    <!-- End elastislide plugin to page for photo galery -->
 {% endblock %}

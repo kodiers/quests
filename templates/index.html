@@ -83,7 +83,7 @@
                         <img src="{% static 'images/no-events-image.png' %}" class="img-responsive img-rounded index_avatar">
                     {% endif %}
                         <a href="{% url 'event' event.pk %}">
-                            <h3 class="text-header">{{ event.title }}</h3>
+                            <h3 class="text-header">{{ event.title|truncatechars:55 }}</h3>
                         </a>
                     <p class="date">{% trans "Start date" %}: {{ event.start_date|date:'d M Y' }}</p>
                     <p>{{ event.description|truncatewords:35 }}</p>
