@@ -17,6 +17,7 @@ from django.views.generic import ListView, DetailView
 
 from django.utils.translation import ugettext as _
 from django.utils.timezone import utc
+from django.utils.timezone import now as timezone_now
 
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -200,6 +201,10 @@ class EventView(DetailView):
     model = Events
     template_name = 'event.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(EventView, self).get_context_data()
+        context['now'] = timezone_now()
+        return context
 
 @login_required()
 def confirm_join_event(request, pk):
@@ -231,42 +236,46 @@ def join_event(request, flag):
     """
     event = None
     error = ''
+    now = timezone_now()
     if request.method == 'POST':
         if 'event_pk' in request.POST:
             event = get_object_or_404(Events, pk=request.POST['event_pk'])
-            if flag == 'player' and request.user != event.organizer:
-                event.registered_players.add(request.user)
-                error = SUCCESSFULLY_REGITERED
-                player_notification = _('You was succesfully registered to event %s' % event.title)
-                # Send notification to player
-                send_user_notification(SUCCESSFULLY_REGITERED, player_notification, EMAIL_HOST_USER, request.user.email)
-                # Send notification to organizer
-                org_subject = _("Player was registered to your event %s" % event.title)
-                org_notification = _("Player {player} was registered to your event {event}".format(
-                    player=request.user.username, event=event.title))
-                send_user_notification(org_subject, org_notification, EMAIL_HOST_USER, event.organizer.email)
-            elif flag == 'team':
-                try:
-                    team = Teams.objects.get(creator=request.user)
-                    if team in event.registered_teams.all():
-                        error = TEAM_ALREADY_REGISTERED
-                    else:
-                        if request.user != event.organizer:
-                            event.registered_teams.add(team)
-                            error = _(TEAM_WAS_REGISTERED % event.title)
-                            creator_notification = _("Your team {team} was registered to event {event}".format(
-                                team=team.title, event=event.title))
-                            # Send notification to team creator
-                            send_user_notification(error, creator_notification, EMAIL_HOST_USER, team.creator.email)
-                            # Send notification to organizer
-                            org_subject = _("Team was registered to your event.")
-                            org_notification = _("Team {team} was registered to your event {event}".format(
-                                team=team.title, event=event.title))
-                            send_user_notification(org_subject, org_notification, EMAIL_HOST_USER, event.organizer.email)
-                except ObjectDoesNotExist:
-                    error = _("You doesn't have any team")
+            if now < event.start_date:
+                if flag == 'player' and request.user != event.organizer:
+                    event.registered_players.add(request.user)
+                    error = SUCCESSFULLY_REGITERED
+                    player_notification = _('You was succesfully registered to event %s' % event.title)
+                    # Send notification to player
+                    send_user_notification(SUCCESSFULLY_REGITERED, player_notification, EMAIL_HOST_USER, request.user.email)
+                    # Send notification to organizer
+                    org_subject = _("Player was registered to your event %s" % event.title)
+                    org_notification = _("Player {player} was registered to your event {event}".format(
+                            player=request.user.username, event=event.title))
+                    send_user_notification(org_subject, org_notification, EMAIL_HOST_USER, event.organizer.email)
+                elif flag == 'team':
+                    try:
+                        team = Teams.objects.get(creator=request.user)
+                        if team in event.registered_teams.all():
+                            error = TEAM_ALREADY_REGISTERED
+                        else:
+                            if request.user != event.organizer:
+                                event.registered_teams.add(team)
+                                error = _(TEAM_WAS_REGISTERED % event.title)
+                                creator_notification = _("Your team {team} was registered to event {event}".format(
+                                        team=team.title, event=event.title))
+                                # Send notification to team creator
+                                send_user_notification(error, creator_notification, EMAIL_HOST_USER, team.creator.email)
+                                # Send notification to organizer
+                                org_subject = _("Team was registered to your event.")
+                                org_notification = _("Team {team} was registered to your event {event}".format(
+                                        team=team.title, event=event.title))
+                                send_user_notification(org_subject, org_notification, EMAIL_HOST_USER, event.organizer.email)
+                    except ObjectDoesNotExist:
+                        error = _("You doesn't have any team")
+                else:
+                    error = REQUEST_PARAMETRS_ERROR
             else:
-                error = REQUEST_PARAMETRS_ERROR
+                error = _("Registration on this event is closed")
         else:
             error = REQUEST_PARAMETRS_ERROR
     else:
@@ -978,6 +987,7 @@ class EventsListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(EventsListView, self).get_context_data(**kwargs)
         context['COUNTRIES'] = COUNTRIES
+        context['now'] = timezone_now()
         return context
 
 
@@ -992,6 +1002,7 @@ class AllEventsListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(AllEventsListView, self).get_context_data(**kwargs)
         context['COUNTRIES'] = COUNTRIES
+        context['now'] = timezone_now()
         return context
 
 
@@ -1032,13 +1043,14 @@ def search_events_view(request):
     objects = search_events(search_string, start_date, end_date, country, city, from_cost, to_cost, duration, organizer)
     paginator = Paginator(objects, 20)
     page = request.GET.get('page')
+    now = timezone_now()
     try:
         object_list = paginator.page(page)
     except PageNotAnInteger:
         object_list = paginator.page(1)
     except EmptyPage:
         object_list = paginator.page(paginator.num_pages)
-    return render_to_response('events.html', {'object_list': object_list, 'COUNTRIES': COUNTRIES},
+    return render_to_response('events.html', {'object_list': object_list, 'COUNTRIES': COUNTRIES, 'now': now},
                               context_instance=RequestContext(request))
 
 
@@ -1129,11 +1141,12 @@ def events_registered_view(request):
             events.append(event)
     paginator = Paginator(events, 20)
     page = request.GET.get('page')
+    now = timezone_now()
     try:
         object_list = paginator.page(page)
     except PageNotAnInteger:
         object_list = paginator.page(1)
     except EmptyPage:
         object_list = paginator.page(paginator.num_pages)
-    return render_to_response('events.html', {'object_list': object_list, 'COUNTRIES': COUNTRIES},
+    return render_to_response('events.html', {'object_list': object_list, 'COUNTRIES': COUNTRIES, 'now': now},
                               context_instance=RequestContext(request))

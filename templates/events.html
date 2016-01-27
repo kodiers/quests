@@ -126,11 +126,15 @@
                                 <span style="margin-left: 20px">
                                     <a href="{% url 'event' object.pk %}" class="mybtn mybtn-small">{% trans 'More...' %}</a>
                                 </span>
-                                <a href="{% url 'confirm_join' object.pk %}" class="mybtn mybtn-small">{% trans 'Join!' %}</a>
+                                {% if object.start_date > now %}
+                                    <a href="{% url 'confirm_join' object.pk %}" class="mybtn mybtn-small">{% trans 'Join!' %}</a>
+                                {% endif %}
                             </p>
                         {% else %}
                             <a href="{% url 'event' object.pk %}" class="mybtn mybtn-small">{% trans 'More...' %}</a>
-                            <a href="{% url 'confirm_join' object.pk %}" class="mybtn mybtn-small">{% trans 'Join!' %}</a>
+                            {% if object.start_date > now %}
+                                <a href="{% url 'confirm_join' object.pk %}" class="mybtn mybtn-small">{% trans 'Join!' %}</a>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>
