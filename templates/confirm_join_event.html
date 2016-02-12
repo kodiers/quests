@@ -5,46 +5,91 @@
 {% block title %}
     {% trans "Join event" %} {{ object.title }} | {% show_title_page %}
 {% endblock %}
+{% block scripts %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/event.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/elastic/elastislide.css' %}">
+    <script src="{% static 'js/elastic/modernizr.custom.17475.js' %}"></script>
+{% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-4">
-                {% if user.questsusers.image.url != None %}
-                    <img src="{{ user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
+    <div class="container-fluid">
+        <div class="row content-row caption-row page-header-background">
+            <div class="col-md-4 icon-block">
+                {% if object.image.url != None %}
+                    <img src="{{ object.image.url }}" class="img-responsive img-rounded content-icon block-icon event-image" alt="{{ object.title }}">
                 {% else %}
-                    <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
+                    <img src="{% static 'images/no-events-image.png' %}" class="img-responsive img-rounded content-icon block-icon event-image" alt="{{ object.title }}">
                 {% endif %}
-                <a href="{% url 'contact_list' %}" class="btn btn-default">{% trans "Message count" %}</a>
             </div>
-            <div class="col-xs-8">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <h1 class="page-header">{% trans "You want to join event" %}: {{ object.title }}</h1>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-3">
-                        <p>{% trans "Start date" %}: {{ object.start_date }}</p>
-                    </div>
-                    <div class="col-xs-3">
-                        <p>{% trans "Place" %}</p>
-                        <ul>
-                            <li>{% trans "Country" %}: {{ object.place.get_country_display }}</li>
-                            <li>{% trans "City" %}: {{ object.place.city }}</li>
-                            <li>{% trans "Street" %}: {{ object.place.street }}</li>
-                        </ul>
-                    </div>
-                    <div class="col-xs-3">
-                        <p>{% trans "Organizer" %}: {{ object.organizer.username }}</p>
-                    </div>
-                    <div class="col-xs-3">
-                        {% if object.price != 0.0 %}
-                            <p>{% trans "Price" %}: {{ object.price }}</p>
+            <div class="col-md-8 event-header-block">
+                <h1 class="page-h1">{% trans "You want to join event" %}: <span class="text-underline">{{ object.title }}</span></h1>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row event-block-bottom-line">
+            <div class="col-md-4 text-center">
+                <h2 class="color-header">{{ user.username }}</h2>
+                {% if user.questsusers.image.url != None %}
+                    <img src="{{ user.questsusers.image.url }}" class="img-responsive img-rounded content-icon block-icon event-image">
+                {% else %}
+                    <img src="{% static 'images/no-players-image.png' %}" class="img-responsive img-rounded content-icon block-icon event-image">
+                {% endif %}
+                <p class="additional-search-parameters text-center">
+                    <a href="{% url 'contact_list' %}" class="mybtn mybtn-small">{% trans "Message count" %}</a>
+                </p>
+            </div>
+            <div class="col-md-4">
+                <p>{% trans "Start date" %}: <span class="date">{{ object.start_date }}</span></p>
+                <p>{% trans 'End date' %}: <span class="date"> {{ object.end_date }}</span></p>
+                <p>{% trans 'Place' %}:
+                    <span class="date">
+                        {% if object.place.city != None %}
+                            {{ object.place.get_country_display }} / {{ object.place.city }}
                         {% else %}
-                            <p class="free_event">{% trans "FREE" %}</p>
+                            {{ object.place.get_country_display }}
                         {% endif %}
-                    </div>
-                </div>
+                    </span>
+                </p>
+                <p>{% trans 'Organizer' %}:
+                    <span class="date">
+                        {% if object.organizer.questsusers.is_organizer %}
+                            <a href="{% url 'organizer' object.organizer.username|get_organizer_by_username %}"> {{ object.organizer.username }}</a>
+                        {% else %}
+                            <a href="{% url 'player' object.organizer.username|get_player_by_username %}">{{ object.organizer.username }}</a>
+                        {% endif %}
+                    </span>
+                </p>
+                {% if object.price != 0.0 %}
+                    <p>{% trans "Price" %}: {{ object.price }}</p>
+                {% else %}
+                    <p class="free_event">{% trans "FREE" %}</p>
+                {% endif %}
+            </div>
+            <div class="col-md-4">
+                <p>
+                    {% if object.is_team %}
+                        <p>{% trans 'TEAM GAME' %}</p>
+                    {% endif %}
+                </p>
+                <p>
+                    {% blocktrans %}Maximum players/teams{% endblocktrans %}:
+                    {% if object.max_players == None %}
+                        N/A
+                    {% else %}
+                        {{ object.max_players }}
+                    {% endif %}
+                </p>
+                <p>
+                    {% blocktrans %}Minimum players/teams{% endblocktrans %}:
+                    {% if object.min_players == None %}
+                        N/A
+                    {% else %}
+                        {{ object.min_players }}
+                    {% endif %}
+                </p>
+                <p>{% blocktrans %}Registered players/teams{% endblocktrans %}: {{ object.get_registered_count }}</p>
+            </div>
+        </div>
                 <div class="row">
                     <div class="col-xs-8">
                         <p>{{ object.description }}</p>

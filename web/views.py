@@ -215,15 +215,20 @@ def confirm_join_event(request, pk):
     :param pk: pk of event
     :return: HttpResponse object
     """
+    now = timezone_now()
     event = get_object_or_404(Events, pk=pk)
     user_registered = False
-    for team in event.registered_teams.all():
-        if request.user in team.players.all():
+    if now < event.start_date:
+        for team in event.registered_teams.all():
+            if request.user in team.players.all():
+                user_registered = True
+        if request.user in event.registered_players.all():
             user_registered = True
-    if request.user in event.registered_players.all():
-        user_registered = True
-    return render_to_response('confirm_join_event.html', {'object': event, 'user_registered': user_registered},
+        return render_to_response('confirm_join_event.html', {'object': event, 'user_registered': user_registered},
                               context_instance=RequestContext(request))
+    else:
+        error = REGISTRATION_CLOSED
+        return render_to_response("error.html", {"error": error}, context_instance=RequestContext(request))
 
 
 @login_required()
@@ -275,7 +280,7 @@ def join_event(request, flag):
                 else:
                     error = REQUEST_PARAMETRS_ERROR
             else:
-                error = _("Registration on this event is closed")
+                error = REGISTRATION_CLOSED
         else:
             error = REQUEST_PARAMETRS_ERROR
     else:

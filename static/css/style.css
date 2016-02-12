@@ -218,6 +218,9 @@ a:hover {
     background-color: #eef6f4;
     margin-bottom: 10px;
 }
+.text-underline {
+    text-decoration: underline;
+}
 @media screen and (max-width: 480px) {
     .date {
         margin-top: 10px;

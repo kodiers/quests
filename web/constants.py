@@ -17,3 +17,5 @@ TEAM_ALREADY_REGISTERED = _('Your team are already registered in this event!')
 
 TEAM_WAS_REGISTERED = 'Your team was registered to event %s'
 YOU_JOINED_TEAM = "You successfully joined team"
+
+REGISTRATION_CLOSED = _("Registration on this event is closed")
