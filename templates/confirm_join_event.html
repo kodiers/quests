@@ -21,14 +21,26 @@
                 {% endif %}
             </div>
             <div class="col-md-8 event-header-block">
-                <h1 class="page-h1">{% trans "You want to join event" %}: <span class="text-underline">{{ object.title }}</span></h1>
+                <h1 class="page-h1 minimaze-h1-text"> {% trans "You want to join event" %}:
+                    <span class="text-underline">
+                        <a href="{% url 'event' object.pk %}">{{ object.title }}</a>
+                    </span>
+                </h1>
             </div>
         </div>
     </div>
     <div class="container">
         <div class="row event-block-bottom-line">
             <div class="col-md-4 text-center">
-                <h2 class="color-header">{{ user.username }}</h2>
+                <h2 class="color-header">
+                    {% if user.questsusers.is_organizer %}
+                        <a href="{% url 'organizer_profile' %}">
+                    {% else %}
+                        <a href="{% url 'player_profile' %}">
+                    {% endif %}
+                        {{ user.username }}
+                    </a>
+                </h2>
                 {% if user.questsusers.image.url != None %}
                     <img src="{{ user.questsusers.image.url }}" class="img-responsive img-rounded content-icon block-icon event-image">
                 {% else %}
@@ -38,7 +50,7 @@
                     <a href="{% url 'contact_list' %}" class="mybtn mybtn-small">{% trans "Message count" %}</a>
                 </p>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 event-info-block">
                 <p>{% trans "Start date" %}: <span class="date">{{ object.start_date }}</span></p>
                 <p>{% trans 'End date' %}: <span class="date"> {{ object.end_date }}</span></p>
                 <p>{% trans 'Place' %}:
@@ -65,12 +77,10 @@
                     <p class="free_event">{% trans "FREE" %}</p>
                 {% endif %}
             </div>
-            <div class="col-md-4">
-                <p>
-                    {% if object.is_team %}
-                        <p>{% trans 'TEAM GAME' %}</p>
-                    {% endif %}
-                </p>
+            <div class="col-md-4 event-info-block">
+                {% if object.is_team %}
+                    <p>{% trans 'TEAM GAME' %}</p>
+                {% endif %}
                 <p>
                     {% blocktrans %}Maximum players/teams{% endblocktrans %}:
                     {% if object.max_players == None %}
@@ -90,63 +100,108 @@
                 <p>{% blocktrans %}Registered players/teams{% endblocktrans %}: {{ object.get_registered_count }}</p>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-8">
-                        <p>{{ object.description }}</p>
-                    </div>
-                    <div class="col-xs-4">
-                        <img src="{{ object.map_link }}">
-                    </div>
-                </div>
+        <div class="row event-block-bottom-line">
+            <div class="col-md-12">
+                <h3 class="color-header">{% trans 'Event description' %}</h3>
+                <p>{{ object.description }}</p>
+                <p class="text-center">
+                    <img src="{{ object.map_link }}" class="map-image img-responsive">
+                </p>
+                <p class="text-center">
+                    <a href="http://maps.google.com/?q={{ object.place.get_country_display }}
+                        {% if object.place.city != None %}
+                            ,{{ object.place.city }}
+                        {% endif %}
+                        {% if object.place.street != None %}
+                            ,{{ object.place.street }}
+                        {% endif %}">
+                            {% trans 'View on google maps' %}
+                    </a>
+                </p>
             </div>
         </div>
-        <div class="row">
+        <div class="row event-block-bottom-line">
             {% if object.is_team %}
-                <div class="col-xs-12">
-                    <h2>{% trans "Registered teams" %}</h2>
-                        {% if user_registered %}
-                            <p>{% trans "You are in team, that registered" %}</p>
+                <div class="col-md-12 text-center">
+                    {% if user_registered %}
+                        <p>{% trans "You are in team, that registered" %}</p>
+                    {% else %}
+                        {% if object.get_registered_count >= object.max_players %}
+                            <p>{% trans "Maximum number of players are registered to this event" %}</p>
                         {% else %}
-                            {% if object.get_registered_count >= object.max_players %}
-                                <p>{% trans "Maximum number of players are registered to this event" %}</p>
+                            {% if user == object.organizer %}
+                                <p>{% trans "You are organizer of this event" %}</p>
                             {% else %}
-                                {% if user == object.organizer %}
-                                    <p>{% trans "You are organizer of this event" %}</p>
-                                {% else %}
-                                    <a href="{% url 'create_and_register_team' object.pk %}" class="btn btn-primary">
-                                        {% blocktrans %}Create team and join!{% endblocktrans %}
-                                    </a>
-                                    <form action="{% url 'join_event' 'team' %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="hidden" value="{{ object.pk }}" name="event_pk">
-                                        <input type="submit" value="{% trans 'Join as team!' %}" class="btn btn-primary">
-                                    </form>
-                                {% endif %}
+                                <div class="row">
+                                    <div class="col-md-6 event-join-button-block">
+                                        <a href="{% url 'create_and_register_team' object.pk %}" class="mybtn mybtn-small">
+                                            {% blocktrans %}Create team and join!{% endblocktrans %}
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6 event-join-button-block">
+                                        <form action="{% url 'join_event' 'team' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" value="{{ object.pk }}" name="event_pk">
+                                            <input type="submit" value="{% trans 'Join as team!' %}" class="mybtn mybtn-small">
+                                        </form>
+                                    </div>
+                                </div>
                             {% endif %}
                         {% endif %}
-                    {% for team in object.registered_teams.all %}
-                        <h3>{{ team.title }}</h3>
-                        {% if user_registered == False %}
-                            {% if object.get_registered_count >= object.max_players %}
-                                <p>{% blocktrans %}Maximum number of players are registered to this event{% endblocktrans %}</p>
-                            {% else %}
-                                {% if user != object.organizer %}
-                                    <form action="{% url 'join_team' %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="hidden" value="{{ team.pk }}" name="team_pk">
-                                        <input type="submit" value="{% trans 'Join team!' %}" class="btn btn-primary">
-                                    </form>
-                                {% endif %}
-                            {% endif %}
-                        {% endif %}
-                        <p>{% trans "Team players" %}:</p>
-                        {% for player in team.players.all %}
-                            <p>{{ player.username }}</p>
-                        {% endfor %}
-                    {% endfor %}
+                    {% endif %}
+                    <h2 class="color-header">
+                        {% trans "Registered teams" %}
+                    </h2>
+                    <table class="table table-responsive table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    {% trans 'Team title' %}
+                                </th>
+                                <th>
+                                    {% trans "Team players" %}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for team in object.registered_teams.all %}
+                                <tr>
+                                    <td>
+                                        <h4 class="color-header">{{ team.title }}</h4>
+                                        {% if user_registered == False %}
+                                            {% if object.get_registered_count >= object.max_players %}
+                                                <p>{% blocktrans %}Maximum number of players are registered to this event{% endblocktrans %}</p>
+                                            {% else %}
+                                                {% if user != object.organizer %}
+                                                    <form action="{% url 'join_team' %}" method="post">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" value="{{ team.pk }}" name="team_pk">
+                                                        <input type="submit" value="{% trans 'Join team!' %}" class="mybtn mybtn-small">
+                                                    </form>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-left">
+                                        <ul>
+                                            {% for player in team.players.all %}
+                                                <li>{% if player.questsusers.is_organizer %}
+                                                        <a href="{% url 'organizer' player.organizers.pk %}">
+                                                    {% else %}
+                                                        <a href="{% url 'player' player.players.pk %}">
+                                                    {% endif %}
+                                                        {{ player.username }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             {% else %}
-                <div class="col-xs-12 text_center">
+                <div class="col-md-12 text_center">
                     {% if user_registered %}
                         <p>{% blocktrans %}You are already joined this event!{% endblocktrans %}</p>
                     {% else %}
@@ -157,53 +212,70 @@
                                 <form method="post" action="{% url 'join_event' 'player' %}">
                                     {% csrf_token %}
                                     <input type="hidden" value="{{ object.pk }}" name="event_pk">
-                                    <input type="submit" value="{% trans "Join event!" %}" class="btn btn-primary btn_width_200">
+                                    <input type="submit" value="{% trans "Join event!" %}" class="mybtn mybtn-small">
                                 </form>
                             {% else %}
                                 <p>{% blocktrans %}You are organizer of this event{% endblocktrans %}</p>
                             {% endif %}
                         {% endif %}
                     {% endif %}
-                    <h2>{% trans "Registered players" %}</h2>
-                    {% for player in object.registered_players.all %}
-                        <h4 class="text_on_1_line">{{ player.username }}</h4>
-                        {% if player.questsusers.image.url != None %}
-                            <img src="{{ player.questsusers.image.url }}" class="img-rounded small_avatar">
-                        {% else %}
-                            <img src="{% static 'images/default-user-avatar.png' %}" class="img-rounded small_avatar">
-                        {% endif %}
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#SendMessageModal{{ player.pk }}">
-                            {% trans "Send message" %}
-                        </button>
-                        <div class="modal fade" id="SendMessageModal{{ player.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                            &times;
+                    <h2 class="color-header">{% trans "Registered players" %}</h2>
+                    <table class="table table-responsive">
+                        <tbody>
+                            {% for player in object.registered_players.all %}
+                                <tr>
+                                    <td>
+                                        {% if player.questsusers.image.url != None %}
+                                            <img src="{{ player.questsusers.image.url }}" class="img-rounded small_avatar">
+                                        {% else %}
+                                            <img src="{% static 'images/no-players-image.png' %}" class="img-rounded small_avatar">
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if player.questsusers.is_organizer %}
+                                            <a href="{% url 'organizer' player.organizers.pk %}">
+                                        {% else %}
+                                            <a href="{% url 'player' player.players.pk %}">
+                                        {% endif %}
+                                            <h4 class="text_on_1_line">{{ player.username }}</h4>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <button class="mybtn mybtn-small" data-toggle="modal" data-target="#SendMessageModal{{ player.pk }}">
+                                            {% trans "Send message" %}
                                         </button>
-                                        <h4 class="modal-title">{% trans "Send new message" %}</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div id="modal_error"></div>
-                                        <form action="{% url 'send_message' %}" method="post" id="idSendMessageForm">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="sender" value="{{ user.username }}">
-                                            <input type="hidden" name="receiver" value="{{ player.username }}">
-                                            <textarea name="text" class="form-control" placeholder="{% trans 'Enter message' %}"></textarea>
-                                            <input type="submit" value="{% trans 'Send' %}" class="btn btn-primary">
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">
-                                            {% trans 'Close' %}
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                    {% endfor %}
+                                        <div class="modal fade" id="SendMessageModal{{ player.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                            &times;
+                                                        </button>
+                                                        <h4 class="modal-title color-header">{% trans "Send new message" %}</h4>
+                                                    </div>
+                                                    <div class="modal-body text-left">
+                                                        <div id="modal_error"></div>
+                                                        <form action="{% url 'send_message' %}" method="post" id="idSendMessageForm">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="sender" value="{{ user.username }}">
+                                                            <input type="hidden" name="receiver" value="{{ player.username }}">
+                                                            <textarea name="text" class="form-control" placeholder="{% trans 'Enter message' %}"></textarea>
+                                                            <input type="submit" value="{% trans 'Send' %}" class="mybtn mybtn-small">
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                            {% trans 'Close' %}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             {% endif %}
         </div>

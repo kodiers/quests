@@ -221,6 +221,9 @@ a:hover {
 .text-underline {
     text-decoration: underline;
 }
+.text-left {
+    text-align: left;
+}
 @media screen and (max-width: 480px) {
     .date {
         margin-top: 10px;

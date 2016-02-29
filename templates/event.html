@@ -115,8 +115,14 @@
                     <img src="{{ object.map_link }}" class="map-image img-responsive">
                 </p>
                 <p class="text-center">
-                    <a href="http://maps.google.com/?q={{ object.place.country }},{{ object.place.city }},{{ object.place.street }}">
-                        {% trans 'View on google maps' %}
+                    <a href="http://maps.google.com/?q={{ object.place.get_country_display }}
+                        {% if object.place.city != None %}
+                            ,{{ object.place.city }}
+                        {% endif %}
+                        {% if object.place.street != None %}
+                            ,{{ object.place.street }}
+                        {% endif %}">
+                            {% trans 'View on google maps' %}
                     </a>
                 </p>
             </div>

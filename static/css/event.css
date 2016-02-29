@@ -57,8 +57,37 @@
 .photos-row {
 	padding-bottom: 20px;
 }
+.event-info-block {
+    padding-top: 55px;
+}
+.event-join-button-block {
+	padding-top: 20px;
+}
+div.event-join-button-block form {
+    margin-top: -10px;
+}
 @media screen and (min-width: 481px) and (max-width: 1080px) {
 	.event-header-block {
-		padding-left: 80px;
+        padding-left: 80px;
 	}
+}
+@media screen and (max-width: 480px) {
+    .minimaze-h1-text {
+        font-size: 70%;
+    }
+	div.event-join-button-block a.mybtn, input.mybtn, input.mybtn:hover, button.mybtn, button.mybtn:hover {
+        color: #3E0216;
+        font-size: 1.2em;
+        background: none;
+        text-decoration: underline;
+    }
+    div.event-join-button-block input.mybtn {
+        font-size: 1em;
+    }
+    td input.mybtn {
+        font-size: 1em;
+    }
+    h2.color-header {
+        font-size: 1.3em;
+    }
 }
