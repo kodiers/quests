@@ -19,9 +19,9 @@
         <div class="row content-row caption-row page-header-background">
             <div class="col-md-4 icon-block">
                 {% if object.image.url != None %}
-                    <img src="{{ object.image.url }}" class="img-responsive img-rounded content-icon block-icon event-image" alt="{{ object.title }}">
+                    <img src="{{ object.image.url }}" class="img-responsive img-rounded content-icon block-icon header-image" alt="{{ object.title }}">
                 {% else %}
-                    <img src="{% static 'images/no-events-image.png' %}" class="img-responsive img-rounded content-icon block-icon event-image" alt="{{ object.title }}">
+                    <img src="{% static 'images/no-events-image.png' %}" class="img-responsive img-rounded content-icon block-icon header-image" alt="{{ object.title }}">
                 {% endif %}
             </div>
             <div class="col-md-8 event-header-block">
@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="container">
-        <div class="row event-block-bottom-line">
+        <div class="row block-bottom-line">
             <div class="col-md-4">
                 <p>{% trans 'Start date' %}: <span class="date"> {{ object.start_date }} </span></p>
                 <p>{% trans 'End date' %}: <span class="date"> {{ object.end_date }}</span></p>
@@ -106,7 +106,7 @@
                 {% endif %}
             </div>
         </div>
-        <div class="row event-block-bottom-line">
+        <div class="row block-bottom-line">
             <div class="col-md-12">
                 <h3 class="color-header">{% trans 'Event description' %}</h3>
                 <p>{{ object.description }}</p>
@@ -133,7 +133,7 @@
                     <h3 class="color-header">{% trans 'Event photos' %}</h3>
                 </div>
             </div>
-            <div class="row event-block-bottom-line photos-row">
+            <div class="row block-bottom-line photos-row">
                 <div class="col-md-12">
                     <div class="gallery">
                         <div class="elastislide-wrapper elastislide-horizontal">
@@ -173,7 +173,7 @@
                 <h2 class="color-header">{% trans 'Tasks' %}</h2>
             </div>
         </div>
-        <div class="row event-block-bottom-line">
+        <div class="row block-bottom-line">
             <div class="col-md-12">
                 <table class="table table-responsive table-hover">
                     <thead>

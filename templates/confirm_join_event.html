@@ -15,9 +15,9 @@
         <div class="row content-row caption-row page-header-background">
             <div class="col-md-4 icon-block">
                 {% if object.image.url != None %}
-                    <img src="{{ object.image.url }}" class="img-responsive img-rounded content-icon block-icon event-image" alt="{{ object.title }}">
+                    <img src="{{ object.image.url }}" class="img-responsive img-rounded content-icon block-icon header-image" alt="{{ object.title }}">
                 {% else %}
-                    <img src="{% static 'images/no-events-image.png' %}" class="img-responsive img-rounded content-icon block-icon event-image" alt="{{ object.title }}">
+                    <img src="{% static 'images/no-events-image.png' %}" class="img-responsive img-rounded content-icon block-icon header-image" alt="{{ object.title }}">
                 {% endif %}
             </div>
             <div class="col-md-8 event-header-block">
@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="container">
-        <div class="row event-block-bottom-line">
+        <div class="row block-bottom-line">
             <div class="col-md-4 text-center">
                 <h2 class="color-header">
                     {% if user.questsusers.is_organizer %}
@@ -42,9 +42,9 @@
                     </a>
                 </h2>
                 {% if user.questsusers.image.url != None %}
-                    <img src="{{ user.questsusers.image.url }}" class="img-responsive img-rounded content-icon block-icon event-image">
+                    <img src="{{ user.questsusers.image.url }}" class="img-responsive img-rounded content-icon block-icon header-image">
                 {% else %}
-                    <img src="{% static 'images/no-players-image.png' %}" class="img-responsive img-rounded content-icon block-icon event-image">
+                    <img src="{% static 'images/no-players-image.png' %}" class="img-responsive img-rounded content-icon block-icon header-image">
                 {% endif %}
                 <p class="additional-search-parameters text-center">
                     <a href="{% url 'contact_list' %}" class="mybtn mybtn-small">{% trans "Message count" %}</a>
@@ -100,7 +100,7 @@
                 <p>{% blocktrans %}Registered players/teams{% endblocktrans %}: {{ object.get_registered_count }}</p>
             </div>
         </div>
-        <div class="row event-block-bottom-line">
+        <div class="row block-bottom-line">
             <div class="col-md-12">
                 <h3 class="color-header">{% trans 'Event description' %}</h3>
                 <p>{{ object.description }}</p>
@@ -120,7 +120,7 @@
                 </p>
             </div>
         </div>
-        <div class="row event-block-bottom-line">
+        <div class="row block-bottom-line">
             {% if object.is_team %}
                 <div class="col-md-12 text-center">
                     {% if user_registered %}

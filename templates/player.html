@@ -6,32 +6,33 @@
     {{ object.user.username }} {% show_title_page %}
 {% endblock %}
 {% block scripts %}
+    <link rel="stylesheet" href="{% static 'css/player.css' %}" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/elastic/elastislide.css' %}">
+    <script src="{% static 'js/elastic/modernizr.custom.17475.js' %}"></script>
 {% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-4">
-                <h1 class="page-header">{{ object.user.username }}</h1>
+    <div class="container-fluid">
+        <div class="row content-row caption-row page-header-background">
+            <div class="col-md-4 icon-block">
                 {% if object.user.questsusers.image.url != None %}
-                    <img src="{{ object.user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
+                    <img src="{{ object.user.questsusers.image.url }}" class="img-responsive img-rounded content-icon block-icon header-image" alt="{{ object.user.username }}">
                 {% else %}
-                    <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
+                    <img src="{% static 'images/no-players-image.png' %}" class="img-responsive img-rounded content-icon block-icon header-image" alt="{{ object.user.username }}">
                 {% endif %}
             </div>
-            <div class="col-xs-8">
-                <h2>{% trans 'Photo' %}:</h2>
-                {% for photo in object.user.photos_set.all %}
-                    {% if photo.image.url != None %}
-                        <img src="{{ photo.image.url }}" class="img-rounded index_avatar">
-                    {% endif %}
-                {% endfor %}
+            <div class="col-md-8 text-left">
+                <h1 class="page-h1">{{ object.user.username }}</h1>
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-2">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#SendMessageModal">
-                    {% blocktrans %}Send message{% endblocktrans %}
-                </button>
+    </div>
+    <div class="container">
+        <div class="row block-bottom-line">
+            <div class="col-md-4">
+                <div class="icon-block">
+                    <button class="mybtn mybtn-small" data-toggle="modal" data-target="#SendMessageModal">
+                        {% blocktrans %}Send message{% endblocktrans %}
+                    </button>
+                </div>
                 <div class="modal fade" id="SendMessageModal" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -39,16 +40,16 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                     &times;
                                 </button>
-                                <h4 class="modal-title">{% blocktrans %}Send new message{% endblocktrans %}</h4>
+                                <h4 class="modal-title color-header">{% blocktrans %}Send new message{% endblocktrans %}</h4>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body text-left">
                                 <div id="modal_error"></div>
                                 <form action="{% url 'send_message' %}" method="post" id="idSendMessageForm">
                                     {% csrf_token %}
                                     <input type="hidden" name="sender" value="{{ user.username }}">
                                     <input type="hidden" name="receiver" value="{{ object.user.username }}">
                                     <textarea name="text" class="form-control" placeholder="{% trans 'Enter message' %}"></textarea>
-                                    <input type="submit" value="{% trans 'Send' %}" class="btn btn-primary">
+                                    <input type="submit" value="{% trans 'Send' %}" class="mybtn mybtn-small">
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -59,52 +60,195 @@
                         </div>
                     </div>
                 </div>
+                <h3 class="color-header">{% blocktrans %}Personal info:{% endblocktrans %}</h3>
+                <div class="p-padding-left">
+                    <p>{% trans 'Score' %}: <span class="date"> {{ object.points }}</span></p>
+                    {% if object.show_personal_info %}
+                        <p>{% blocktrans %}Date of birth:{% endblocktrans %}
+                            <span class="date">
+                                {{ object.date_of_birth|date:'d M Y' }}
+                            </span>
+                        </p>
+                        <p>{% trans 'Sex' %}:
+                            <span class="date">
+                                {{ object.get_sex_display }}
+                            </span>
+                        </p>
+                        <p>{% trans 'Country' %}:
+                            <span class="date">
+                                {{ object.user.contacts.get_country_display }}
+                            </span>
+                        </p>
+                        <p>{% trans 'City' %}:
+                            <span class="date">
+                                {{ object.user.contacts.city }}
+                            </span>
+                        </p>
+                        <p>{% trans 'Street' %}:
+                            <span class="date">
+                                {{ object.user.contacts.street }}
+                            </span>
+                        </p>
+                        <p>{% trans 'Phone' %}:
+                            <span class="date">
+                                {{ object.user.contacts.phone }}
+                            </span>
+                        </p>
+                        <p>{% trans 'Skype' %}:
+                            <span class="date">
+                                {{ object.user.contacts.skype }}
+                            </span>
+                        </p>
+                        <p>Web-site:
+                            <span class="date">
+                                {{ object.user.contacts.site }}
+                            </span>
+                        </p>
+                    {% endif %}
+                </div>
             </div>
-            <div class="col-xs-2">
-                <p>{% trans 'Score' %}: {{ object.points }}</p>
+            <div class="col-md-8">
+                <h3 class="color-header">{% trans 'About me' %}:</h3>
+                 <p>{{ object.description }}</p>
+            </div>
+        </div>
+        <div class="row block-bottom-line photos-row">
+            <div class="col-md-12">
+                <h2 class="color-header">{% trans 'Photo' %}:</h2>
+                <div class="gallery">
+                    <div class="elastislide-wrapper elastislide-horizontal">
+                        <div class="elastislide-carousel">
+                            <ul id="carousel" class="elastislide-list">
+                                {% for photo in object.user.photos_set.all %}
+                                    {% if forloop.first %}
+                                        <li data-preview="{{ photo.image.url }}" class="current-img">
+                                            <a href="#">
+                                                <img src="{{ photo.image.url }}" alt="{{ photo.title }}">
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li data-preview="{{ photo.image.url }}">
+                                            <a href="#">
+                                                <img src="{{ photo.image.url }}" alt="{{ photo.title }}">
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <nav>
+                            <span class="elastislide-prev" style="display: none;">Previous</span>
+                            <span class="elastislide-next" style="display: none;">Next</span>
+                        </nav>
+                    </div>
+                    <div class="image-preview">
+                        <img src="" id="preview">
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-4">
-                {% if object.show_personal_info %}
-                    <h2>{% blocktrans %}Personal info:{% endblocktrans %}</h2>
-                    <p>{% blocktrans %}Date of birth:{% endblocktrans %} {{ object.date_of_birth|date:'d M Y' }}</p>
-                    <p>{% trans 'Sex' %}: {{ object.get_sex_display }}</p>
-                    <p>{% trans 'Country' %}: {{ object.user.contacts.country }}</p>
-                    <p>{% trans 'City' %}: {{ object.user.contacts.city }}</p>
-                    <p>{% trans 'Street' %}: {{ object.user.contacts.street }}</p>
-                    <p>{% trans 'Phone' %}: {{ object.user.contacts.phone }}</p>
-                    <p>{% trans 'Skype' %}: {{ object.user.contacts.skype }}</p>
-                    <p>Web-site: {{ object.user.contacts.site }}</p>
-                {% endif %}
-            </div>
-            <div class="col-xs-8">
-                <h2>{% trans 'About me' %}:</h2>
-                <p>{{ object.description }}</p>
+            <div class="col-md-12">
+                <h3 class="color-header">{% trans "Future events" %}:</h3>
+                <table class="table table-responsive table-hover">
+                    <thead>
+                        <tr>
+                            <th>{% trans 'Event title' %}</th>
+                            <th>{% trans 'Start date' %}</th>
+                            <th>{% trans 'Organizer' %}</th>
+                            <th>{% trans 'City' %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in object.get_future_events %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'event' event.pk %}">{{ event.title }}</a>
+                                </td>
+                                <td>{{ event.start_date }}</td>
+                                <td>
+                                    {% if event.organizer.questsusers.is_organizer %}
+                                        <a href="{% url 'organizer' event.organizer.organizers.pk %}">
+                                            {{ event.organizer }}
+                                        </a>
+                                    {% else %}
+                                        <a href="{% url 'player' event.organizer.players.pk %}">
+                                            {{ event.organizer }}
+                                        </a>
+                                    {% endif %}
+                                </td>
+                                <td>{{ event.place.city }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12">
-                <h2>{% trans "Future events" %}:</h2>
-                {% for event in object.get_future_events %}
-                    <p class="text_on_1_line">{{ event.title }}</p>
-                    <p class="text_on_1_line">{{ event.start_date }}</p>
-                    <p class="text_on_1_line">{{ event.organizer }}</p>
-                    <p class="text_on_1_line">{{ event.place.city }}</p>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <h2>{% blocktrans %}Completed events:{% endblocktrans %}</h2>
-                {% for event in object.get_last_events %}
-                    <p class="text_on_1_line">{{ event.title }}</p>
-                    <p class="text_on_1_line">{{ event.end_date }}</p>
-                    <p class="text_on_1_line">{{ event.organizer }}</p>
-                    <p class="text_on_1_line">{{ event.place.city }}</p>
-                    <p class="text_on_1_line">{{ object.user.username|get_score_for_event_by_user:event }}</p>
-                {% endfor %}
+            <div class="col-md-12">
+                <h3 class="color-header">{% blocktrans %}Completed events:{% endblocktrans %}</h3>
+                <table class="table table-responsive table-hover">
+                    <thead>
+                        <tr>
+                            <th>{% trans 'Event title' %}</th>
+                            <th class="cell-no-display">{% trans 'Start date' %}</th>
+                            <th>{% trans 'End date' %}</th>
+                            <th>{% trans 'Organizer' %}</th>
+                            <th class="cell-no-display">{% trans 'City' %}</th>
+                            <th class="cell-no-display">{% trans 'User points' %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in object.get_last_events %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'event' event.pk %}">{{ event.title }}</a>
+                                </td>
+                                <td class="cell-no-display">{{ event.start_date }}</td>
+                                <td>{{ event.end_date }}</td>
+                                <td>
+                                    {% if event.organizer.questsusers.is_organizer %}
+                                        <a href="{% url 'organizer' event.organizer.organizers.pk %}">
+                                            {{ event.organizer }}
+                                        </a>
+                                    {% else %}
+                                        <a href="{% url 'player' event.organizer.players.pk %}">
+                                            {{ event.organizer }}
+                                        </a>
+                                    {% endif %}
+                                </td>
+                                <td class="cell-no-display">{{ event.place.city }}</td>
+                                <td class="cell-no-display">{{ object.user.username|get_score_for_event_by_user:event }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+    <!-- Add elastislide plugin to page for photo galery -->
+    <script src="{% static 'js/elastic/jquerypp.custom.js' %}"></script>
+    <script src="{% static 'js/elastic/jquery.elastislide.js' %}"></script>
+    <script type="text/javascript">
+        var current = 0, $preview = $( '#preview' ), $carouselEl = $( '#carousel' ), $carouselItems = $carouselEl.children(),
+                carousel = $carouselEl.elastislide( {
+                    current : current,
+					minItems : 4,
+					onClick : function( el, pos, evt ) {
+                        changeImage( el, pos );
+						evt.preventDefault();
+					},
+					onReady : function() {
+						changeImage( $carouselItems.eq( current ), current );
+					}
+				} );
+        function changeImage( el, pos ) {
+            $preview.attr( 'src', el.data( 'preview' ) );
+            $carouselItems.removeClass( 'current-img' );
+            el.addClass( 'current-img' );
+            carousel.setCurrent( pos );
+        }
+
+    </script>
+    <!-- End elastislide plugin to page for photo galery -->
 {% endblock %}

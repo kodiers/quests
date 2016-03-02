@@ -224,6 +224,54 @@ a:hover {
 .text-left {
     text-align: left;
 }
+.header-image {
+    max-width: 150px;
+    max-height: 150px;
+}
+.color-header {
+    color: #3E0216;
+    text-align: center;
+}
+.gallery {
+	width: 100%;
+	max-width: 650px;
+	margin: 0 auto;
+	border-radius: 20px;
+	position: relative;
+}
+.elastislide-horizontal {
+	background-color: transparent;
+	border-radius: 20px 20px 0 0;
+}
+.elastislide-horizontal .elastislide-loading {
+	background-image: url(../images/elastic/loading_dark.gif);
+}
+
+.elastislide-carousel ul li a{
+	padding: 2px;
+}
+.elastislide-carousel ul li a img {
+	border-radius: 10px;
+	border: none;
+}
+.elastislide-wrapper nav span {
+	background-color: #666;
+}
+.image-preview img {
+	border-radius: 0 0 20px 20px;
+	max-width: 100%;
+	display: block;
+}
+.elastislide-carousel ul li.current-img a img {
+	box-shadow: 0 0 3px 2px rgba(62,235,255,0.8);
+}
+.block-bottom-line {
+    border-bottom-style: solid;
+    border-bottom-color: #3E0216;
+}
+.photos-row {
+	padding-bottom: 20px;
+}
 @media screen and (max-width: 480px) {
     .date {
         margin-top: 10px;

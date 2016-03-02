@@ -1,0 +1,19 @@
+div.modal-header h4.color-header {
+    text-align: left;
+}
+div.col-md-4 button.mybtn {
+    margin-left: 20px;
+}
+.p-padding-left {
+    margin-left: 10px;
+}
+@media screen and (max-width: 480px) {
+    .cell-no-display {
+        display: none;
+    }
+}
+@media screen and (min-width: 481px) and (max-width: 1080px){
+    div.col-md-4 div.icon-block {
+        text-align: left;
+    }
+}
