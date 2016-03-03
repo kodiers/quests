@@ -75,7 +75,15 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <h1>{% trans 'Today events' %}</h1>
-                        {% for event in object.organizers.get_current_events %}
+                        {% for event in object.organizers.get_today_events %}
+                            <a href="{% url 'event' event.pk %}">{{ event.title }} {{ event.start_date|date:'d m Y H i' }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h1>{% trans 'Started events' %}</h1>
+                        {% for event in object.organizers.get_started_events %}
                             <a href="{% url 'event' event.pk %}">{{ event.title }} {{ event.start_date|date:'d m Y H i' }}</a>
                         {% endfor %}
                     </div>

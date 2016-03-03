@@ -365,9 +365,8 @@ class Players(models.Model):
 
     def get_current_event(self):
         """
-        Return all events, whcih started today for current player.
+        Return all events, which started today for current player.
         """
-        today = datetime.date.today()
         events = []
         all_events = Events.objects.filter(completed=False).filter(started=True).order_by('start_date')
         user_teams = Teams.objects.filter(players=self.user)
@@ -460,16 +459,25 @@ class Organizers(models.Model):
         """
         Get all future events for organizer. Calling in template.
         """
-        today = datetime.date.today()
-        events = Events.objects.filter(organizer=self.user).filter(start_date__gte=today).filter(started=False).filter(completed=False).order_by('start_date')
+        tomorrow = datetime.datetime.today() + datetime.timedelta(1)
+        events = Events.objects.filter(organizer=self.user).filter(start_date__gte=tomorrow).filter(started=False).filter(completed=False).order_by('start_date')
         return events
 
-    def get_current_events(self):
+    def get_started_events(self):
         """
-        Get current events for this organizer. Calling in template.
+        Get started events for this organizer. Calling in template.
         """
-        today = datetime.date.today()
-        events = Events.objects.filter(organizer=self.user).filter(start_date=today).filter(completed=False).filter(started=True).order_by('pk')
+        events = Events.objects.filter(organizer=self.user).filter(completed=False).filter(started=True).order_by('start_date')
+        return events
+
+    def get_today_events(self):
+        """
+        Get events which start_date is more than today date (example: 2016-02-02) and less than tomorrow (example: 2016-03-02)
+        :return: list of Events
+        """
+        today = datetime.datetime.today()
+        tomorrow = today + datetime.timedelta(1)
+        events = Events.objects.filter(organizer=self.user).filter(start_date__gte=today.date()).filter(start_date__lte=tomorrow.date()).filter(started=False).order_by('start_date')
         return events
 
     def get_completed_events(self):
