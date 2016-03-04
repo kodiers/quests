@@ -7,13 +7,33 @@ div.col-md-4 button.mybtn {
 .p-padding-left {
     margin-left: 10px;
 }
+.color-header-left {
+    color: #3E0216;
+    text-align: left;
+}
 @media screen and (max-width: 480px) {
     .cell-no-display {
         display: none;
+    }
+    td a.mybtn {
+        color: #3E0216;
+        font-size: 1em;
+        background: none;
+        text-decoration: none;
+    }
+    h1.page-h1 {
+        font-size: 70%;
+        margin-left: -5px;
     }
 }
 @media screen and (min-width: 481px) and (max-width: 1080px){
     div.col-md-4 div.icon-block {
         text-align: left;
+    }
+    td a.mybtn {
+        color: #3E0216;
+        font-size: 1em;
+        background: none;
+        text-decoration: none;
     }
 }

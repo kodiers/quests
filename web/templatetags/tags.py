@@ -141,15 +141,15 @@ def show_title_page():
     return PAGE_TITLE
 
 
-# @register.filter()
-# def if_user_is_organizer(username):
-#     """
-#     Check, then user if organizer. If yes => return true.
-#     :param username: username of user
-#     :return: Boolean
-#     """
-#     user = User.objects.get(username=username)
-#     if Organizers.objects.filter(user=user).exists():
-#         return True
-#     else:
-#         return False
+@register.filter()
+def check_http_prefix(siteaddr):
+    """
+    If siteaddr doesn't have http or https prefix - add it
+    :param siteaddr - string with web url
+    :return string
+    """
+    if siteaddr.startswith("http") or siteaddr.startswith("https"):
+        return siteaddr
+    else:
+        return "http://" + siteaddr
+

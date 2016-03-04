@@ -33,4 +33,10 @@
     .organizers-events-list {
         margin-top: 10px;
     }
+    .hided-hovered-block a {
+        color: #3E0216;
+    }
+    .hided-hovered-block a.mybtn {
+        color: white;
+    }
 }
