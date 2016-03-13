@@ -17,6 +17,20 @@
     <script src="{% static 'js/upload_events_photo.js' %}"></script>
 {% endblock %}
 {% block content %}
+    <div class="container-fluid">
+        <div class="row content-row caption-row page-header-background">
+            <div class="col-md-4 icon-block">
+                {% if object.questsusers.image.url != None %}
+                    <img src="{{ object.questsusers.image.url }}" class="img-responsive img-rounded content-icon block-icon header-image" alt="{{ object.username }}">
+                {% else %}
+                    <img src="{% static 'images/no-players-image.png' %}" class="img-responsive img-rounded content-icon block-icon header-image" alt="{{ object.username }}">
+                {% endif %}
+            </div>
+            <div class="col-md-8 text-left">
+                <h1 class="page-h1">{{ object.username }}</h1>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
@@ -32,13 +46,8 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-4">
-                <h1 class="page-header">{{ object.username }}</h1>
-                {% if object.questsusers.image.url != None %}
-                    <img src="{{ object.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
-                {% else %}
-                    <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
-                {% endif %}
                 <a href="{% url 'contact_list' %}" class="btn btn-primary">{% trans 'Send message' %}</a>
+                <a href="{% url 'password_change' %}" class="mybtn mybtn-small">{% trans 'Change password' %}</a>
                 <form action="." method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <p>{% blocktrans %}Change avatar:{% endblocktrans %}</p>

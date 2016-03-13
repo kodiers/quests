@@ -33,6 +33,7 @@
                 {% else %}
                     <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
                 {% endif %}
+                <a href="{% url 'password_change' %}" class="mybtn mybtn-small">{% trans 'Change password' %}</a>
                 <a href="{% url 'contact_list' %}" class="btn btn-primary">{% trans 'Send message' %}</a>
                 <a href="{% url 'create_event' %}" class="btn btn-primary">{% trans 'Create event' %}</a>
                 <form action="." method="post" enctype="multipart/form-data">

@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
+from django.contrib.auth.views import password_change_done, password_change
+
 from web.views import registration, index, restore_password, logout_view, login_view, EventView, confirm_join_event, \
     create_team, join_team, join_event, PlayerView, OrganizerView, show_my_profile, create_event, add_task, delete_task, \
     edit_task, delete_event, delete_team, leave_team, unregister_event, upload_photos, delete_photo, play_event, \
@@ -25,6 +27,8 @@ urlpatterns = patterns('',
     url(r'^organizer/(?P<pk>\d+)/$', OrganizerView.as_view(), name='organizer'),
     url(r'^my_profile/$', show_my_profile, name='player_profile'),
     url(r'^my_organizer_profile/$', show_my_organizer_profile, name='organizer_profile'),
+    url(r'^my_profile/change_password/$', password_change, {'template_name': 'password_change.html'},  name='password_change'),
+    url(r'^my_profile/change_password_done/', password_change_done, {'template_name': 'password-done.html'}, name='password_change_done'),
     url(r'^confirm_join/(?P<pk>\d+)/$', confirm_join_event, name='confirm_join'),
     url(r'^join/(?P<flag>\w+)/$', join_event, name='join_event'),
     url(r'^unregister_event/$', unregister_event, name='unregister_event'),
