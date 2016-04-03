@@ -1,0 +1,46 @@
+.row-padding {
+    padding-bottom: 10px;
+
+}
+.avatar-image {
+    max-width: 50px;
+    max-height: 50px;
+}
+.color-header-left {
+    color: #3E0216;
+    text-align: left;
+}
+.text-color {
+    color: #3E0216;
+}
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+.photo-gallery-block {
+    padding-top: 10px;
+    /*margin-left: 10px;*/
+    /*margin-right: 10px;*/
+}
+@media screen and (max-width: 480px) {
+    .mybtn {
+        display: block;
+    }
+    td button.mybtn {
+        color: #3E0216;
+        font-size: 1em;
+        background: none;
+        text-decoration: none;
+    }
+    div.col-md-4.text-right {
+        text-align: left;
+    }
+}
+@media screen and (min-width: 481px) and (max-width: 1080px){
+    .mybtn {
+        display: block;
+    }
+    div.col-md-4.text-right {
+        text-align: left;
+    }
+}

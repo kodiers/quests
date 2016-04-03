@@ -6,389 +6,128 @@
     {{ object.username }} | {% show_title_page %}
 {% endblock %}
 {% block scripts %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
     <script src="{% static 'js/jquery.cookie.js' %}"></script>
     <script src="{% static 'js/calendar.js' %}"></script>
-    <script src="{% static 'js/delete_event.js' %}"></script>
-    <script src="{% static 'js/delete_team.js' %}"></script>
-    <script src="{% static 'js/leave_team.js' %}"></script>
-    <script src="{% static 'js/unregister_user.js' %}"></script>
-    <script src="{% static 'js/uploads_modal.js' %}"></script>
-    <script src="{% static 'js/delete_photo.js' %}"></script>
-    <script src="{% static 'js/upload_events_photo.js' %}"></script>
 {% endblock %}
 {% block content %}
+    {% include 'profile_header.html' %}
     <div class="container-fluid">
-        <div class="row content-row caption-row page-header-background">
-            <div class="col-md-4 icon-block">
-                {% if object.questsusers.image.url != None %}
-                    <img src="{{ object.questsusers.image.url }}" class="img-responsive img-rounded content-icon block-icon header-image" alt="{{ object.username }}">
-                {% else %}
-                    <img src="{% static 'images/no-players-image.png' %}" class="img-responsive img-rounded content-icon block-icon header-image" alt="{{ object.username }}">
-                {% endif %}
-            </div>
-            <div class="col-md-8 text-left">
-                <h1 class="page-h1">{{ object.username }}</h1>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                {% if error %}
-                    <p class="error">{{ error }}</p>
-                {% endif %}
-                {% if message %}
-                    <p class="message">{{ message }}</p>
-                {% endif %}
+        <div class="row row-padding block-bottom-line">
+            <div class="col-md-12 text-center">
+                <a href="{% url 'contact_list' %}" class="btn mybtn mybtn-small">{% trans 'Messages' %}</a>
+                <a href="{% url 'password_change' %}" class="btn mybtn mybtn-small">{% trans 'Change password' %}</a>
+                <a href="{% url 'create_event' %}" class="btn mybtn mybtn-small">{% trans 'Create event' %}</a>
+                <a href="{% url 'create_team' %}" class="btn mybtn mybtn-small">{% blocktrans %}Create team{% endblocktrans %}</a>
+                <a href="{% url 'player_event_management' %}" class="btn mybtn mybtn-small">{% trans "Event management" %}</a>
+                <a href="{% url 'photo_gallery' %}" class="btn mybtn mybtn-small">{% trans "Photo gallery" %}</a>
+                <a href="{% url 'team_management' %}" class="btn mybtn mybtn-small">{% trans "My teams" %}</a>
             </div>
         </div>
     </div>
     <div class="container">
+        <div class="row block-bottom-line">
+            <div class="col-md-6 text-center">
+                <h3 class="color-header">{% blocktrans %}My score:{% endblocktrans %}</h3>
+                {{ object.players.points }}
+            </div>
+            <div class="col-md-6 text-center">
+                <h3 class="color-header">{% trans 'Rating' %}</h3>
+                {{ object.players.rating }}
+            </div>
+        </div>
+        {% if object.players.get_current_event %}
+            <div class="row block-bottom-line">
+                <div class="col-md-12">
+                    <h2 class="color-header">{% blocktrans %}Today events{% endblocktrans %}</h2>
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th class="text-center">{% trans 'Title' %}</th>
+                                <th class="text-center">{% trans 'Start date' %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for event in object.players.get_current_event %}
+                                <tr>
+                                    <td class="text-center">
+                                        <a href="{% url 'play_event' event.pk %}">
+                                            <h4> {{ event.title }}</h4>
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        {{ event.start_date|date:'d-m-Y H:i' }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
         <div class="row">
-            <div class="col-xs-4">
-                <a href="{% url 'contact_list' %}" class="btn btn-primary">{% trans 'Send message' %}</a>
-                <a href="{% url 'password_change' %}" class="mybtn mybtn-small">{% trans 'Change password' %}</a>
+            <div class="col-md-12">
+                <h2 class="color-header">{% blocktrans %}Change personal info:{% endblocktrans %}</h2>
                 <form action="." method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <p>{% blocktrans %}Change avatar:{% endblocktrans %}</p>
-                        <input id="id_avatar" name="avatar" type="file">
-                    <h2>{% blocktrans %}Change personal info:{% endblocktrans %}</h2>
-
-                        {{ form.email.label }}:
-                        {{ form.email|add_class_to_formfield:"form-control" }}
-
-                        {{ form.description.label }}:
-                        {{ form.description|add_class_to_formfield:"form-control" }}
-                    
-                    <p>
-                        {{ form.date_of_birth.label }}:
-                        {{ form.date_of_birth|add_class_to_formfield:"form-control" }}
-                    </p>
-                    <p>
-                        {{ form.sex.label }}:
-                        {{ form.sex|add_class_to_formfield:"form-control" }}
-                    </p>
-                    <p>
-                        {{ form.country.label }}:
-                        {{ form.country|add_class_to_formfield:"form-control" }}
-                    </p>
-                    <p>
-                        {{ form.city.label }}:
-                        {{ form.city|add_class_to_formfield:"form-control" }}
-                    </p>
-                    <p>
-                        {{ form.street.label }}:
-                        {{ form.street|add_class_to_formfield:"form-control" }}
-                    </p>
-                    <p>
-                        {{ form.phone.label }}:
-                        {{ form.phone|add_class_to_formfield:"form-control" }}
-                    </p>
-                    <p>
-                        {{ form.skype.label }}:
-                        {{ form.skype|add_class_to_formfield:"form-control" }}
-                    </p>
-                    <p>
-                        {{ form.site.label }}:
-                        {{ form.site|add_class_to_formfield:"form-control" }}
-                    </p>
-                    <p>
-                        {{ form.show_personal_info.label }}
-                        {{ form.show_personal_info|add_class_to_formfield:"form-control" }}
-                    </p>
-                    <input type="submit" value="{% trans 'Save!' %}">
-                </form>
-            </div>
-            <div class="col-xs-8">
-                <div class="row">
-                    <div class="col-xs-2">
-                        <a href="{% url 'create_event' %}" class="btn btn-default">{% trans 'Create event' %}</a>
-                    </div>
-                    <div class="col-xs-2">
-                        <a href="{% url 'create_team' %}" class="btn btn-primary">{% blocktrans %}Create team{% endblocktrans %}</a>
-                    </div>
-                    <div class="col-xs-8">
-                        <h2>{% blocktrans %}Today events{% endblocktrans %}</h2>
-                        {% for event in object.players.get_current_event %}
-                            <a href="{% url 'play_event' event.pk %}">{{ event.title }} {{ event.start_date|date:'d m Y H i' }}</a>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4">
-                        <h3>{% blocktrans %}My score:{% endblocktrans %}</h3>
-                        {{ object.players.points }}
-                        <h3>{% trans 'Rating' %}</h3>
-                        {{ object.players.rating }}
-                    </div>
-                    <div class="col-xs-4">
-                        <h2>{% blocktrans %}My teams:{% endblocktrans %}</h2>
-                        {% for team in object.players.get_user_teams %}
-                            <div id='team{{ team.pk }}'>{{ team.title }} {{ team.points }}
-                                {% if team.creator == object %}
-                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteTeamModal{{ team.pk }}">
-                                        {% blocktrans %}Delete team{% endblocktrans %}
-                                    </button>
-                                    <!-- Modal for delete team -->
-                                    <div class="modal fade" id="deleteTeamModal{{ team.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                                        &times;
-                                                    </button>
-                                                    <h4 class="modal-title">{% blocktrans %}Delete team{% endblocktrans %} {{ team.title }}</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <h4> {% blocktrans %}Are you sure?{% endblocktrans %} </h4>
-                                                    <form method="post" id="id_deleteTeamForm{{ team.pk }}">
-                                                        {% csrf_token %}
-                                                        <input type="hidden" name="team_id" value="{{ team.pk }}" id="delTeamID{{ team.pk }}">
-                                                        <input type="submit" value="{% trans 'Delete' %}" class="btn btn-danger" onclick="prevent_refresh_team_delete({{ team.pk}})">
-                                                    </form>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal" id="id_delTeamCloseButton{{ team.pk }}">
-                                                        {% trans 'Close' %}
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End delete modal -->
-                                {% else %}
-                                    <button class="btn btn-primary" data-toggle="modal" data-target="#leaveTeamModal{{ team.pk }}">
-                                        {% blocktrans %}Leave team{% endblocktrans %}
-                                    </button>
-                                    <!-- Modal for leave team -->
-                                    <div class="modal fade" id="leaveTeamModal{{ team.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                                        &times;
-                                                    </button>
-                                                    <h4 class="modal-title">{% blocktrans %}Leave team{% endblocktrans %} {{ team.title }}</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <h4> {% blocktrans %}Are you sure?{% endblocktrans %} </h4>
-                                                    <form method="post" id="id_leaveTeamForm{{ team.pk }}">
-                                                        {% csrf_token %}
-                                                        <input type="hidden" name="team_id" value="{{ team.pk }}" id="leaveTeamID{{ team.pk }}">
-                                                        <input type="submit" value="{% trans 'Leave' %}" class="btn btn-primary" onclick="prevent_refresh_team_leave({{ team.pk}})">
-                                                    </form>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal" id="id_leaveTeamCloseButton{{ team.pk }}">
-                                                        {% trans 'Close' %}
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End leave modal -->
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <div class="col-xs-4">
-                        <h2>{% blocktrans %}My events{% endblocktrans %}</h2>
-                        {% for event in object.questsusers.get_user_events %}
-                            <div id="event{{ event.pk }}"><a href="{% url 'edit_event' event.pk %}"> {{ event.title }}</a>
-                                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteEventModal{{ event.pk }}">
-                                    {% trans 'Delete' %}
-                                </button>
-                            </div>
-                            <!-- Modal for delete event -->
-                            <div class="modal fade" id="deleteEventModal{{ event.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                                &times;
-                                            </button>
-                                            <h4 class="modal-title">{% blocktrans %}Delete event{% endblocktrans %} {{ event.title }}</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <h4> {% blocktrans %}Are you sure?{% endblocktrans %} </h4>
-                                            <form method="post" id="id_deleteEventForm{{ event.pk }}">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="event_id" value="{{ event.pk }}" id="delEventID{{ event.pk }}">
-                                                <input type="submit" value="{% trans 'Delete' %}" class="btn btn-danger" onclick="prevent_refresh_delete({{ event.pk }})">
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="id_delEventCloseButton{{ event.pk }}">
-                                                {% trans 'Close' %}
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End delete modal -->
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <h2>{% blocktrans %}My photos{% endblocktrans %}</h2>
-                        {% if object.players.get_user_photos %}
-                            <div id="profile_corousel" class="carousel slide" data-ride="carousel">
-                                <div class="carousel-inner" role="listbox">
-                                    {% for photo in object.players.get_user_photos %}
-                                        {% if forloop.first %}
-                                            <div class="item active" style="text-align: center">
-                                                <img src="{{ photo.image.url }}" class="img-rounded photos">
-                                                <a onclick="delete_photo({{ photo.pk }})" class="btn btn-danger">{% trans 'Delete' %}</a>
-                                            </div>
-                                        {% else %}
-                                            <div class="item" style="text-align: center">
-                                                <img src="{{ photo.image.url }}" class="img-rounded photos">
-                                                <a onclick="delete_photo({{ photo.pk }})" class="btn btn-danger">{% trans 'Delete' %}</a>
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                                <a class="left carousel-control" href="#profile_corousel" role="button" data-slide="prev">
-                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                    <span class="sr-only">{% trans 'Previous' %}</span>
-                                </a>
-                                <a class="right carousel-control" href="#profile_corousel" role="button" data-slide="next">
-                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                    <span class="sr-only">{% trans 'Next' %}</span>
-                                </a>
-                            </div>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {% trans 'Current avatar' %}:
+                        {% if object.questsusers.image.url != None %}
+                            <img src="{{ object.questsusers.image.url }}" class="img-responsive img-rounded content-icon block-icon avatar-image" alt="{{ object.username }}">
+                        {% else %}
+                            <img src="{% static 'images/no-players-image.png' %}" class="img-responsive img-rounded content-icon block-icon avatar-image" alt="{{ object.username }}">
                         {% endif %}
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#addPhotoModal">
-                            {% blocktrans %}Add photos{% endblocktrans %}
-                        </button>
-                        <!-- Add photos modal -->
-                        <div class="modal fade" id="addPhotoModal" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                            &times;
-                                        </button>
-                                        <h4>{% blocktrans %}Add photo{% endblocktrans %}</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <h4>{% blocktrans %}Select photo{% endblocktrans %}</h4>
-                                        <form method="post" enctype="multipart/form-data" id="addPhotoForm">
-                                            {% csrf_token %}
-                                            <label for="id_photo_title">{% trans 'Title' %}</label>
-                                            <input type="text" name="title" class="form-control" placeholder="{% trans 'Enter title for image' %}" id="id_photo_title">
-                                            <label for="id_photo_description">{% trans 'Description' %}</label>
-                                            <input type="text" name="description" class="form-control" placeholder="{% trans 'Enter description' %}">
-                                            <label for="id_photo_date">{% trans 'Date' %}</label>
-                                            <input type="text" id="id_photo_date" name="date" class="form-control">
-                                            <label for="id_photo">{% blocktrans %}Choose file{% endblocktrans %}</label>
-                                            <input type="file" name="photo" id="id_photo" class="form-control">
-                                            <input type="submit" value="{% trans 'Upload' %}" onclick="prevent_refresh_photo()" class="btn btn-primary">
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal" id="id_photoCloseButton">
-                                            {% trans 'Close' %}
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End modal -->
+                        <br>
+                        <label for="id_avatar">{% blocktrans %}Change avatar:{% endblocktrans %}</label>
+                        <input id="id_avatar" name="avatar" type="file">
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <h2>{% blocktrans %}Future events{% endblocktrans %}</h2>
-                        {% for event in object.players.get_future_events %}
-                            <div id="reg_event{{ event.pk }}">
-                                <a href="{% url 'event' event.pk %}">{{ event.title }} </a> {{ event.description|truncatewords:10 }} {{ event.start_date }}
-                                {% if event.is_team %}
-                                    <span class="message">
-                                        {% blocktrans %}For unregister event you should leave{% endblocktrans %} {{ object.username|get_user_team_by_event:event.pk }}
-                                    </span>
-                                {% else %}
-                                    <button class="btn btn-primary" data-toggle="modal" data-target="#unregisterModal{{ event.pk }}">
-                                        {% trans 'Unregister' %}
-                                    </button>
-                                    <!-- Modal for unregister event -->
-                                    <div class="modal fade" id="unregisterModal{{ event.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                                        &times;
-                                                    </button>
-                                                    <h4 class="modal-title">{% blocktrans %}Unregister event{% endblocktrans %} {{ event.title }}</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <h4> {% blocktrans %}Are you sure?{% endblocktrans %} </h4>
-                                                    <form method="post" id="id_unregisterForm{{ event.pk }}">
-                                                        {% csrf_token %}
-                                                        <input type="hidden" name="event_id" value="{{ event.pk }}" id="unregisterEventID{{ event.pk }}">
-                                                        <input type="submit" value="{% trans 'Unregister' %}" class="btn btn-primary" onclick="prevent_refresh_unregister({{ event.pk}})">
-                                                    </form>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal" id="id_unregisterCloseButton{{ event.pk }}">
-                                                        {% trans 'Close' %}
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
+                    <div class="form-group">
+                        <label for="id_email">{{ form.email.label }}:</label>
+                        {{ form.email|add_class_to_formfield:"form-control" }}
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <h2>{% blocktrans %}Completed events{% endblocktrans %}</h2>
-                        {% for event in object.players.get_last_events %}
-                            {{ event.title }} {{ event.description|truncatewords:10 }} {{ event.end_date }} {{ object.username|get_score_for_event_by_user:event }}
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#addEventPhotoModal{{ event.pk }}">
-                                {% blocktrans %}Add photos{% endblocktrans %}
-                            </button>
-                            <!-- Add event photos modal -->
-                            <div class="modal fade" id="addEventPhotoModal{{ event.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                                &times;
-                                            </button>
-                                            <h4>{% blocktrans %}Add photo{% endblocktrans %}</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <h4>{% blocktrans %}Select photo{% endblocktrans %}</h4>
-                                            <form method="post" enctype="multipart/form-data" id="addEventPhotoForm{{ event.pk }}">
-                                                {% csrf_token %}
-                                                <label for="id_photo_title{{ event.pk }}">{% trans 'Title' %}</label>
-                                                <input type="text" name="title" class="form-control" placeholder="{% trans 'Enter title for image' %}" id="id_photo_title{{ event.pk }}">
-                                                <label for="id_photo_description{{ event.pk }}">{% trans 'Description' %}</label>
-                                                <input type="text" name="description" class="form-control" placeholder="{% trans 'Enter description' %}" id="id_photo_description{{ event.pk }}">
-                                                <label for="id_photo_date{{ event.pk }}">{% trans 'Date' %}</label>
-                                                <input type="text" id="id_photo_date{{ event.pk }}" name="date" class="form-control">
-                                                <label for="id_photo{{ event.pk }}">{% blocktrans %}Choose file{% endblocktrans %}</label>
-                                                <input type="file" name="photo" id="id_photo{{ event.pk }}" class="form-control">
-                                                <input type="hidden" name="event" value="{{ event.pk }}">
-                                                <input type="submit" value="{% trans 'Upload' %}" onclick="prevent_refresh_eventphoto({{ event.pk }})" class="btn btn-primary">
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="id_photoCloseButton">
-                                                {% trans 'Close' %}
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End modal -->
-                        {% endfor %}
+                    <div class="form-group">
+                        <label for="id_description">{{ form.description.label }}:</label>
+                        {{ form.description|add_class_to_formfield:"form-control" }}
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="id_date_of_birth">{{ form.date_of_birth.label }}:</label>
+                        {{ form.date_of_birth|add_class_to_formfield:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_sex">{{ form.sex.label }}:</label>
+                        {{ form.sex|add_class_to_formfield:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_country">{{ form.country.label }}:</label>
+                        {{ form.country|add_class_to_formfield:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_city">{{ form.city.label }}:</label>
+                        {{ form.city|add_class_to_formfield:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_street">{{ form.street.label }}:</label>
+                        {{ form.street|add_class_to_formfield:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_phone">{{ form.phone.label }}:</label>
+                        {{ form.phone|add_class_to_formfield:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_skype">{{ form.skype.label }}:</label>
+                        {{ form.skype|add_class_to_formfield:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_site">{{ form.site.label }}:</label>
+                        {{ form.site|add_class_to_formfield:"form-control" }}
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            {{ form.show_personal_info|add_class_to_formfield:"form-control" }}&nbsp;{{ form.show_personal_info.label }}
+                        </label>
+                    </div>
+                    <input type="submit" value="{% trans 'Save!' %}" class="mybtn mybtn-small">
+                </form>
             </div>
         </div>
     </div>

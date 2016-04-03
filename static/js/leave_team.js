@@ -39,6 +39,7 @@ function leave_team(team_pk) {
             // if report show debug in console
             if (response.code != 1) {
                 console.log('Some error in AJAX request');
+                $('#showError').modal('show');
             }
             else {
                 // delet div with deleted task

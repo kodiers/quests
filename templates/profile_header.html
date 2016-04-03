@@ -1,0 +1,27 @@
+{% load staticfiles %}
+<div class="container-fluid">
+    <div class="row content-row caption-row page-header-background">
+        <div class="col-md-4 icon-block">
+            {% if object.questsusers.image.url != None %}
+                <img src="{{ object.questsusers.image.url }}" class="img-responsive img-rounded content-icon block-icon header-image" alt="{{ object.username }}">
+            {% else %}
+                <img src="{% static 'images/no-players-image.png' %}" class="img-responsive img-rounded content-icon block-icon header-image" alt="{{ object.username }}">
+            {% endif %}
+        </div>
+        <div class="col-md-8 text-left">
+            <h1 class="page-h1">{{ object.username }}</h1>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+            {% if message %}
+                <p class="message">{{ message }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>

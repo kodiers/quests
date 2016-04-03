@@ -12,9 +12,6 @@ div.col-md-4 button.mybtn {
     text-align: left;
 }
 @media screen and (max-width: 480px) {
-    .cell-no-display {
-        display: none;
-    }
     td a.mybtn {
         color: #3E0216;
         font-size: 1em;

@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load tags %}
+{% load thumbnail %}
+{% load i18n %}
+{% block title %}
+    {% trans 'Photo gallery' %} | {% show_title_page %}
+{% endblock %}
+{% block scripts %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
+    <script src="{% static 'js/jquery.cookie.js' %}"></script>
+    <script src="{% static 'js/calendar.js' %}"></script>
+    <script src="{% static 'js/uploads_modal.js' %}"></script>
+    <script src="{% static 'js/delete_photo.js' %}"></script>
+{% endblock %}
+{% block content %}
+    {% include 'profile_header.html' %}
+    <div class="container-fluid">
+        <div class="row row-padding block-bottom-line">
+            <div class="col-md-12 text-center">
+                <a href="{% url 'contact_list' %}" class="mybtn mybtn-small">{% trans 'Messages' %}</a>
+                <a href="{% url 'password_change' %}" class="mybtn mybtn-small">{% trans 'Change password' %}</a>
+                <a href="{% url 'create_event' %}" class="mybtn mybtn-small">{% trans 'Create event' %}</a>
+                <a href="{% url 'create_team' %}" class="mybtn mybtn-small">{% blocktrans %}Create team{% endblocktrans %}</a>
+                {% if object.questsusers.is_organizer %}
+                    <a href="{% url 'organizer_profile' %}" class="mybtn mybtn-small">{% trans "Profile" %}</a>
+                {% else %}
+                    <a href="{% url 'player_profile' %}" class="mybtn mybtn-small">{% trans "Profile" %}</a>
+                {% endif %}
+                <a href="{% url 'player_event_management' %}" class="mybtn mybtn-small">{% trans "Event management" %}</a>
+                <a href="{% url 'team_management' %}" class="mybtn mybtn-small">{% trans "My teams" %}</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row block-bottom-line">
+            <div class="col-md-12">
+                <h2 class="color-header">{% blocktrans %}My photos{% endblocktrans %}</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <button class="mybtn mybtn-small" data-toggle="modal" data-target="#addPhotoModal">
+                     {% blocktrans %}Add photos{% endblocktrans %}
+                 </button>
+                <!-- Add photos modal -->
+                <div class="modal fade" id="addPhotoModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                                <h4>{% blocktrans %}Add photo{% endblocktrans %}</h4>
+                            </div>
+                            <div class="modal-body text-left">
+                                <h4>{% blocktrans %}Select photo{% endblocktrans %}</h4>
+                                <form method="post" enctype="multipart/form-data" id="addPhotoForm">
+                                    {% csrf_token %}
+                                    <label for="id_photo_title">{% trans 'Title' %}</label>
+                                    <input type="text" name="title" class="form-control" placeholder="{% trans 'Enter title for image' %}" id="id_photo_title">
+                                    <label for="id_photo_description">{% trans 'Description' %}</label>
+                                    <input type="text" name="description" class="form-control" placeholder="{% trans 'Enter description' %}">
+                                    <label for="id_photo_date">{% trans 'Date' %}</label>
+                                    <input type="text" id="id_photo_date" name="date" class="form-control">
+                                    <label for="id_photo">{% blocktrans %}Choose file{% endblocktrans %}</label>
+                                    <input type="file" name="photo" id="id_photo" class="form-control">
+                                    <input type="submit" value="{% trans 'Upload' %}" onclick="prevent_refresh_photo()" class="mybtn mybtn-small">
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" id="id_photoCloseButton">
+                                    {% trans 'Close' %}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End modal -->
+            </div>
+        </div>
+        {% for row in photos|columns:4 %}
+            <div class="row">
+                {% for photo in row %}
+                    <div class="col-md-3 photo-gallery-block">
+                        {% thumbnail photo.image "200x200" as img %}
+                            <p class="date text-center">{{ photo.date|date:"Y-m-d" }}</p>
+                            <div class="text-center">
+                                <a data-toggle="modal" data-target="#viewPhotoModal{{ photo.pk }}">
+                                    <img src="{{ img.url }}" class="img-rounded" alt="{{ img.title }}">
+                                </a>
+                            </div>
+                            <div class="text-center">
+                                <a onclick="delete_photo({{ photo.pk }})">{% trans 'Delete' %}</a>
+                            </div>
+                            <!-- View photo modal -->
+                            <div class="modal fade" id="viewPhotoModal{{ photo.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                &times;
+                                            </button>
+                                            <h4>{{ photo.title }}</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img src="{{ photo.image.url }}" class="img-responsive">
+                                            <p class="text-center">
+                                                <a href="{{ photo.image.url }}" target="_blank">
+                                                    {% trans 'View full photo' %}
+                                                </a>
+                                            </p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="id_photoCloseButton">
+                                                {% trans 'Close' %}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End modal -->
+                        {% endthumbnail %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% empty %}
+            <div class="row">
+                <div class="col-md-12">
+                    <h5 class="color-header">{% trans 'No photos yet!' %}</h5>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

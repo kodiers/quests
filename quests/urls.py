@@ -8,7 +8,7 @@ from web.views import registration, index, restore_password, logout_view, login_
     edit_task, delete_event, delete_team, leave_team, unregister_event, upload_photos, delete_photo, play_event, \
     start_task, task_answer, complete_event, show_my_organizer_profile, EventsListView, AllEventsListView, \
     search_events_view, PlayersListView, search_players_view, OrganizerListView, search_organizers_view, \
-    events_registered_view
+    events_registered_view, player_event_management, photo_gallery, team_management
 
 from pages.urls import urlpatterns as pages_url
 
@@ -27,6 +27,9 @@ urlpatterns = patterns('',
     url(r'^organizer/(?P<pk>\d+)/$', OrganizerView.as_view(), name='organizer'),
     url(r'^my_profile/$', show_my_profile, name='player_profile'),
     url(r'^my_organizer_profile/$', show_my_organizer_profile, name='organizer_profile'),
+    url(r'^my_profile/event_management/$', player_event_management, name='player_event_management'),
+    url(r'^my_profile/photo_gallery/$', photo_gallery, name='photo_gallery'),
+    url(r'^my_profile/teams/$', team_management, name='team_management'),
     url(r'^my_profile/change_password/$', password_change, {'template_name': 'password_change.html'},  name='password_change'),
     url(r'^my_profile/change_password_done/', password_change_done, {'template_name': 'password-done.html'}, name='password_change_done'),
     url(r'^confirm_join/(?P<pk>\d+)/$', confirm_join_event, name='confirm_join'),

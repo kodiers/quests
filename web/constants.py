@@ -19,3 +19,6 @@ TEAM_WAS_REGISTERED = 'Your team was registered to event %s'
 YOU_JOINED_TEAM = "You successfully joined team"
 
 REGISTRATION_CLOSED = _("Registration on this event is closed")
+NOT_ACCESS_TO_PAGE = _("You doesn't have access to this page")
+
+SIMPLE_JSON_ERROR = {'code': 0}

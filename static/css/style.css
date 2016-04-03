@@ -327,6 +327,9 @@ a:hover {
     .block-icon {
         display: none;
     }
+    .cell-no-display {
+        display: none;
+    }
 }
 @media screen and (min-width: 481px) and (max-width: 1080px){
     .content-row {

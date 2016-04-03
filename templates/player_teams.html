@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load tags %}
+{% load i18n %}
+{% block title %}
+    {% trans 'My teams' %} | {% show_title_page %}
+{% endblock %}
+{% block scripts %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
+    <script src="{% static 'js/jquery.cookie.js' %}"></script>
+    <script src="{% static 'js/delete_team.js' %}"></script>
+    <script src="{% static 'js/leave_team.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div class="modal fade" id="showError" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title">{% trans "Error!" %}</h4>
+                </div>
+                <div class="modal-body">
+                    <h2>{% blocktrans %}Error when you try leave team!{% endblocktrans %}</h2>
+                    <p class="error">{% blocktrans %}Creator cannot leave his team!{% endblocktrans %}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="id_closeButton">
+                        {% trans "Close" %}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'profile_header.html' %}
+    <div class="container-fluid">
+        <div class="row row-padding block-bottom-line">
+            <div class="col-md-12 text-center">
+                <a href="{% url 'contact_list' %}" class="mybtn mybtn-small">{% trans 'Messages' %}</a>
+                <a href="{% url 'password_change' %}" class="mybtn mybtn-small">{% trans 'Change password' %}</a>
+                <a href="{% url 'create_event' %}" class="mybtn mybtn-small">{% trans 'Create event' %}</a>
+                <a href="{% url 'create_team' %}" class="mybtn mybtn-small">{% blocktrans %}Create team{% endblocktrans %}</a>
+                {% if object.questsusers.is_organizer %}
+                    <a href="{% url 'organizer_profile' %}" class="mybtn mybtn-small">{% trans "Profile" %}</a>
+                {% else %}
+                    <a href="{% url 'player_profile' %}" class="mybtn mybtn-small">{% trans "Profile" %}</a>
+                {% endif %}
+                <a href="{% url 'player_event_management' %}" class="mybtn mybtn-small">{% trans "Event management" %}</a>
+                <a href="{% url 'photo_gallery' %}" class="mybtn mybtn-small">{% trans "Photo gallery" %}</a>
+            </div>
+        </div>
+    </div>
+    {% if user_main_team %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="color-header-left">{% trans 'Your team' %}:</h2>
+                </div>
+            </div>
+            <div class="row block-bottom-line">
+                <div class="col-md-4 text-right">
+                    <h3 class="text-color">{{ user_main_team.title }}</h3>
+                </div>
+                <div class="col-md-4">
+                    <h3 class="text-color">{% trans 'Score' %}: &nbsp; {{ user_main_team.points }}</h3>
+                </div>
+                <div class="col-md-4">
+                    <button class="mybtn mybtn-small" data-toggle="modal" data-target="#deleteTeamModal">
+                        {% blocktrans %}Delete team{% endblocktrans %}
+                    </button>
+                    <!-- Modal for delete team -->
+                    <div class="modal fade" id="deleteTeamModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                        &times;
+                                    </button>
+                                    <h4 class="modal-title">{% blocktrans %}Delete team{% endblocktrans %} {{ user_main_team.title }}</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <h4> {% blocktrans %}Are you sure?{% endblocktrans %} </h4>
+                                    <form method="post" id="id_deleteTeamForm">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="team_id" value="{{ user_main_team.pk }}" id="delTeamID">
+                                        <input type="submit" value="{% trans 'Delete' %}" class="mybtn mybtn-small" onclick="prevent_refresh_team_delete({{ user_main_team.pk}})">
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal" id="id_delTeamCloseButton">
+                                        {% trans 'Close' %}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End delete modal -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-centered">
+                    <h3 class="color-header">{% trans 'You member of teams' %}</h3>
+                    <table class="table table-responsive">
+                        <colgroup>
+                            <col class="col-md-1">
+                            <col class="col-md-1">
+                            <col class="col-md-3">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>{% trans 'Title' %}</th>
+                                <th>{% trans 'Score' %}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for team in teams %}
+                                <tr>
+                                    <td class="text-color date">{{ team.title }}</td>
+                                    <td>{{ team.points }}</td>
+                                    <td>
+                                        <button class="mybtn mybtn-small" data-toggle="modal" data-target="#leaveTeamModal{{ team.pk }}">
+                                            {% blocktrans %}Leave team{% endblocktrans %}
+                                        </button>
+                                        <!-- Modal for leave team -->
+                                        <div class="modal fade" id="leaveTeamModal{{ team.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                            &times;
+                                                        </button>
+                                                        <h4 class="modal-title">{% blocktrans %}Leave team{% endblocktrans %} {{ team.title }}</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <h4> {% blocktrans %}Are you sure?{% endblocktrans %} </h4>
+                                                        <form method="post" id="id_leaveTeamForm{{ team.pk }}">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="team_id" value="{{ team.pk }}" id="leaveTeamID{{ team.pk }}">
+                                                            <input type="submit" value="{% trans 'Leave' %}" class="mybtn mybtn-small" onclick="prevent_refresh_team_leave({{ team.pk}})">
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal" id="id_leaveTeamCloseButton{{ team.pk }}">
+                                                            {% trans 'Close' %}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End leave modal -->
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

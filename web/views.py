@@ -689,6 +689,8 @@ def leave_team(request):
     :return: HttpResponse - if success return json else return error page
     """
     team = Teams.objects.get(pk=request.POST['pk'])
+    if team.creator == request.user:
+        return HttpResponse(json.dumps(SIMPLE_JSON_ERROR), content_type="application/json")
     team.players.remove(request.user)
     return HttpResponse(json.dumps(SIMPLE_JSON_ANSWER), content_type="application/json")
 
@@ -727,6 +729,8 @@ def upload_photos(request):
                 photo.description = request.POST['description']
             if 'date' in request.POST and request.POST['date']:
                 photo.date = request.POST['date']
+            else:
+                photo.date = timezone_now().date()
             if 'event' in request.POST and request.POST['event']:
                 event = Events.objects.get(pk=request.POST['event'])
                 photo.event = event
@@ -1154,4 +1158,60 @@ def events_registered_view(request):
     except EmptyPage:
         object_list = paginator.page(paginator.num_pages)
     return render_to_response('events.html', {'object_list': object_list, 'COUNTRIES': COUNTRIES, 'now': now},
+                              context_instance=RequestContext(request))
+
+
+@login_required()
+def player_event_management(request):
+    """
+    Show all players events. Show leave, delete and create event forms and buttons
+    :param request: HttpRequest
+    :return: HttpResponse
+    """
+    # TODO: May be use this view for organizers?
+    user = request.user
+    if user.questsusers.is_organizer:
+        error = NOT_ACCESS_TO_PAGE
+        return render_to_response("error.html", {"error": error}, context_instance=RequestContext(request))
+    else:
+        started_events = user.players.get_current_event()
+        future_events = user.players.get_future_events()
+        user_events = user.questsusers.get_user_events()
+        last_events = user.players.get_last_events()
+        return render_to_response("player_event_management.html", {"object": user,
+                                                                   "started_events": started_events,
+                                                                   "future_events": future_events,
+                                                                   "user_events": user_events,
+                                                                   "last_events": last_events
+                                                                   },
+                                  context_instance=RequestContext(request))
+
+
+@login_required()
+def photo_gallery(request):
+    """
+
+    :param request:
+    :return:
+    """
+    object = request.user
+    photos = Photos.objects.filter(user=request.user).order_by('-date')
+    return render_to_response('photo_gallery.html', {'photos': photos, "object": object},
+                              context_instance=RequestContext(request))
+
+
+@login_required()
+def team_management(request):
+    """
+    """
+    object = request.user
+    all_teams = object.questsusers.get_user_teams()
+    user_main_team = None
+    teams = []
+    for team in all_teams:
+        if team.creator == object:
+            user_main_team = team
+        else:
+            teams.append(team)
+    return render_to_response("player_teams.html", {"object": object, "teams": teams, "user_main_team": user_main_team},
                               context_instance=RequestContext(request))

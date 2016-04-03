@@ -285,6 +285,12 @@ class QuestsUsers(models.Model):
         events = Events.objects.filter(organizer=self.user).order_by('start_date')
         return events
 
+    def get_user_teams(self):
+        """
+        Return all teams for current user.
+        """
+        return Teams.objects.filter(players=self.user)
+
     class Meta:
         verbose_name_plural = "Quests users"
         verbose_name = "Quest user"
@@ -674,7 +680,7 @@ class Photos(models.Model):
     Model for photos.
     """
     title = models.TextField(verbose_name=_("Title"), null=True, blank=True)
-    description = models.TextField(verbose_name=_("Descrition"), null=True, blank=True)
+    description = models.TextField(verbose_name=_("Description"), null=True, blank=True)
     date = models.DateField(verbose_name=_("Date"), null=True, blank=True)
     event = models.ForeignKey(Events, null=True, blank=True, verbose_name=_("Event"))
     user = models.ForeignKey(User, null=True, blank=True, verbose_name=_("User"))

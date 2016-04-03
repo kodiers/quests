@@ -3,7 +3,7 @@
  */
 function prevent_refresh_team_delete(team_pk) {
 
-    var form_id = '#id_deleteTeamForm' + team_pk;
+    var form_id = '#id_deleteTeamForm';
 
     $(form_id).on('submit', function (event) {
         // Prevent form refresh
@@ -33,7 +33,7 @@ function delete_team(team_pk) {
             //console.log(response);
 
             // close modal
-            var button_id = 'id_delTeamCloseButton' + team_pk;
+            var button_id = 'id_delTeamCloseButton';
             document.getElementById(button_id).click();
 
             // if report show debug in console
@@ -41,7 +41,7 @@ function delete_team(team_pk) {
                 console.log('Some error in AJAX request');
             }
             else {
-                // delet div with deleted task
+                // delet div with deleted team
                 var div_id = '#team' + team_pk;
                 $(div_id).remove();
                 // reload to show changes
