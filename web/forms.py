@@ -68,7 +68,8 @@ class CreateEventForm(forms.ModelForm):
         model = Events
         fields = ['title', 'description', 'is_team', 'start_date', 'end_date', 'duration', 'image',
                   'max_players', 'min_players', 'organizer']
-        widgets = {'organizer':forms.HiddenInput()}
+        widgets = {'organizer':forms.HiddenInput(), 'title': forms.Textarea(attrs={'rows': 1}),
+                   'description': forms.Textarea(attrs={'rows': 5})}
 
 
 class OrganizerProfileForm(forms.Form):

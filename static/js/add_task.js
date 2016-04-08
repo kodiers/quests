@@ -74,7 +74,9 @@ function add_task () {
 
         success: function(response) {
             // add new task to tasklist without page refresh
-
+            if (response.code == 0){
+                console.log("error");
+            }
             //Clear modal form
             $('.modal').on('hidden.bs.modal', function () {
                 $(this).find('form')[0].reset();

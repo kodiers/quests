@@ -6,6 +6,7 @@
     {% trans "Create event!" %} | {% show_title_page %}
 {% endblock %}
 {% block scripts %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.datetimepicker.css' %}">
     <script src="{% static 'js/jquery.cookie.js' %}"></script>
     <script src="{% static 'js/jquery.datetimepicker.js' %}"></script>
@@ -17,9 +18,27 @@
     <script src="{% static 'js/calendar_create.js' %}"></script>
 {% endblock %}
 {% block content %}
+    {% include 'profile_header.html' %}
+    <div class="container-fluid">
+        <div class="row row-padding block-bottom-line">
+            <div class="col-md-12 text-center">
+                <a href="{% url 'contact_list' %}" class="mybtn mybtn-small">{% trans 'Messages' %}</a>
+                <a href="{% url 'password_change' %}" class="mybtn mybtn-small">{% trans 'Change password' %}</a>
+                <a href="{% url 'player_event_management' %}" class="mybtn mybtn-small">{% trans "Event management" %}</a>
+                <a href="{% url 'create_team' %}" class="mybtn mybtn-small">{% blocktrans %}Create team{% endblocktrans %}</a>
+                {% if object.questsusers.is_organizer %}
+                    <a href="{% url 'organizer_profile' %}" class="mybtn mybtn-small">{% trans "Profile" %}</a>
+                {% else %}
+                    <a href="{% url 'player_profile' %}" class="mybtn mybtn-small">{% trans "Profile" %}</a>
+                {% endif %}
+                <a href="{% url 'photo_gallery' %}" class="mybtn mybtn-small">{% trans "Photo gallery" %}</a>
+                <a href="{% url 'team_management' %}" class="mybtn mybtn-small">{% trans "My teams" %}</a>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
-            <div class=" col-xs-12">
+            <div class=" col-md-12">
                 <div id="id_error">
                     {% if error %}
                         <p class="error"> {{ error }} </p>
@@ -57,151 +76,122 @@
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-xs-6">
+            <div class="col-md-6">
                 <form action="." method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {{ form.title.label_tag }}<span class="star">*</span>
-                            <span class="error">
-                                {{ form.title.errors.as_text }}
-                            </span>
-                            {{ form.title|add_class_to_formfield:'form-control' }}
-                        </div>
+                    <div class="form-group">
+                        {{ form.title.label_tag }}<span class="star">*</span>
+                        <span class="error">
+                            {{ form.title.errors.as_text }}
+                        </span>
+                        {{ form.title|add_class_to_formfield:'form-control' }}
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {{ form.description.label_tag }}<span class="star">*</span>
-                            <span class="error">
-                                {{ form.description.errors.as_text }}
-                            </span>
-                            {{ form.description|add_class_to_formfield:'form-control' }}
-                        </div>
+                    <div class="form-group">
+                        {{ form.description.label_tag }}<span class="star">*</span>
+                        <span class="error">
+                            {{ form.description.errors.as_text }}
+                        </span>
+                        {{ form.description|add_class_to_formfield:'form-control' }}
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {{ form.is_team.label_tag }}
+                    <div class="checkbox">
+                        <label>
+                            {{ form.is_team|add_class_to_formfield:'form-control' }}&nbsp;{{ form.is_team.label }}
                             <span class="error">
                                 {{ form.is_team.errors.as_text }}
                             </span>
-                            {{ form.is_team|add_class_to_formfield:'form-control' }}
-                        </div>
+                        </label>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {{ form.start_date.label_tag }}<span class="star">*</span>
-                            <span class="error">
-                                {{ form.start_date.errors.as_text }}
-                            </span>
-                            {{ form.start_date|add_class_to_formfield:'form-control' }}
-                        </div>
+                    <div class="form-group">
+                        {{ form.start_date.label_tag }}<span class="star">*</span>
+                        <span class="error">
+                            {{ form.start_date.errors.as_text }}
+                        </span>
+                        {{ form.start_date|add_class_to_formfield:'form-control' }}
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {{ form.end_date.label_tag }}<span class="star">*</span>
-                            <span class="error">
-                                {{ form.end_date.errors.as_text }}
-                            </span>
-                            {{ form.end_date|add_class_to_formfield:'form-control' }}
-                        </div>
+                    <div class="form-group">
+                        {{ form.end_date.label_tag }}<span class="star">*</span>
+                        <span class="error">
+                            {{ form.end_date.errors.as_text }}
+                        </span>
+                        {{ form.end_date|add_class_to_formfield:'form-control' }}
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {{ form.duration.label_tag }}
-                            <span class="tooltips">
-                                {% blocktrans %}
-                                    Enter duration of event in format 'Dd HH:MM:SS:' where, D - is days, HH -is hours, MM - minutes, SS - seconds.
-                                {% endblocktrans %}
-                            </span>
-                            <span class="error">
-                                {{ form.duration.errors.as_text }}
-                            </span>
-                            {{ form.duration|add_class_to_formfield:'form-control' }}
-                        </div>
+                    <div class="form-group">
+                        {{ form.duration.label_tag }}
+                        <span class="tooltips">
+                            {% blocktrans %}
+                                Enter duration of event in format 'Dd HH:MM:SS:' where, D - is days, HH -is hours, MM - minutes, SS - seconds.
+                            {% endblocktrans %}
+                        </span>
+                        <span class="error">
+                            {{ form.duration.errors.as_text }}
+                        </span>
+                        {{ form.duration|add_class_to_formfield:'form-control' }}
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {{ form.max_players.label_tag }}
-                            <span class="error">
-                                {{ form.max_players.errors.as_text }}
-                            </span>
-                            {{ form.max_players|add_class_to_formfield:'form-control' }}
-                        </div>
+                    <div class="form-group">
+                        {{ form.max_players.label_tag }}
+                        <span class="error">
+                            {{ form.max_players.errors.as_text }}
+                        </span>
+                        {{ form.max_players|add_class_to_formfield:'form-control' }}
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {{ form.min_players.label_tag }}
-                            <span class="error">
-                                {{ form.min_players.errors.as_text }}
-                            </span>
-                            {{ form.min_players|add_class_to_formfield:'form-control' }}
-                        </div>
+                    <div class="form-group">
+                        {{ form.min_players.label_tag }}
+                        <span class="error">
+                            {{ form.min_players.errors.as_text }}
+                        </span>
+                        {{ form.min_players|add_class_to_formfield:'form-control' }}
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {{ form.image.label_tag }}
-                            <span class="error">
-                                {{ form.image.errors.as_text }}
-                            </span>
-                            {{ form.image|add_class_to_formfield:'form-control' }}
-                        </div>
+                    <div class="form-group">
+                        {{ form.image.label_tag }}
+                        <span class="error">
+                            {{ form.image.errors.as_text }}
+                        </span>
+                        {{ form.image|add_class_to_formfield:'form-control' }}
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {{ form.country.label_tag }}
-                            <span class="error">
-                                {{ form.country.errors.as_text }}
-                            </span>
-                            {{ form.country|add_class_to_formfield:'form-control' }}
-                        </div>
+                    <div class="form-group">
+                        {{ form.country.label_tag }}
+                        <span class="error">
+                            {{ form.country.errors.as_text }}
+                        </span>
+                        {{ form.country|add_class_to_formfield:'form-control' }}
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {{ form.city.label_tag }}
-                            <span class="error">
-                                {{ form.city.errors.as_text }}
-                            </span>
-                            {{ form.city|add_class_to_formfield:'form-control' }}
-                        </div>
+                    <div class="form-group">
+                        {{ form.city.label_tag }}
+                        <span class="error">
+                            {{ form.city.errors.as_text }}
+                        </span>
+                        {{ form.city|add_class_to_formfield:'form-control' }}
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {{ form.street.label_tag }}
-                            <span class="error">
-                                {{ form.street.errors.as_text }}
-                            </span>
-                            {{ form.street|add_class_to_formfield:'form-control' }}
-                        </div>
+                    <div class="form-group">
+                        {{ form.street.label_tag }}
+                        <span class="error">
+                            {{ form.street.errors.as_text }}
+                        </span>
+                        {{ form.street|add_class_to_formfield:'form-control' }}
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {{ form.organizer|add_class_to_formfield:'form-control' }}
-                            <span class="error">
-                                {{ form.organizer.errors.as_text }}
-                            </span>
-                        </div>
+                    <div class="form-group">
+                        {{ form.organizer|add_class_to_formfield:'form-control' }}
+                        <span class="error">
+                            {{ form.organizer.errors.as_text }}
+                        </span>
+                        <p class="help-block">
+                            {% blocktrans %}
+                                All fields marked as * are required!
+                            {% endblocktrans %}
+                        </p>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <p class="tooltips">
-                                {% blocktrans %}
-                                    All fields marked as * are required!
-                                {% endblocktrans %}
-                            </p>
-                        </div>
-                    </div>
-                    <input type="submit" value="{% trans 'Save' %}" class="btn btn-primary">
+                    <input type="submit" value="{% trans 'Save' %}" class="mybtn mybtn-small">
                 </form>
                 {% if event %}
                     <h6>{% trans 'Map of event' %}:</h6>
                     <img src="{{ event.map_link }}">
                 {% endif %}
             </div>
-            <div class="col-xs-6">
+            <div class="col-md-6">
             {% if event %}
                 <!-- Add task modal -->
                 <!-- add task modal call button -->
-                <button class="btn btn-primary" data-toggle="modal" data-target="#addTaskModal">
+                <button class="mybtn mybtn-small" data-toggle="modal" data-target="#addTaskModal">
                     {% trans 'Add task' %}
                 </button>
                 <!-- add task modal window -->
@@ -263,7 +253,7 @@
                                     <h4>{% trans 'Task hint' %}:</h4>
                                     <label for="id_taskHint">{% trans 'Task hint' %}:</label>
                                     <textarea class="form-control" id="id_taskHint" name="taskHint" placeholder="{% trans 'Enter hint' %}"></textarea>
-                                    <input type="SUBMIT" value="{% trans 'Create!' %}" class="btn btn-primary">
+                                    <input type="SUBMIT" value="{% trans 'Create!' %}" class="mybtn mybtn-small">
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -274,119 +264,131 @@
                     </div>
                 </div>
                 <!-- End create task modal -->
-                <h2>{% trans 'Tasks' %}</h2>
+                <h2 class="color-header">{% trans 'Tasks' %}</h2>
                 <!-- Task list -->
-                    <div id="id_taskList">
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>{% trans 'Title' %}</th>
+                            <th class="cell-no-display">{% trans 'Score' %}</th>
+                            <th class="cell-no-display">{% trans 'Answer' %}</th>
+                            <th class="cell-no-display">{% trans 'Time' %}</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     {% for task in event.get_event_tasks %}
-                        <div id="task{{ task.pk }}">
-                            {% trans 'Task' %}: {{ task.title }} {% trans 'Score' %}: {{ task.score }} {% trans 'Answer' %}: {{ task.answer }} {% trans 'Time' %}: {{ task.time }} {% trans 'Hint' %}: {{ task.hints.text }}
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#editTaskModal{{ task.pk }}">
-                                {% trans 'Edit' %}
-                            </button>
-                            <!-- modal for edit task -->
-                            <div class="modal fade" id="editTaskModal{{ task.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                                &times;
-                                            </button>
-                                            <h4 class="modal-title">{% trans 'Edit task' %} {{ task.title }}</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form method="post" id="id_editTaskForm{{ task.pk }}">
-                                                {% csrf_token %}
-                                                <label for="id_editTaskTitle{{ task.pk }}">{% trans 'Title' %}</label>
-                                                <input type="text" name="editTaskTitle" class="form-control" id="id_editTaskTitle{{ task.pk }}" value="{{ task.title }}">
-                                                <label for="id_editTaskDescription{{ task.pk }}">{% trans 'Description' %}</label>
-                                                <textarea class="form-control" id="id_editTaskDescription{{ task.pk }}" name="editTaskDescription">{{ task.description }}</textarea>
-                                                <label for="id_editTaskTime{{ task.pk }}">{% trans 'Time for task (minutes)' %}:</label>
-                                                <input type="number" class="form-control" name="editTaskTime" id="id_editTaskTime{{ task.pk }}" value="{{ task.time }}">
-                                                <label for="id_editTaskScore{{ task.pk }}">{% trans 'Score' %}:</label>
-                                                <input type="number" class="form-control" name="editTaskScore" id="id_editTaskScore{{ task.pk }}" value="{{ task.score }}">
-                                                <label for="id_editTaskAnswer{{ task.pk }}">{% trans 'Answer' %}:</label>
-                                                <input type="text" class="form-control" name="editTaskAnswer" id="id_editTaskAnswer{{ task.pk }}" value="{{ task.answer }}">
-                                                <hr>
-                                                <h4>{% trans 'Task place' %}:</h4>
-                                                <label for="id_editTaskCountry{{ task.pk }}">{% trans 'Country' %}</label>
-                                                <select class="form-control" name="editTaskCountry" id="id_editTaskCountry{{ task.pk }}">
-                                                    {% for country in COUNTRIES %}
-                                                        {% if country.0 == task.place.country %}
-                                                            <option value="{{ country.0 }}" selected="selected">
-                                                                {{ country.1 }}
-                                                            </option>
-                                                        {% else %}
-                                                            <option value="{{ country.0 }}">{{ country.1 }}</option>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                </select>
-{#                                                <input type="text" name="editTaskCountry" class="form-control" id="id_editTaskCountry{{ task.pk }}" value="{{ task.place.get_country_display }}">#}
-                                                <label for="id_editTaskCity{{ task.pk }}">{% trans 'City' %}</label>
-                                                <input type="text" name="editTaskCity" class="form-control" id="id_editTaskCity{{ task.pk }}" value="{{ task.place.city }}">
-                                                <label for="id_editTaskStreet{{ task.pk }}">{% trans 'Street' %}</label>
-                                                <input type="text" name="editTaskStreet" class="form-control" id="id_editTaskStreet{{ task.pk }}" value="{{ task.place.city }}">
-{#                                                 -------------Not used longtitude and latitude in this version----------- #}
-{#                                                <label for="id_editTaskLon{{ task.pk }}">Longtitude</label>#}
-{#                                                <input type="text" name="editTaskLon" class="form-control" id="id_editTaskLon{{ task.pk }}" value="{{ task.place.lon }}">#}
-{#                                                <label for="id_editTaskLat{{ task.pk }}">Latitude</label>#}
-{#                                                <input type="text" name="editTaskLat" class="form-control" id="id_editTaskLat{{ task.pk }}" value="{{ task.place.lat }}">#}
-                                                <input type="hidden" name="editTaskPlacePk" id="id_editTaskPlacePk{{ task.pk }}" value="{{ task.place.pk }}">
-                                                <hr>
-                                                <h4>{% trans 'Task hint' %}:</h4>
-                                                <label for="id_editTaskHint{{ task.pk }}">{% trans 'Task hint' %}:</label>
-                                                <textarea class="form-control" id="id_editTaskHint{{ task.pk }}" name="editTaskHint">{{ task.hints.text }}</textarea>
-                                                <input type="hidden" value="{{ task.hints.pk }}" name="editTaskHintPk" id="id_editTaskHintPk{{ task.pk }}">
-                                                <input type="SUBMIT" value="{% trans 'Save!' %}" class="btn btn-primary" onclick="edit_prevent_refresh({{ task.pk }})">
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="id_editCloseButton{{ task.pk }}">
-                                                {% trans 'Close' %}
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End modal for edit task -->
-                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteTaskModal{{ task.pk }}">
-                                {% trans 'Delete' %}
-                            </button>
-                            <!-- Modal for delete task -->
-                            <div class="modal fade" id="deleteTaskModal{{ task.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                                &times;
-                                            </button>
-                                            <h4 class="modal-title">{% trans 'Delete task' %} {{ task.title }}</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <h4> {% trans 'Are you sure' %}? </h4>
-                                            <form method="post" id="id_deleteTaskForm{{ task.pk }}">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="task_id" value="{{ task.pk }}" id="delTaskID{{ task.pk }}">
-                                                <input type="submit" value="{% trans 'Delete' %}" class="btn btn-danger" onclick="prevent_refresh({{ task.pk}})">
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="id_delcloseButton{{ task.pk }}">
-                                                {% trans 'Close' %}
-                                            </button>
+                        <tr id="task{{ task.pk }}">
+                            <td>{{ task.title }}</td>
+                            <td class="cell-no-display">{{ task.score }}</td>
+                            <td class="cell-no-display">{{ task.answer }}</td>
+                            <td class="cell-no-display">{{ task.time }}</td>
+                            <td>
+                                <button class="mybtn mybtn-small" data-toggle="modal" data-target="#editTaskModal{{ task.pk }}">
+                                    {% trans 'Edit' %}
+                                </button>
+                                <!-- modal for edit task -->
+                                <div class="modal fade" id="editTaskModal{{ task.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                    &times;
+                                                </button>
+                                                <h4 class="modal-title color-header-left">{% trans 'Edit task' %} {{ task.title }}</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="post" id="id_editTaskForm{{ task.pk }}">
+                                                    {% csrf_token %}
+                                                    <label for="id_editTaskTitle{{ task.pk }}">{% trans 'Title' %}</label>
+                                                    <input type="text" name="editTaskTitle" class="form-control" id="id_editTaskTitle{{ task.pk }}" value="{{ task.title }}">
+                                                    <label for="id_editTaskDescription{{ task.pk }}">{% trans 'Description' %}</label>
+                                                    <textarea class="form-control" id="id_editTaskDescription{{ task.pk }}" name="editTaskDescription">{{ task.description }}</textarea>
+                                                    <label for="id_editTaskTime{{ task.pk }}">{% trans 'Time for task (minutes)' %}:</label>
+                                                    <input type="number" class="form-control" name="editTaskTime" id="id_editTaskTime{{ task.pk }}" value="{{ task.time }}">
+                                                    <label for="id_editTaskScore{{ task.pk }}">{% trans 'Score' %}:</label>
+                                                    <input type="number" class="form-control" name="editTaskScore" id="id_editTaskScore{{ task.pk }}" value="{{ task.score }}">
+                                                    <label for="id_editTaskAnswer{{ task.pk }}">{% trans 'Answer' %}:</label>
+                                                    <input type="text" class="form-control" name="editTaskAnswer" id="id_editTaskAnswer{{ task.pk }}" value="{{ task.answer }}">
+                                                    <hr>
+                                                    <h4>{% trans 'Task place' %}:</h4>
+                                                    <label for="id_editTaskCountry{{ task.pk }}">{% trans 'Country' %}</label>
+                                                    <select class="form-control" name="editTaskCountry" id="id_editTaskCountry{{ task.pk }}">
+                                                        {% for country in COUNTRIES %}
+                                                            {% if country.0 == task.place.country %}
+                                                                <option value="{{ country.0 }}" selected="selected">
+                                                                    {{ country.1 }}
+                                                                </option>
+                                                            {% else %}
+                                                                <option value="{{ country.0 }}">{{ country.1 }}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                    <label for="id_editTaskCity{{ task.pk }}">{% trans 'City' %}</label>
+                                                    <input type="text" name="editTaskCity" class="form-control" id="id_editTaskCity{{ task.pk }}" value="{{ task.place.city }}">
+                                                    <label for="id_editTaskStreet{{ task.pk }}">{% trans 'Street' %}</label>
+                                                    <input type="text" name="editTaskStreet" class="form-control" id="id_editTaskStreet{{ task.pk }}" value="{{ task.place.city }}">
+                                                    <input type="hidden" name="editTaskPlacePk" id="id_editTaskPlacePk{{ task.pk }}" value="{{ task.place.pk }}">
+                                                    <hr>
+                                                    <h4>{% trans 'Task hint' %}:</h4>
+                                                    <label for="id_editTaskHint{{ task.pk }}">{% trans 'Task hint' %}:</label>
+                                                    <textarea class="form-control" id="id_editTaskHint{{ task.pk }}" name="editTaskHint">{{ task.hints.text }}</textarea>
+                                                    <input type="hidden" value="{{ task.hints.pk }}" name="editTaskHintPk" id="id_editTaskHintPk{{ task.pk }}">
+                                                    <input type="SUBMIT" value="{% trans 'Save!' %}" class="mybtn mybtn-small" onclick="edit_prevent_refresh({{ task.pk }})">
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal" id="id_editCloseButton{{ task.pk }}">
+                                                    {% trans 'Close' %}
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- End delete modal -->
-                        </div>
+                            </td>
+                            <td>
+                                <!-- End modal for edit task -->
+                                <button class="mybtn mybtn-small" data-toggle="modal" data-target="#deleteTaskModal{{ task.pk }}">
+                                    {% trans 'Delete' %}
+                                </button>
+                                <!-- Modal for delete task -->
+                                <div class="modal fade" id="deleteTaskModal{{ task.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                    &times;
+                                                </button>
+                                                <h4 class="modal-title">{% trans 'Delete task' %} {{ task.title }}</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h4> {% trans 'Are you sure' %}? </h4>
+                                                <form method="post" id="id_deleteTaskForm{{ task.pk }}">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="task_id" value="{{ task.pk }}" id="delTaskID{{ task.pk }}">
+                                                    <input type="submit" value="{% trans 'Delete' %}" class="mybtn mybtn-small" onclick="prevent_refresh({{ task.pk}})">
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal" id="id_delcloseButton{{ task.pk }}">
+                                                    {% trans 'Close' %}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End delete modal -->
+                            </td>
+                        </tr>
                     {% endfor %}
-                    </div>
-                {% else %}
-                    <h5>{% trans 'You shoul save your event first' %}</h5>
-                {% endif %}
+                    </tbody>
+                </table>
+            {% else %}
+                <h5 class="color-header">{% trans 'You shoul save your event first' %}</h5>
+            {% endif %}
             </div>
         </div>
     </div>
     <script src="{% static 'js/add_task.js' %}"></script>
-
 {% endblock %}

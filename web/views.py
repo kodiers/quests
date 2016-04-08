@@ -3,7 +3,7 @@ import json
 
 from django.http import HttpResponse
 
-from django.shortcuts import render_to_response, redirect, get_object_or_404
+from django.shortcuts import render_to_response, redirect, get_object_or_404, render
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -476,15 +476,17 @@ def create_event(request, pk=None):
         event = None
         place = EventsPlaces()
     if request.method == 'POST':
+        if convert_str_to_int(request.POST['organizer']) != request.user.pk:
+            return render_to_response('error.html', {'error': NOT_ACCESS_TO_PAGE}, context_instance=RequestContext(request))
         form = CreateEventForm(request.POST, request.FILES, instance=event)
         if form.is_valid():
-            event = form.save()
             if 'country' in request.POST and request.POST['country']:
                 place.country = request.POST['country']
             if 'city' in request.POST and request.POST['city']:
                 place.city = request.POST['city']
             if 'street' in request.POST and request.POST['street']:
                 place.street = request.POST['street']
+            event = form.save()
             place.save()
             event.place = place
             event.map_link = construct_map_link(GOOGLE_API_STRING_URL, GOOGLE_MAPS_BROWSER_API_KEY, place.country, place.city, place.street)
@@ -496,7 +498,7 @@ def create_event(request, pk=None):
         form = CreateEventForm(initial={'organizer':request.user, 'duration':'1d 00:00:00',
                                         'country': place.country, 'city': place.city,
                                         'street': place.street}, instance=event)
-    return render_to_response('create_event.html', {'form': form, 'event': event, 'COUNTRIES': COUNTRIES,'error': error},
+    return render_to_response('create_event.html', {'object': request.user, 'form': form, 'event': event, 'COUNTRIES': COUNTRIES,'error': error},
                               context_instance=RequestContext(request))
 
 
@@ -511,6 +513,8 @@ def add_task(request):
     if request.method == 'POST':
         if 'event' in request.POST and request.POST['event']:
             event = Events.objects.get(pk=request.POST['event'])
+            if request.user.pk != event.organizer.pk:
+                return HttpResponse(json.dumps(SIMPLE_JSON_ERROR), content_type="application/json")
             new_task = Tasks()
             new_task.event = event
             new_place = EventsPlaces()
@@ -1190,9 +1194,9 @@ def player_event_management(request):
 @login_required()
 def photo_gallery(request):
     """
-
-    :param request:
-    :return:
+    Show photos, downloaded by player.
+    :param request: HttpRequest
+    :return: HttpResponse
     """
     object = request.user
     photos = Photos.objects.filter(user=request.user).order_by('-date')
@@ -1203,6 +1207,9 @@ def photo_gallery(request):
 @login_required()
 def team_management(request):
     """
+    Show teams, which contains player
+    :param request: HttpRequest
+    :return: HttpResponse
     """
     object = request.user
     all_teams = object.questsusers.get_user_teams()
