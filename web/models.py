@@ -744,6 +744,10 @@ class TaskStatistics(models.Model):
     answered = models.BooleanField(default=False, verbose_name=_("Task is correctly answered"))
     # TODO: add fields for executed time in days, seconds, minutes, hours and add handler for this
 
+    def increase_used_hints(self):
+        self.used_hints += 1
+        self.save()
+
     def __str__(self):
         if self.team != None:
             return self.team.title + ":" + self.task.title

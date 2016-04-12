@@ -719,7 +719,6 @@ def upload_photos(request):
     :param request: HttpRequest (from AJAX function upload())
     :return: HttpResponse - if success return json else return error page
     """
-    # TODO: create ajax request(script) for upload photos and completed the view
     error = ''
     if request.method == 'POST':
         if 'photo' in request.FILES:
@@ -805,10 +804,11 @@ def play_event(request, pk):
         eventstat.player = request.user
         eventstat.start_time = datetime.datetime.utcnow().replace(tzinfo=utc)
         eventstat.save()
-    return render_to_response('play_event.html', {'event': event, 'tasks': tasks, 'user_team': user_team, 'eventstat': eventstat},
+    return render_to_response('play_event.html', {'event': event, 'tasks': tasks, 'user_team': user_team,
+                                                  'eventstat': eventstat, 'object': request.user},
                               context_instance=RequestContext(request))
 
-# TODO: complete comments from here
+
 @login_required()
 @json_wrapper
 def start_task(request):
@@ -1222,3 +1222,24 @@ def team_management(request):
             teams.append(team)
     return render_to_response("player_teams.html", {"object": object, "teams": teams, "user_main_team": user_main_team},
                               context_instance=RequestContext(request))
+
+
+@login_required()
+@json_wrapper
+def get_hint(request):
+    """
+    Return task hint if exists!. Accept post request from AJAX function.
+    :param request: HttpRequest from AJAX function Get_hint
+    :return: HttpResponse as json (code and hint's text if exist)
+    """
+    user = request.user
+    task = Tasks.objects.get(pk=request.POST['pk'])
+    try:
+        # Check that task started
+        taskstat = TaskStatistics.objects.filter(task=task).filter(player=user).get(started=True)
+        hint = Hints.objects.get(task=task)
+    except (ObjectDoesNotExist, TaskStatistics.MultipleObjectsReturned, Hints.MultipleObjectsReturned):
+        return HttpResponse(json.dumps(SIMPLE_JSON_ERROR), content_type="application/json")
+    taskstat.increase_used_hints()
+    return HttpResponse(json.dumps({'code': 1, 'hint': hint.text}), content_type="application/json")
+

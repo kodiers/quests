@@ -6,51 +6,96 @@
     {% blocktrans %}Playing event{% endblocktrans %} {{ event.title }} | {% show_title_page %}
 {% endblock %}
 {% block scripts %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}" type="text/css">
     <script src="{% static 'js/jquery.cookie.js' %}"></script>
     <script src="{% static 'js/start_task.js' %}"></script>
     <script src="{% static 'js/send_answer.js' %}"></script>
     <script src="{% static 'js/comlete_event.js' %}"></script>
+    <script src="{% static 'js/get_hint.js' %}"></script>
 {% endblock %}
 {% block content %}
+    {% include 'profile_header.html' %}
     <div class="container">
         <div class="row">
-            <div class="col-xs-4">
-                <h2>{{ user.username }}</h2>
-                {% if user.questsusers.image.url != None %}
-                    <img src="{{ user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
+            <div class="col-md-4">
+                <a href="{% url 'contact_list' %}" class="mybtn mybtn-small text-center play-message-btn">{% blocktrans %}Send message{% endblocktrans %}</a>
+                {% if event.is_team %}
+                    <h2 class="color-header">{% blocktrans %}Registered teams{% endblocktrans %}</h2>
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>{% trans 'Title' %}</th>
+                                <th>{% trans 'Score' %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for team in event.registered_teams.all %}
+                            <tr>
+                                <td>{{ team.title }}</td>
+                                <td>{{ team.points }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {% if user_team %}
+                        <h4 class="color-header">{% blocktrans %}Your team{% endblocktrans %}</h4>
+                        <table class="table table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>{% trans 'Title' %}</th>
+                                    <th>{% trans 'Score' %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ user_team.title }}</td>
+                                    <td>{{ user_team.points }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 class="color-header">{% blocktrans %}Team members{% endblocktrans %}</h5>
+                        <table class="table table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>{% trans 'User name' %}</th>
+                                    <th>{% trans 'Score' %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for player in user_team.players.all %}
+                                <tr>
+                                    <td>{{ player.username }}</td>
+                                    <td>{{ player.score }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
                 {% else %}
-                    <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
+                    <h2 class="color-header">{% blocktrans %}Registered players{% endblocktrans %}</h2>
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>{% trans 'User name' %}</th>
+                                <th>{% trans 'Score' %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in event.registered_players.all %}
+                            <tr>
+                                <td>{{ player.username }}</td>
+                                <td>{{ player.score }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 {% endif %}
-                <a href="{% url 'contact_list' %}" class="btn btn-primary">{% blocktrans %}Send message{% endblocktrans %}</a>
-                <div class="row">
-                    <div class="col-xs-12">
-                        {% if event.is_team %}
-                            <h2>{% blocktrans %}Registered teams{% endblocktrans %}</h2>
-                            {% for team in event.registered_teams.all %}
-                                {{ team.title }} {{ team.points }}
-                            {% endfor %}
-                            {% if user_team %}
-                                <h2>{% blocktrans %}Your team{% endblocktrans %}</h2>
-                                {{ user_team.title }} {{ user_team.points }}
-                                <h3>{% blocktrans %}Team members{% endblocktrans %}</h3>
-                                {% for player in user_team.players.all %}
-                                    {{ player.username }} {{ player.score }}
-                                {% endfor %}
-                            {% endif %}
-                        {% else %}
-                            <h2>{% blocktrans %}Registered players{% endblocktrans %}</h2>
-                            {% for player in event.registered_players.all %}
-                                {{ player.username }} {{ player.score }}
-                            {% endfor %}
-                        {% endif %}
-                    </div>
-                </div>
             </div>
-            <div class="col-xs-8">
-                <h1 class="page-header">{{ event.title }}</h1>
+            <div class="col-md-8">
+                <h1 class="color-header">{{ event.title }}</h1>
                 {% if eventstat.completed == False %}
-                    <p>{% blocktrans %}If you done all tasks press complete event button{% endblocktrans %}</p>
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#completeEvent">
+                    <p class="text-color">{% blocktrans %}If you done all tasks press complete event button{% endblocktrans %}</p>
+                    <button class="mybtn mybtn-small" data-toggle="modal" data-target="#completeEvent">
                         {% blocktrans %}Complete event{% endblocktrans %}
                     </button>
                     <!-- Complete event modal -->
@@ -61,13 +106,13 @@
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                         &times;
                                     </button>
-                                    <h4>{% blocktrans %}Complete event{% endblocktrans %} {{ event.title }}?</h4>
+                                    <h4 class="text-color">{% blocktrans %}Complete event{% endblocktrans %} {{ event.title }}?</h4>
                                 </div>
                                 <div class="modal-body">
                                     <form method="post" id="completeEventForm">
                                         {% csrf_token %}
                                         <input type="hidden" value="{{ eventstat.pk }}" name="event_pk" id="event">
-                                        <input type="submit" value="{% trans 'Complete' %}" onclick="prevent_refresh_complete({{ eventstat.pk }})">
+                                        <input type="submit" value="{% trans 'Complete' %}" onclick="prevent_refresh_complete({{ eventstat.pk }})" class="mybtn mybtn-small">
                                     </form>
                                 </div>
                             </div>
@@ -77,49 +122,83 @@
                 {% else %}
                     <p class="error">{% blocktrans %}You are completed this event{% endblocktrans %}</p>
                 {% endif %}
-                <p>{% trans 'Duration' %}: {{ event.duration }}</p>
-                <p>{% blocktrans %}Event description{% endblocktrans %}: {{ event.description }}</p>
+                <p class="text-color">{% trans 'Duration' %}: {{ event.duration }}</p>
+                <h4 class="color-header">{% blocktrans %}Event description{% endblocktrans %}</h4>
+                <p>{{ event.description }}</p>
                 {% if event.map_link != None %}
                     <img src="{{ event.map_link }}">
                 {% endif %}
-                {% for task in tasks %}
-                    {% get_taskstat_for_task username=user.username task_id=task.pk as taskstat %}
-                    {% if taskstat.completed %}
-                        {% trans 'Completed' %}
-                            {{ task.title }} {% trans 'Task score' %}: {{ task.score }} {% trans 'Task time' %}: {{ task.time }} {% trans 'Your score' %}: {{ taskstat.score }} {% trans 'Your time' %}: {{ taskstat.time }}
-                    {% else %}
-                        {% blocktrans %}Not completed{% endblocktrans %}
-                        <button onclick="start_task({{ task.pk }})" class="btn btn-primary">{{ task.title }}</button>
-                        <!-- Play task modal -->
-                        <div class="modal fade" id="playTask{{ task.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                            &times;
-                                        </button>
-                                        <h4>{{ task.title }}</h4>
+                <h4 class="color-header">{% trans 'Tasks' %}</h4>
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>{% trans 'Is completed?' %}</th>
+                            <th>{% trans 'Title' %}</th>
+                            <th class="cell-no-display">{% trans 'Score' %}</th>
+                            <th class="cell-no-display">{% trans 'Time' %}</th>
+                            <th class="cell-no-display">{% trans 'You score' %}</th>
+                            <th class="cell-no-display">{% trans 'Your time' %}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for task in tasks %}
+                        {% get_taskstat_for_task username=user.username task_id=task.pk as taskstat %}
+                        <tr>
+                            {% if taskstat.completed %}
+                                <td>{% trans 'Yes' %}</td>
+                                <td>{{ task.title }}</td>
+                                <td class="cell-no-display">{{ task.score }}</td>
+                                <td class="cell-no-display">{{ task.time }}</td>
+                                <td class="cell-no-display">{{ taskstat.score }}</td>
+                                <td class="cell-no-display">{{ taskstat.time }}</td>
+                                <td></td>
+                            {% else %}
+                                <td>{% trans 'No' %}</td>
+                                <td>{{ task.title }}</td>
+                                <td class="cell-no-display">{{ task.score }}</td>
+                                <td class="cell-no-display">{{ task.time }}</td>
+                                <td class="cell-no-display">N/A</td>
+                                <td class="cell-no-display">N/A</td>
+                                <td>
+                                    <button onclick="start_task({{ task.pk }})" class="mybtn mybtn-small">
+                                        {% trans 'Complete' %}
+                                    </button>
+                                    <!-- Play task modal -->
+                                    <div class="modal fade" id="playTask{{ task.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                        &times;
+                                                    </button>
+                                                    <h4 class="color-header-left">{{ task.title }}</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>{{ task.description }}</p>
+                                                    {% if task.time not in None %}
+                                                        <p>{% trans 'Time for task' %}: {{ task.time }}</p>
+                                                    {% endif %}
+                                                    <p>{% trans 'Score' %}: {{ task.score }}</p>
+                                                    <a onclick="get_hint({{ task.pk }})">{% trans 'Hint' %}</a>
+                                                    <div id="hint{{ task.pk }}"></div>
+                                                    <form method="post" id="answerForm{{ task.pk }}">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" value="{{ task.pk }}" name="task_id" id="id_task{{ task.pk }}">
+                                                        <label for="id_answer{{ task.pk }}">{% trans 'Answer' %}</label>
+                                                        <input type="text" class="form-control" name="answer" id="id_answer{{ task.pk }}">
+                                                        <input type="SUBMIT" value="Ok" onclick="prevent_refresh_answer({{ task.pk }})" class="mybtn mybtn-small">
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-body">
-                                        <p>{{ task.description }}</p>
-                                        {% if task.time not in None %}
-                                            {{ task.time }}
-                                        {% endif %}
-                                        <p>{% trans 'Score' %}: {{ task.score }}</p>
-                                        <a href="#">{% trans 'Hint' %}</a>
-                                        <form method="post" id="answerForm{{ task.pk }}">
-                                            {% csrf_token %}
-                                            <input type="hidden" value="{{ task.pk }}" name="task_id" id="id_task{{ task.pk }}">
-                                            <label for="id_answer{{ task.pk }}">{% trans 'Answer' %}</label>
-                                            <input type="text" class="form-control" name="answer" id="id_answer{{ task.pk }}">
-                                            <input type="SUBMIT" value="Ok" onclick="prevent_refresh_answer({{ task.pk }})" class="btn btn-primary">
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
