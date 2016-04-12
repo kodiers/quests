@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b5ae2a34-2c0c-42d1-97d3-09378873b7e4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/get_hint.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/quests/urls.py" afterPath="$PROJECT_DIR$/quests/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/css/profile.css" afterPath="$PROJECT_DIR$/static/css/profile.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/play_event.html" afterPath="$PROJECT_DIR$/templates/play_event.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/models.py" afterPath="$PROJECT_DIR$/web/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/views.py" afterPath="$PROJECT_DIR$/web/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/player_teams.html" afterPath="$PROJECT_DIR$/templates/player_teams.html" />
     </list>
     <ignored path="quests.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -53,7 +47,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quests/urls.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="315">
@@ -61,6 +55,26 @@
               <folding>
                 <element signature="e#0#51#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="player_event_management.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/player_event_management.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="33" column="10" selection-start-line="17" selection-start-column="4" selection-end-line="33" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="player_teams.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/player_teams.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="328">
+              <caret line="160" column="18" selection-start-line="160" selection-start-column="18" selection-end-line="160" selection-end-column="18" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -174,7 +188,6 @@
         <option value="$PROJECT_DIR$/static/js/delete_team.js" />
         <option value="$PROJECT_DIR$/web/constants.py" />
         <option value="$PROJECT_DIR$/static/js/leave_team.js" />
-        <option value="$PROJECT_DIR$/templates/player_teams.html" />
         <option value="$PROJECT_DIR$/templates/player_profile.html" />
         <option value="$PROJECT_DIR$/templates/password_change.html" />
         <option value="$PROJECT_DIR$/static/css/player.css" />
@@ -189,6 +202,7 @@
         <option value="$PROJECT_DIR$/web/views.py" />
         <option value="$PROJECT_DIR$/templates/play_event.html" />
         <option value="$PROJECT_DIR$/static/css/profile.css" />
+        <option value="$PROJECT_DIR$/templates/player_teams.html" />
       </list>
     </option>
   </component>
@@ -1197,13 +1211,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/player_teams.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1785">
-          <caret line="119" column="62" selection-start-line="119" selection-start-column="62" selection-end-line="119" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/quests/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="600">
@@ -1248,13 +1255,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1155">
           <caret line="77" column="37" selection-start-line="77" selection-start-column="37" selection-end-line="77" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/player_event_management.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1395">
-          <caret line="33" column="10" selection-start-line="17" selection-start-column="4" selection-end-line="33" selection-end-column="10" />
         </state>
       </provider>
     </entry>
@@ -1356,6 +1356,22 @@
           <folding>
             <element signature="e#0#51#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/player_event_management.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="33" column="10" selection-start-line="17" selection-start-column="4" selection-end-line="33" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/player_teams.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="328">
+          <caret line="160" column="18" selection-start-line="160" selection-start-column="18" selection-end-line="160" selection-end-column="18" />
+          <folding />
         </state>
       </provider>
     </entry>
