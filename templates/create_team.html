@@ -5,15 +5,36 @@
 {% block title %}
     {% trans 'Create your team!' %} | {% show_title_page %}
 {% endblock %}
+{% block scripts %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
+{% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <h1 class="page-header">{% blocktrans %}Create your team{% endblocktrans %}</h1>
+    {% include 'profile_header.html' %}
+    <div class="container-fluid">
+        <div class="row row-padding block-bottom-line">
+            <div class="col-md-12 text-center">
+                <a href="{% url 'contact_list' %}" class="mybtn mybtn-small">{% trans 'Messages' %}</a>
+                <a href="{% url 'password_change' %}" class="mybtn mybtn-small">{% trans 'Change password' %}</a>
+                <a href="{% url 'create_event' %}" class="mybtn mybtn-small">{% trans 'Create event' %}</a>
+                <a href="{% url 'player_event_management' %}" class="mybtn mybtn-small">{% trans "Event management" %}</a>
+                {% if object.questsusers.is_organizer %}
+                    <a href="{% url 'organizer_profile' %}" class="mybtn mybtn-small">{% trans "Profile" %}</a>
+                {% else %}
+                    <a href="{% url 'player_profile' %}" class="mybtn mybtn-small">{% trans "Profile" %}</a>
+                {% endif %}
+                <a href="{% url 'photo_gallery' %}" class="mybtn mybtn-small">{% trans "Photo gallery" %}</a>
+                <a href="{% url 'team_management' %}" class="mybtn mybtn-small">{% trans "My teams" %}</a>
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-md-12">
+                <h1 class="color-header">{% blocktrans %}Create your team{% endblocktrans %}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-3 col-md-6 text-center">
                 {% if error %}
                     <p class="error">{{ error }}</p>
                 {% endif %}
@@ -28,11 +49,14 @@
                 {% else %}
                     <form action="." method="post">
                         {% csrf_token %}
-                        {{ form.as_p }}
+                        <div class="form-group">
+                            <label for="id_title">{{ form.title.label }}</label>
+                            {{ form.title|add_class_to_formfield:'form-control' }}
+                        </div>
                         {% if event != '' %}
                             <input type="hidden" value="{{ event.pk }}" name="event_pk">
                         {% endif %}
-                        <input type="submit" class="btn btn-primary" value="{% trans 'Submit!' %}">
+                        <input type="submit" class="mybtn mybtn-small" value="{% trans 'Submit!' %}">
                     </form>
                 {% endif %}
             </div>

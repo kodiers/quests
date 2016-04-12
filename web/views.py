@@ -346,7 +346,9 @@ def create_team(request, event_pk=None):
         else:
             error = FORM_FIELDS_ERROR
     form = CreateTeamForm()
-    return render_to_response('create_team.html', {'form': form, 'event': event, 'error': error, 'success': success},
+    return render_to_response('create_team.html', {'form': form, 'event': event,
+                                                   'error': error, 'success': success,
+                                                   'object': request.user},
                               context_instance=RequestContext(request))
 
 
