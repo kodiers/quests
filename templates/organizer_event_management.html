@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load tags %}
+{% load i18n %}
+{% block title %}
+    {% trans "Event managemnet" %} | {% show_title_page %}
+{% endblock %}
+{% block scripts %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/organizer_profile.css' %}">
+    <script src="{% static 'js/jquery.cookie.js' %}"></script>
+    <script src="{% static 'js/calendar.js' %}"></script>
+    <script src="{% static 'js/delete_event.js' %}"></script>
+    <script src="{% static 'js/unregister_user.js' %}"></script>
+    <script src="{% static 'js/upload_events_photo.js' %}"></script>
+{% endblock %}
+{% block content %}
+    {% include "profile_header.html" %}
+    <div class="container-fluid">
+        <div class="row row-padding block-bottom-line">
+            <div class="col-md-12 text-center">
+                <a href="{% url 'contact_list' %}" class="mybtn mybtn-small">{% trans 'Messages' %}</a>
+                <a href="{% url 'password_change' %}" class="mybtn mybtn-small">{% trans 'Change password' %}</a>
+                <a href="{% url 'create_event' %}" class="mybtn mybtn-small">{% trans 'Create event' %}</a>
+                <a href="{% url 'create_team' %}" class="mybtn mybtn-small">{% blocktrans %}Create team{% endblocktrans %}</a>
+                {% if object.questsusers.is_organizer %}
+                    <a href="{% url 'organizer_profile' %}" class="mybtn mybtn-small">{% trans "Profile" %}</a>
+                {% else %}
+                    <a href="{% url 'player_profile' %}" class="mybtn mybtn-small">{% trans "Profile" %}</a>
+                {% endif %}
+                <a href="{% url 'photo_gallery' %}" class="mybtn mybtn-small">{% trans "Photo gallery" %}</a>
+                <a href="{% url 'team_management' %}" class="mybtn mybtn-small">{% trans "My teams" %}</a>
+            </div>
+        </div>
+    </div>
+    {% if today_events %}
+        <div class="container">
+            <div class="row block-bottom-line">
+                <div class="col-md-12">
+                    <h2 class="color-header">{% blocktrans %}Today events{% endblocktrans %}</h2>
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Title" %}</th>
+                                <th class="cell-no-display">{% trans "Start date" %}</th>
+                                <th class="cell-no-display">{% trans "End date" %}</th>
+                                <th>{% trans "Team game" %}</th>
+                                <th>{% trans "Registered" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for event in today_events %}
+                                <tr>
+                                    <td><a href="{% url "current_event" event.pk %}">{{ event.title }}</a> </td>
+                                    <td class="cell-no-display">{{ event.start_date|date:'d-m-Y H:i' }}</td>
+                                    <td class="cell-no-display">{{ event.end_date|date:'d-m-Y H:i'}}</td>
+                                    <td>
+                                        {% if event.is_team %}
+                                            {% trans "Yes" %}
+                                        {% else %}
+                                            {% trans "No" %}
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ event.get_registered_count }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if started_events %}
+        <div class="container">
+            <div class="row block-bottom-line">
+                <div class="col-md-12">
+                    <h2 class="color-header">{% trans 'Started events' %}</h2>
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>{% trans 'Title' %}</th>
+                                <th>{% trans 'Start date' %}</th>
+                                <th class="cell-no-display">{% trans 'End date' %}</th>
+                                <th class="cell-no-display">{% trans 'Team game' %}</th>
+                                <th>{% trans 'Registered' %}</th>
+                                <th class="cell-no-display">{% trans 'Completed' %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for event in started_events %}
+                                <tr>
+                                    <td><a href="{% url 'current_event' event.pk %}">{{ event.title }}</a></td>
+                                    <td>{{ event.start_date|date:'d-m-Y H:i' }}</td>
+                                    <td class="cell-no-display">{{ event.end_date|date:'d-m-Y H:i' }}</td>
+                                    <td class="cell-no-display">
+                                        {% if event.is_team %}
+                                            {% trans 'Yes' %}
+                                        {% else %}
+                                            {% trans 'No' %}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {{ event.get_registered_count }}
+                                    </td>
+                                    <td class="cell-no-display">{{ event.get_users_completed_event }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="container">
+        <div class="row block-bottom-line">
+            <div class="col-md-12">
+                <h2 class="color-header">{% trans 'Future events' %}</h2>
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>{% trans 'Title' %}</th>
+                            <th>{% trans 'Start date' %}</th>
+                            <th class="cell-no-display">{% trans 'End date' %}</th>
+                            <th class="cell-no-display">{% trans 'Team game' %}</th>
+                            <th>{% trans 'Registered' %}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in future_events %}
+                            <tr id="event{{ event.pk }}">
+                                <td><a href="{% url 'edit_event' event.pk %}">{{ event.title }}</a></td>
+                                <td>{{ event.start_date|date:'d-m-Y H:i' }}</td>
+                                <td class="cell-no-display">{{ event.end_date|date:'d-m-Y H:i' }}</td>
+                                <td class="cell-no-display">
+                                    {% if event.is_team %}
+                                        {% trans 'Yes' %}
+                                    {% else %}
+                                        {% trans 'No' %}
+                                    {% endif %}
+                                </td>
+                                <td>{{ event.get_registered_count }}</td>
+                                <td>
+                                    <button class="mybtn mybtn-small" data-toggle="modal" data-target="#deleteEventModal{{ event.pk }}">
+                                        {% trans 'Delete' %}
+                                    </button>
+                                    <!-- Modal for delete event -->
+                                    <div class="modal fade" id="deleteEventModal{{ event.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                        &times;
+                                                    </button>
+                                                    <h4 class="modal-title">{% blocktrans %}Delete event{% endblocktrans %} {{ event.title }}</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h4> {% blocktrans %}Are you sure?{% endblocktrans %} </h4>
+                                                    <form method="post" id="id_deleteEventForm{{ event.pk }}">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="event_id" value="{{ event.pk }}" id="delEventID{{ event.pk }}">
+                                                        <input type="submit" value="{% trans 'Delete' %}" class="mybtn mybtn-small" onclick="prevent_refresh_delete({{ event.pk }})">
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal" id="id_delEventCloseButton{{ event.pk }}">
+                                                        {% trans 'Close' %}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End delete modal -->
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6">
+                                    <p class="color-header">{% blocktrans %}No events planned{% endblocktrans %}</p>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row block-bottom-line">
+            <div class="col-md-12">
+                <h2 class="color-header">{% trans 'Completed events' %}</h2>
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>{% trans 'Title' %}</th>
+                            <th class="cell-no-display">{% trans 'Start date' %}</th>
+                            <th class="cell-no-display">{% trans 'End date' %}</th>
+                            <th class="cell-no-display">{% trans 'Team game' %}</th>
+                            <th>{% trans 'Winner' %}</th>
+                            <th class="cell-no-display">{% trans 'Winner score' %}</th>
+                            <th>{% trans 'Registered' %}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in completed_events %}
+                            <tr>
+                                <td><a href="{% url 'show_completed_event_organizer' event.pk %}">{{ event.title }}</a></td>
+                                <td class="cell-no-display">{{ event.start_date|date:"d-m-Y H:i" }}</td>
+                                <td class="cell-no-display">{{ event.end_date|date:"d-m-Y H:i" }}</td>
+                                <td class="cell-no-display">
+                                    {% if event.is_team %}
+                                        {% trans 'Yes' %}
+                                    {% else %}
+                                        {% trans 'No' %}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if event.is_team %}
+                                        {{ event.get_event_winner }}
+                                    {% else %}
+                                        {% if event.get_event_winner %}
+                                            <a href="{% url 'player' event.get_event_winner|get_player_by_username %}">
+                                                {{ event.get_event_winner }}
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                                <td class="cell-no-display">
+                                    {{ event.get_event_score_by_winner }}
+                                </td>
+                                <td>
+                                    {{ event.get_registered_count }}
+                                </td>
+                                <td>
+                                    <button class="mybtn mybtn-small" data-toggle="modal" data-target="#addEventPhotoModal{{ event.pk }}">
+                                        {% blocktrans %}Add photos{% endblocktrans %}
+                                    </button>
+                                    <!-- Add event photos modal -->
+                                    <div class="modal fade" id="addEventPhotoModal{{ event.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                        &times;
+                                                    </button>
+                                                    <h4>{% blocktrans %}Add photo{% endblocktrans %}</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h4>{% blocktrans %}Select photo{% endblocktrans %}</h4>
+                                                    <form method="post" enctype="multipart/form-data" id="addEventPhotoForm{{ event.pk }}">
+                                                        {% csrf_token %}
+                                                        <label for="id_photo_title{{ event.pk }}">{% trans 'Title' %}</label>
+                                                        <input type="text" name="title" class="form-control" placeholder="{% trans 'Enter title for image' %}" id="id_photo_title{{ event.pk }}">
+                                                        <label for="id_photo_description{{ event.pk }}">{% trans 'Description' %}</label>
+                                                        <input type="text" name="description" class="form-control" placeholder="{% trans 'Enter description' %}" id="id_photo_description{{ event.pk }}">
+                                                        <label for="id_photo_date">{% trans 'Date' %}</label>
+                                                        <input type="text" id="id_photo_date" name="date" class="form-control">
+                                                        <label for="id_photo{{ event.pk }}">{% blocktrans %}Choose file{% endblocktrans %}</label>
+                                                        <input type="file" name="photo" id="id_photo{{ event.pk }}" class="form-control">
+                                                        <input type="hidden" name="event" value="{{ event.pk }}">
+                                                        <input type="submit" value="{% trans 'Upload' %}" onclick="prevent_refresh_eventphoto({{ event.pk }})" class="mybtn mybtn-small">
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal" id="id_photoCloseButton">
+                                                        {% trans 'Close' %}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End modal -->
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

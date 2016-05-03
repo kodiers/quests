@@ -1,0 +1,26 @@
+div.col-md-8.event-header-block {
+    padding-top: 30px;
+}
+@media screen and (max-width: 800px) {
+    div.col-md-8.event-header-block {
+        padding-top: 0px;
+        padding-left: 0px;
+    }
+    div.col-md-8.event-header-block h1.color-header-left {
+        text-align: center !important;
+    }
+    div.col-md-4.icon-block {
+        display: none;
+    }
+}
+@media screen and (max-width: 375px){
+    div.container-fluid div.col-md-8 h1.page-h1 {
+        margin-left: auto;
+    }
+}
+@media screen and (max-width: 320px){
+    div.container-fluid div.col-md-8 h1.page-h1 {
+        font-size: 30px;
+        margin-left: auto;
+    }
+}

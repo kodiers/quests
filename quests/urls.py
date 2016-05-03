@@ -8,7 +8,8 @@ from web.views import registration, index, restore_password, logout_view, login_
     edit_task, delete_event, delete_team, leave_team, unregister_event, upload_photos, delete_photo, play_event, \
     start_task, task_answer, complete_event, show_my_organizer_profile, EventsListView, AllEventsListView, \
     search_events_view, PlayersListView, search_players_view, OrganizerListView, search_organizers_view, \
-    events_registered_view, player_event_management, photo_gallery, team_management, get_hint
+    events_registered_view, player_event_management, photo_gallery, team_management, get_hint, current_events_view, \
+    complete_event_organizer, show_completed_event_organizer
 
 from pages.urls import urlpatterns as pages_url
 
@@ -52,6 +53,9 @@ urlpatterns = patterns('',
     url(r'^start_task/$', start_task, name='start_task'),
     url(r'^task_answer/$', task_answer, name='task_answer'),
     url(r'^complete_event/$', complete_event, name='complete_event'),
+    url(r'^current_event/(?P<pk>\d+)/$', current_events_view, name='current_event'),
+    url(r'^complete_event_organizer/$', complete_event_organizer, name='complete_event_organizer'),
+    url(r'^show_completed_event/(?P<pk>\d+)/$', show_completed_event_organizer, name='show_completed_event_organizer'),
     url(r'^get_hint/$', get_hint, name='get_hint'),
     url(r'^register/$', registration, name='register'),
     url(r'^restore/$', restore_password, name='restore'),

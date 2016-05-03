@@ -291,6 +291,18 @@ class QuestsUsers(models.Model):
         """
         return Teams.objects.filter(players=self.user)
 
+    def get_eventstat_score(self, event):
+        """
+        Return score, which users get on event
+        :param event: Event objects
+        :return: score or 0
+        """
+        try:
+            eventstat = EventStatistics.objects.filter(event=event).get(player=self.user)
+            return eventstat.score
+        except (EventStatistics.DoesNotExist, EventStatistics.MultipleObjectsReturned):
+            return 0
+
     class Meta:
         verbose_name_plural = "Quests users"
         verbose_name = "Quest user"
@@ -481,16 +493,17 @@ class Organizers(models.Model):
         Get events which start_date is more than today date (example: 2016-02-02) and less than tomorrow (example: 2016-03-02)
         :return: list of Events
         """
-        today = datetime.datetime.today()
+        today = datetime.date.today()
+        today_with_time = datetime.datetime(year=today.year, month=today.month, day=today.day)
         tomorrow = today + datetime.timedelta(1)
-        events = Events.objects.filter(organizer=self.user).filter(start_date__gte=today.date()).filter(start_date__lte=tomorrow.date()).filter(started=False).order_by('start_date')
+        events = Events.objects.filter(organizer=self.user).filter(start_date__gte=today_with_time).filter(start_date__lte=tomorrow).filter(completed=False).order_by('start_date')
         return events
 
     def get_completed_events(self):
         """
         Get completed events for this organizer. Calling in template
         """
-        today = datetime.date.today()
+        # today = datetime.date.today()
         events = Events.objects.filter(organizer=self.user).filter(completed=True).order_by('start_date')
         return events
 
@@ -523,6 +536,18 @@ class Teams(models.Model):
         """
         self.points += points
         self.save()
+
+    def get_eventstat_score(self, event):
+        """
+        Return team's score< which team get on event
+        :param event: Event object
+        :return: int score or 0
+        """
+        try:
+            eventstat = EventStatistics.objects.filter(event=event).get(team=self)
+            return eventstat.score
+        except (EventStatistics.DoesNotExist, EventStatistics.MultipleObjectsReturned):
+            return 0
 
     class Meta:
         verbose_name = "Team"
@@ -597,7 +622,10 @@ class Events(models.Model):
         """
         Return username (if user is winner) or team.title if event for team only. Calling in template.
         """
-        eventwinner = EventsWinners.objects.get(event=self)
+        try:
+            eventwinner = EventsWinners.objects.get(event=self)
+        except EventsWinners.DoesNotExist:
+            return None
         if self.is_team:
             return eventwinner.team.title
         else:
@@ -631,6 +659,14 @@ class Events(models.Model):
             statistics = EventStatistics.objects.filter(event=self).filter(player=user).aggregate(Max('score'))
         return statistics['score__max']
 
+    def get_users_completed_event(self):
+        """
+        Return count of players/teams, which completed event
+        :return: int
+        """
+        statistics = EventStatistics.objects.filter(event=self).filter(completed=True).count()
+        return statistics
+
 
     class Meta:
         verbose_name = "Event"
@@ -653,6 +689,14 @@ class Tasks(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_task_completed_count(self):
+        """
+        Return number of users/team, which complete the task
+        :return: int
+        """
+        taskstat_count = TaskStatistics.objects.filter(task=self, completed=True).count()
+        return taskstat_count
 
     class Meta:
         verbose_name = "Task"

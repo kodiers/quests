@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load tags %}
+{% load i18n %}
+{% block title %}
+    {% trans "Current event" %} {{ event.title }} | {% show_title_page %}
+{% endblock %}
+{% block scripts %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/event.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/organizer_profile.css' %}">
+    <script src="{% static 'js/jquery.cookie.js' %}"></script>
+    <script src="{% static 'js/calendar.js' %}"></script>
+    <script src="{% static 'js/delete_event.js' %}"></script>
+    <script src="{% static 'js/unregister_user.js' %}"></script>
+    <script src="{% static 'js/upload_events_photo.js' %}"></script>
+    <script src="{% static 'js/complete_event_organizer.js' %}"></script>
+{% endblock %}
+{% block content %}
+    {% include "profile_header.html" %}
+    <div class="container-fluid">
+        <div class="row row-padding block-bottom-line">
+            <div class="col-md-12 text-center">
+                <a href="{% url 'contact_list' %}" class="mybtn mybtn-small">{% trans 'Messages' %}</a>
+                <a href="{% url 'password_change' %}" class="mybtn mybtn-small">{% trans 'Change password' %}</a>
+                <a href="{% url 'player_event_management' %}" class="mybtn mybtn-small">{% trans 'Event management' %}</a>
+                <a href="{% url 'create_team' %}" class="mybtn mybtn-small">{% blocktrans %}Create team{% endblocktrans %}</a>
+                {% if object.questsusers.is_organizer %}
+                    <a href="{% url 'organizer_profile' %}" class="mybtn mybtn-small">{% trans "Profile" %}</a>
+                {% else %}
+                    <a href="{% url 'player_profile' %}" class="mybtn mybtn-small">{% trans "Profile" %}</a>
+                {% endif %}
+                <a href="{% url 'photo_gallery' %}" class="mybtn mybtn-small">{% trans "Photo gallery" %}</a>
+                <a href="{% url 'team_management' %}" class="mybtn mybtn-small">{% trans "My teams" %}</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row block-bottom-line">
+            <div class="col-md-4 icon-block">
+                {% if event.image.url != None %}
+                    <img src="{{ event.image.url }}" class="img-responsive img-rounded content-icon block-icon header-image" alt="{{ object.title }}">
+                {% else %}
+                    <img src="{% static 'images/no-events-image.png' %}" class="img-responsive img-rounded content-icon block-icon header-image" alt="{{ object.title }}">
+                {% endif %}
+            </div>
+            <div class="col-md-8 event-header-block">
+                <h1 class="color-header-left">{{ event.title }}</h1>
+            </div>
+        </div>
+        <div class="row block-bottom-line">
+            <div class="col-md-4">
+                <p>{% trans 'Start date' %}: <span class="date"> {{ event.start_date }} </span></p>
+                <p>{% trans 'End date' %}: <span class="date"> {{ event.end_date }}</span></p>
+                <p>{% trans 'Place' %}:
+                    <span class="date">
+                        {% if event.place.city != None %}
+                            {{ event.place.get_country_display }} / {{ event.place.city }}
+                        {% else %}
+                            {{ event.place.get_country_display }}
+                        {% endif %}
+                    </span>
+                </p>
+            </div>
+            <div class="col-md-4">
+                <p>
+                    {% blocktrans %}Maximum players/teams{% endblocktrans %}:
+                    {% if event.max_players == None %}
+                        N/A
+                    {% else %}
+                        {{ event.max_players }}
+                    {% endif %}
+                </p>
+                <p>
+                    {% blocktrans %}Minimum players/teams{% endblocktrans %}:
+                    {% if event.min_players == None %}
+                        N/A
+                    {% else %}
+                        {{ event.min_players }}
+                    {% endif %}
+                </p>
+                <p>{% blocktrans %}Registered players/teams{% endblocktrans %}: {{ event.get_registered_count }}</p>
+            </div>
+            <div class="col-md-4">
+                {% if event.price != 0.0 %}
+                    <p>{% trans 'Price' %}: {{ object.price }}</p>
+                {% else %}
+                    <p class="free_event">{% trans 'FREE' %}</p>
+                {% endif %}
+                {% if event.is_team %}
+                    <p>{% trans 'TEAM GAME' %}</p>
+                {% endif %}
+                {% if event.completed == False %}
+                    <button class="mybtn mybtn-small" data-toggle="modal" data-target="#completeEvent">
+                        {% blocktrans %}Complete event{% endblocktrans %}
+                    </button>
+                    <!-- Complete event modal -->
+                    <div class="modal fade" id="completeEvent" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                        &times;
+                                    </button>
+                                    <h4 class="text-color">{% blocktrans %}Complete event{% endblocktrans %} {{ event.title }}?</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" id="completeEventForm">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="{{ even.pk }}" name="event_pk" id="event">
+                                        <input type="submit" value="{% trans 'Complete' %}" onclick="prevent_refresh_complete({{ event.pk }})" class="mybtn mybtn-small">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="error"></p>
+                    <!-- end modal -->
+                {% else %}
+                    <p class="error">{% blocktrans %}Event completed{% endblocktrans %}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row block-bottom-line">
+            <div class="col-md-12">
+                <h3 class="color-header">{% trans 'Event description' %}</h3>
+                <p>{{ event.description }}</p>
+                <h4 class="color-header">{% trans 'Map' %}:</h4>
+                <p class="text-center">
+                    <img src="{{ event.map_link }}" class="map-image img-responsive">
+                </p>
+                <p class="text-center">
+                    <a href="http://maps.google.com/?q={{ event.place.get_country_display }}
+                        {% if event.place.city != None %}
+                            ,{{ event.place.city }}
+                        {% endif %}
+                        {% if event.place.street != None %}
+                            ,{{ event.place.street }}
+                        {% endif %}">
+                            {% trans 'View on google maps' %}
+                    </a>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="color-header">{% trans 'Tasks' %}</h2>
+            </div>
+        </div>
+        <div class="row block-bottom-line">
+            <div class="col-md-12">
+                <table class="table table-responsive table-hover">
+                    <thead>
+                        <tr>
+                            <th class="color-header">
+                                {% trans 'Task name' %}
+                            </th>
+                            <th class="color-header">
+                                {% trans 'Score' %}
+                            </th>
+                            <th class="color-header">
+                                {% trans 'Time (min)' %}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for task in tasks %}
+                            <tr>
+                                <td>
+                                    <a data-toggle="modal" data-target="#viewTaskModal{{ task.pk }}">
+                                        {{ task.title }}
+                                    </a>
+                                    <div class="modal fade" id="viewTaskModal{{ task.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                        &times;
+                                                    </button>
+                                                    <h4 class="modal-title color-header-left">{% trans 'Edit task' %} {{ task.title }}</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h5>{{ task.title }}</h5>
+                                                    <p>{{ task.description }}</p>
+                                                    <p>{% trans 'Time for task (minutes)' %}: {{ task.time }}</p>
+                                                    <p>{% trans 'Score' %}: {{ task.score }}</p>
+                                                    <p>{% trans 'Answer' %}: {{ task.answer }}</p>
+                                                    <h6>{% trans 'Task place' %}:</h6>
+                                                    <ul>
+                                                        <li>{{ task.place.get_country_display }}</li>
+                                                        <li>{{ task.place.city }}</li>
+                                                        <li>{{ task.place.street }}</li>
+                                                    </ul>
+                                                    <h6>{% trans 'Task hint' %}:</h6>
+                                                    <p>{{ task.hints.text }}</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal" id="id_editCloseButton{{ task.pk }}">
+                                                        {% trans 'Close' %}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    {{ task.score }}
+                                </td>
+                                <td class="text-center">
+                                    {% if task.time == None %}
+                                        N/A
+                                    {% else %}
+                                        {{ task.time }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                {% if event.is_team == False %}
+                    <h2 class="color-header">{% trans 'Registered players' %}</h2>
+                {% else %}
+                    <h2 class="color-header">{% trans 'Registered teams' %}</h2>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                {% if event.is_team == False %}
+                    <table class="table table-responsive table-hover">
+                        <thead>
+                            <tr>
+                                <th class="color-header">
+                                    {% trans 'Player' %}
+                                </th>
+                                <th class="color-header">
+                                    {% trans 'Score' %}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for player in event.registered_players.all %}
+                                <tr>
+                                    <td class="text-center">
+                                        {% if player.questsusers.is_organizer %}
+                                            <a href="{% url 'organizer' player.organizers.pk %}">
+                                        {% else %}
+                                            <a href="{% url 'player' player.players.pk %}">
+                                        {% endif %}
+                                        <h5>{{ player.username }}</h5>
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                       {{ player.username|get_player_score }}
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="2" class="color-header">
+                                        {% blocktrans %}None registered to this event yet{% endblocktrans %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% elif event.is_team %}
+                    <table class="table table-responsive table-hover">
+                        {% for team in event.registered_teams.all %}
+                            <tr>
+                                <td class="color-header">
+                                    <h4>{{ team.title }}</h4>
+                                </td>
+                                <td>
+                                    <table class="table table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th class="color-header">
+                                                    {% trans 'Player' %}
+                                                </th>
+                                                <th class="color-header">
+                                                    {% trans 'Score' %}
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for player in team.players.all %}
+                                                <tr>
+                                                    <td class="text-center">
+                                                        {% if player.questsusers.is_organizer %}
+                                                            <a href="{% url 'organizer' player.organizers.pk %}">
+                                                        {% else %}
+                                                            <a href="{% url 'player' player.players.pk %}">
+                                                        {% endif %}
+                                                            <h5>{{ player.username }}</h5>
+                                                        </a>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        {{ player.username|get_player_score }}
+                                                    </td>
+                                                </tr>
+                                            {% empty %}
+                                                {% blocktrans %}Empty team{% endblocktrans %}
+                                            {%  endfor %}
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td>
+                                    {% blocktrans %}None registered to this event yet{% endblocktrans %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

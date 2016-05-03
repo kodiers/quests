@@ -35,6 +35,9 @@ function delete_event(event_pk) {
             // close modal
             var button_id = 'id_delEventCloseButton' + event_pk;
             document.getElementById(button_id).click();
+            // var modal_id = '#deleteEventModal' + event_pk;
+            // $('.modal.in').modal('hide');
+            // $.modal.close();
 
             // if report show debug in console
             if (response.code != 1) {

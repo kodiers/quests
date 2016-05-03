@@ -66,7 +66,11 @@
                     <p>{% trans 'Street' %}: <span class="date">{{ object.user.contacts.street }}</span> </p>
                     <p>{% trans 'Phone' %}: <span class="date">{{ object.user.contacts.phone }}</span> </p>
                     <p>{% trans 'Skype' %}: <span class="date">{{ object.user.contacts.skype }}</span> </p>
-                    <p>Web-site: <a href="{{ object.user.contacts.site|check_http_prefix }}">{{ object.user.contacts.site }}</a> </p>
+                    <p>Web-site:
+                        {% if object.user.contacts.site %}
+                            <a href="{{ object.user.contacts.site|check_http_prefix }}">{{ object.user.contacts.site }}</a>
+                        {% endif %}
+                    </p>
                 </div>
             </div>
             <div class="col-md-8">

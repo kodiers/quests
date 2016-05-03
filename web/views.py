@@ -206,6 +206,7 @@ class EventView(DetailView):
         context['now'] = timezone_now()
         return context
 
+
 @login_required()
 def confirm_join_event(request, pk):
     """
@@ -1174,11 +1175,17 @@ def player_event_management(request):
     :param request: HttpRequest
     :return: HttpResponse
     """
-    # TODO: May be use this view for organizers?
     user = request.user
     if user.questsusers.is_organizer:
-        error = NOT_ACCESS_TO_PAGE
-        return render_to_response("error.html", {"error": error}, context_instance=RequestContext(request))
+        today_events = user.organizers.get_today_events()
+        started_events = user.organizers.get_started_events()
+        future_events = user.organizers.get_future_events()
+        completed_events = user.organizers.get_completed_events()
+        return render(request, "organizer_event_management.html", {"object": user,
+                                                                   "today_events": today_events,
+                                                                   "started_events": started_events,
+                                                                   "future_events": future_events,
+                                                                   "completed_events": completed_events})
     else:
         started_events = user.players.get_current_event()
         future_events = user.players.get_future_events()
@@ -1238,10 +1245,74 @@ def get_hint(request):
     task = Tasks.objects.get(pk=request.POST['pk'])
     try:
         # Check that task started
-        taskstat = TaskStatistics.objects.filter(task=task).filter(player=user).get(started=True)
+        taskstat = TaskStatistics.objects.filter(task=task, player=user).get(started=True)
         hint = Hints.objects.get(task=task)
     except (ObjectDoesNotExist, TaskStatistics.MultipleObjectsReturned, Hints.MultipleObjectsReturned):
         return HttpResponse(json.dumps(SIMPLE_JSON_ERROR), content_type="application/json")
     taskstat.increase_used_hints()
     return HttpResponse(json.dumps({'code': 1, 'hint': hint.text}), content_type="application/json")
+
+
+@login_required()
+def current_events_view(request, pk):
+    """
+    Show current events.
+    :param request: HttpRequest
+    :param pk: pk of event
+    :return: HttpResponse
+    """
+    try:
+        event = Events.objects.get(pk=pk)
+    except (Events.MultipleObjectsReturned, Events.DoesNotExist):
+        error = _("No event found!")
+        return render(request, "error.html", {'error': error})
+    now = datetime.date.today()
+    if event.start_date.date() > now:
+        return render(request, "error.html", {'error': _("It's not started or today event")})
+    if request.user != event.organizer:
+        return render(request, "error.html", {'error': NOT_ACCESS_TO_PAGE})
+    tasks = Tasks.objects.filter(event=event)
+    return render(request, 'current_events.html', {"event": event, 'tasks': tasks, "object": request.user})
+
+
+@json_wrapper
+@login_required()
+def complete_event_organizer(request):
+    """
+    Complete event for all users, set event.completed to True
+    Accept request from AJAX function (from complete_event_organizer.js complete_event function)
+    :param request: HttpRequest
+    :return: HttpResponse as json
+    """
+    try:
+        event = Events.objects.filter(completed=False).get(pk=request.POST['pk'])
+    except (Events.MultipleObjectsReturned, Events.DoesNotExist):
+        return HttpResponse(json.dumps(SIMPLE_JSON_ERROR), content_type="application/json")
+    if event.organizer != request.user:
+        return HttpResponse(json.dumps(SIMPLE_JSON_ERROR), content_type="application/json")
+    eventstatistics = EventStatistics.objects.filter(event=event).filter(completed=False)
+    eventstatistics.update(completed=True)
+    tasks = Tasks.objects.filter(event=event)
+    for task in tasks:
+        taskstatistics = TaskStatistics.objects.filter(task=task).filter(completed=False)
+        taskstatistics.update(completed=True)
+    event.completed = True
+    event.save()
+    return HttpResponse(json.dumps(SIMPLE_JSON_ANSWER), content_type="application/json")
+
+
+@login_required()
+def show_completed_event_organizer(request, pk):
+    """
+    Show completed event with statistics to organizer.
+    :param request: HttpRequest
+    :param pk: Event pk
+    :return: HttpResponse
+    """
+    try:
+        event = Events.objects.filter(completed=True, organizer=request.user).get(pk=pk)
+    except (Events.DoesNotExist, Events.MultipleObjectsReturned):
+        return render(request, "error.html", {"error": _("Error than get information about event from database")})
+    tasks = Tasks.objects.filter(event=event)
+    return render(request, "completed_event.html", {'object': request.user, 'event': event, 'tasks': tasks})
 

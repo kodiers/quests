@@ -6,218 +6,120 @@
     {{ object.username }} | {% show_title_page %}
 {% endblock %}
 {% block scripts %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/organizer_profile.css'%}">
     <script src="{% static 'js/jquery.cookie.js' %}"></script>
     <script src="{% static 'js/delete_photo.js' %}"></script>
     <script src="{% static 'js/uploads_modal.js' %}"></script>
     <script src="{% static 'js/delete_event.js' %}"></script>
 {% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                {% if error %}
-                    <p class="error">{{ error }}</p>
-                {% endif %}
-                {% if message %}
-                    <p class="message">{{ message }}</p>
-                {% endif %}
+    {% include 'profile_header.html' %}
+    <div class="container-fluid">
+        <div class="row row-padding block-bottom-line">
+            <div class="col-md-12 text-center">
+                <a href="{% url 'contact_list' %}" class="btn mybtn mybtn-small">{% trans 'Messages' %}</a>
+                <a href="{% url 'password_change' %}" class="btn mybtn mybtn-small">{% trans 'Change password' %}</a>
+                <a href="{% url 'create_event' %}" class="btn mybtn mybtn-small">{% trans 'Create event' %}</a>
+                <a href="{% url 'create_team' %}" class="btn mybtn mybtn-small">{% blocktrans %}Create team{% endblocktrans %}</a>
+                <a href="{% url 'player_event_management' %}" class="btn mybtn mybtn-small">{% trans "Event management" %}</a>
+                <a href="{% url 'photo_gallery' %}" class="btn mybtn mybtn-small">{% trans "Photo gallery" %}</a>
+                <a href="{% url 'team_management' %}" class="btn mybtn mybtn-small">{% trans "My teams" %}</a>
             </div>
         </div>
     </div>
     <div class="container">
+        <div class="row block-bottom-line">
+            <div class="col-md-12">
+                <h1 class="color-header">{% trans 'Today events (not started)' %}</h1>
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <td>{% trans 'Title' %}</td>
+                            <td class="cell-no-display">{% trans 'Start date' %}</td>
+                            <td>{% trans 'Registered' %}</td>
+                            <td>{% trans 'Team game' %}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for event in object.organizers.get_today_events %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'current_event' event.pk %}">
+                                    <h4>{{ event.title }}</h4>
+                                </a>
+                            </td>
+                            <td class="cell-no-display">{{ event.start_date|date:'d-m-Y H:i' }}</td>
+                            <td>{{ event.get_registered_count }}</td>
+                            <td>
+                                {% if event.is_team %}
+                                    {% trans 'Yes' %}
+                                {% else %}
+                                    {% trans 'No' %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4">
+                                <h5 class="color-header">{% trans 'No events today' %}</h5>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div class="row">
-            <div class="col-xs-4">
-                <h1 class="page-header">{{ object.username }}</h1>
-                {% if object.questsusers.image.url != None %}
-                    <img src="{{ object.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
-                {% else %}
-                    <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
-                {% endif %}
-                <a href="{% url 'password_change' %}" class="mybtn mybtn-small">{% trans 'Change password' %}</a>
-                <a href="{% url 'contact_list' %}" class="btn btn-primary">{% trans 'Send message' %}</a>
-                <a href="{% url 'create_event' %}" class="btn btn-primary">{% trans 'Create event' %}</a>
+            <div class="col-md-12">
+                <h2 class="color-header">{% blocktrans %}Change personal info:{% endblocktrans %}</h2>
                 <form action="." method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <p>{% trans 'Change avatar' %}:</p>
-                    <input id="id_avatar" name="avatar" type="file">
-                    <h2>{% blocktrans %}Change personal info{% endblocktrans %}:</h2>
-                        {{ form.email.label }}:
-                        {{ form.email|add_class_to_formfield:"form-control" }}
-                        {{ form.description.label }}:
-                        {{ form.description|add_class_to_formfield:"form-control" }}
-                    <p>
-                        {{ form.country.label }}:
-                        {{ form.country|add_class_to_formfield:"form-control" }}
-                    </p>
-                    <p>
-                        {{ form.city.label }}:
-                        {{ form.city|add_class_to_formfield:"form-control" }}
-                    </p>
-                    <p>
-                        {{ form.street.label }}:
-                        {{ form.street|add_class_to_formfield:"form-control" }}
-                    </p>
-                    <p>
-                        {{ form.phone.label }}:
-                        {{ form.phone|add_class_to_formfield:"form-control" }}
-                    </p>
-                    <p>
-                        {{ form.skype.label }}:
-                        {{ form.skype|add_class_to_formfield:"form-control" }}
-                    </p>
-                    <p>
-                        {{ form.site.label }}:
-                        {{ form.site|add_class_to_formfield:"form-control" }}
-                    </p>
-                    <input type="submit" value="Save!">
-                </form>
-            </div>
-            <div class="col-xs-8">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <h1>{% trans 'Today events' %}</h1>
-                        {% for event in object.organizers.get_today_events %}
-                            <a href="{% url 'event' event.pk %}">{{ event.title }} {{ event.start_date|date:'d m Y H i' }}</a>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <h1>{% trans 'Started events' %}</h1>
-                        {% for event in object.organizers.get_started_events %}
-                            <a href="{% url 'event' event.pk %}">{{ event.title }} {{ event.start_date|date:'d m Y H i' }}</a>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <h2>{% trans 'Photos' %}</h2>
-                        {% if object.organizers.get_organizers_photo %}
-                            <div id="profile_corousel" class="carousel slide" data-ride="carousel">
-                                <div class="carousel-inner" role="listbox">
-                                    {% for photo in object.organizers.get_organizers_photo %}
-                                        {% if forloop.first %}
-                                            <div class="item active" style="text-align: center">
-                                                <img src="{{ photo.image.url }}" class="img-rounded photos">
-                                                <a onclick="delete_photo({{ photo.pk }})" class="btn btn-danger">{% trans 'Delete' %}</a>
-                                            </div>
-                                        {% else %}
-                                            <div class="item" style="text-align: center">
-                                                <img src="{{ photo.image.url }}" class="img-rounded photos">
-                                                <a onclick="delete_photo({{ photo.pk }})" class="btn btn-danger">{% trans 'Delete' %}</a>
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                                <a class="left carousel-control" href="#profile_corousel" role="button" data-slide="prev">
-                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                    <span class="sr-only">{% trans 'Previous' %}</span>
-                                </a>
-                                <a class="right carousel-control" href="#profile_corousel" role="button" data-slide="next">
-                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                    <span class="sr-only">{% trans 'Next' %}</span>
-                                </a>
-                            </div>
+                    <div class="form-group">
+                        {% trans 'Current avatar' %}:
+                        {% if object.questsusers.image.url != None %}
+                            <img src="{{ object.questsusers.image.url }}" class="img-responsive img-rounded content-icon block-icon avatar-image" alt="{{ object.username }}">
+                        {% else %}
+                            <img src="{% static 'images/no-players-image.png' %}" class="img-responsive img-rounded content-icon block-icon avatar-image" alt="{{ object.username }}">
                         {% endif %}
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#addPhotoModal">
-                            {% blocktrans %}Add photos{% endblocktrans %}
-                        </button>
-                        <!-- Add photos modal -->
-                        <div class="modal fade" id="addPhotoModal" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                            &times;
-                                        </button>
-                                        <h4>{% blocktrans %}Add photo{% endblocktrans %}</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <h4>{% blocktrans %}Select photo{% endblocktrans %}</h4>
-                                        <form method="post" enctype="multipart/form-data" id="addPhotoForm">
-                                            {% csrf_token %}
-                                            <label for="id_photo_title">{% trans 'Title' %}</label>
-                                            <input type="text" name="title" class="form-control" placeholder="{% trans 'Enter title for image' %}" id="id_photo_title">
-                                            <label for="id_photo_description">{% trans 'Description' %}</label>
-                                            <input type="text" name="description" class="form-control" placeholder="{% trans 'Enter description' %}">
-                                            <label for="id_photo_date">{% trans 'Date' %}</label>
-                                            <input type="text" id="id_photo_date" name="date" class="form-control">
-                                            <label for="id_photo">{% trans 'Choose file' %}</label>
-                                            <input type="file" name="photo" id="id_photo" class="form-control">
-                                            <input type="submit" value="{% trans 'Upload' %}" onclick="prevent_refresh_photo()" class="btn btn-primary">
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal" id="id_photoCloseButton">
-                                            {% trans 'Close' %}
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End modal -->
+                        <br>
+                        <label for="id_avatar">{% blocktrans %}Change avatar:{% endblocktrans %}</label>
+                        <input id="id_avatar" name="avatar" type="file">
                     </div>
-                </div>
-                <div class="row">
-                    <h2>{% blocktrans %}Future events{% endblocktrans %}</h2>
-                    {% for event in object.organizers.get_future_events %}
-                        <div id="event{{ event.pk }}">
-                            {{ event.title }} {% trans 'Start date' %}: {{ event.start_date |date:'d m Y H i'}}
-                            {% if event.is_team %}
-                                {% trans 'Team game' %}
-                            {% endif %}
-                            {% blocktrans %}Minimum players/teams{% endblocktrans %}: {{ event.min_players }}
-                            {% blocktrans %}Maximum players/teams{% endblocktrans %}: {{ event.max_players }}
-                            {% trans 'Registered' %}: {{ event.get_registered_count }}
-                            <a href="{% url 'edit_event' event.pk %}" class="btn btn-primary"> {% trans 'Edit' %}</a>
-                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteEventModal{{ event.pk }}">
-                                {% trans 'Delete' %}
-                            </button>
-                            <!-- Modal for delete event -->
-                            <div class="modal fade" id="deleteEventModal{{ event.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                                &times;
-                                            </button>
-                                            <h4 class="modal-title">{% blocktrans %}Delete event{% endblocktrans %} {{ event.title }}</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <h4> {% blocktrans %}Are you sure?{% endblocktrans %} </h4>
-                                            <form method="post" id="id_deleteEventForm{{ event.pk }}">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="event_id" value="{{ event.pk }}" id="delEventID{{ event.pk }}">
-                                                <input type="submit" value="{% trans 'Delete' %}" class="btn btn-danger" onclick="prevent_refresh_delete({{ event.pk }})">
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="id_delEventCloseButton{{ event.pk }}">
-                                                {% trans 'Close' %}
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End delete modal -->
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="row">
-                    <h2>{% blocktrans %}Completed events{% endblocktrans %}</h2>
-                    {% for event in object.organizers.get_completed_events %}
-                        <p>
-                            {{ event.title }} {% trans 'Start date' %}: {{ event.start_date|date:'d m Y H i' }}
-                            {% if event.is_team %}
-                                {% trans 'Team game' %}
-                                {% trans 'Winner' %}: {{ event.get_event_winner }}
-                            {% else %}
-                                {% trans 'Winner' %}: <a href="{% url 'player' event.get_event_winner|get_player_by_username %}">{{ event.get_event_winner }}</a>
-                            {% endif %}
-                             {% trans 'Registered' %}: {{ event.get_registered_count }} {% trans 'Winner score' %}: {{ event.get_event_score_by_winner }}
-                        </p>
-                    {% endfor %}
-                </div>
+                    <div class="form-group">
+                        <label for="id_email">{{ form.email.label }}:</label>
+                        {{ form.email|add_class_to_formfield:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_description">{{ form.description.label }}:</label>
+                        {{ form.description|add_class_to_formfield:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_country">{{ form.country.label }}:</label>
+                        {{ form.country|add_class_to_formfield:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_city">{{ form.city.label }}:</label>
+                        {{ form.city|add_class_to_formfield:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_street">{{ form.street.label }}:</label>
+                        {{ form.street|add_class_to_formfield:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_phone">{{ form.phone.label }}:</label>
+                        {{ form.phone|add_class_to_formfield:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_skype">{{ form.skype.label }}:</label>
+                        {{ form.skype|add_class_to_formfield:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_site">{{ form.site.label }}:</label>
+                        {{ form.site|add_class_to_formfield:"form-control" }}
+                    </div>
+                    <input type="submit" value="Save!" class="mybtn mybtn-small">
+                </form>
             </div>
         </div>
     </div>

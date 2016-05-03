@@ -85,9 +85,12 @@ def get_player_by_username(username):
     :param username: username of user
     :return: player.pk
     """
-    user = User.objects.get(username=username)
-    player = Players.objects.get(user=user)
-    return player.pk
+    if username != None:
+        user = User.objects.get(username=username)
+        player = Players.objects.get(user=user)
+        return player.pk
+    else:
+        return 'nobody'
 
 
 @register.filter()
@@ -197,4 +200,15 @@ def columns(thelist, n):
     if list_len % n != 0:
         split += 1
     return [thelist[i::split] for i in range(split)]
+
+
+@register.filter()
+def get_eventstat_score(obj, event):
+    """
+    Call get_eventstats_score method for questsusers or team object
+    :param questuser: QuestsUsers or Team object
+    :param event: Event object
+    :return: result of get_eventstat_score method
+    """
+    return obj.get_eventstat_score(event)
 
