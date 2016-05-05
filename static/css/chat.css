@@ -1,0 +1,10 @@
+div.col-md-4.text-center {
+    padding-bottom: 10px;
+}
+div.col-md-4.text-center button {
+    margin-top: 20px;
+}
+.chat_link {
+    font-weight: 500;
+    font-size: 18px;
+}

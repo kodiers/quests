@@ -3,26 +3,40 @@
 {% load tags %}
 {% load i18n %}
 {% block title %}
-    {% blocktrans %}Write message{% endblocktrans %} | {% show_title_page %}
+    {% blocktrans %}Contact list{% endblocktrans %} | {% show_title_page %}
 {% endblock %}
 {% block scripts %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/chat.css' %}">
     <script src="{% static 'js/jquery.cookie.js' %}"></script>
     <script src="{% static 'js/check_username.js' %}"></script>
 {% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-4">
-                <h2>{{ user.username }}</h2>
-                {% if user.questsusers.image.url != None %}
-                    <img src="{{ user.questsusers.image.url }}" class="img-responsive img-rounded index_avatar">
+    {% include 'profile_header.html' %}
+    <div class="container-fluid">
+        <div class="row row-padding block-bottom-line">
+            <div class="col-md-12 text-center">
+                {% if object.questsusers.is_organizer %}
+                    <a href="{% url 'organizer_profile' %}" class="btn mybtn mybtn-small">{% trans "Profile" %}</a>
                 {% else %}
-                    <img src="{% static 'images/default-user-avatar.png' %}" class="img-responsive img-rounded index_avatar">
+                    <a href="{% url 'player_profile' %}" class="btn mybtn mybtn-small">{% trans "Profile" %}</a>
                 {% endif %}
-                <button class="btn btn-primary" data-toggle="modal" data-target="#SendMessageModal">
+                <a href="{% url 'password_change' %}" class="btn mybtn mybtn-small">{% trans 'Change password' %}</a>
+                <a href="{% url 'create_event' %}" class="btn mybtn mybtn-small">{% trans 'Create event' %}</a>
+                <a href="{% url 'create_team' %}" class="btn mybtn mybtn-small">{% blocktrans %}Create team{% endblocktrans %}</a>
+                <a href="{% url 'player_event_management' %}" class="btn mybtn mybtn-small">{% trans "Event management" %}</a>
+                <a href="{% url 'photo_gallery' %}" class="btn mybtn mybtn-small">{% trans "Photo gallery" %}</a>
+                <a href="{% url 'team_management' %}" class="btn mybtn mybtn-small">{% trans "My teams" %}</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row block-bottom-line">
+            <div class="col-md-4 text-center">
+                <button class="mybtn mybtn-small" data-toggle="modal" data-target="#SendMessageModal">
                     {% blocktrans %}Send message{% endblocktrans %}
                 </button>
-                <div class="modal fade" id="SendMessageModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal fade text-left" id="SendMessageModal" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -36,9 +50,11 @@
                                 <form action="{% url 'send_message' %}" method="post" id="idSendMessageForm">
                                     {% csrf_token %}
                                     <input type="hidden" name="sender" value="{{ user.username }}">
+                                    <label for="idReceiver">{% trans 'Enter username' %}</label>
                                     <input type="text" name="receiver" class="form-control" placeholder="{% trans 'Enter username' %}" id="idReceiver">
-                                    <textarea name="text" class="form-control" placeholder="{% trans 'Enter message' %}"></textarea>
-                                    <input type="submit" value="{% trans 'Send' %}" class="btn btn-primary">
+                                    <label for="messageText">{% trans 'Enter message' %}:</label>
+                                    <textarea name="text" class="form-control" placeholder="{% trans 'Enter message' %}" id="messageText"></textarea>
+                                    <input type="submit" value="{% trans 'Send' %}" class="mybtn mybtn-small">
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -50,20 +66,44 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-8">
-                <h3>{% blocktrans %}Your contacts{% endblocktrans %}</h3>
-                {% if chats %}
-                    {% for chat in chats %}
-                        <p>
-                            <a href="{% url 'chat' chat.id %}">{{ chat.partner.username }}</a>
-                            {% if chat.have_new_message %}
-                                <span class="new_message"> {% trans 'New' %} </span>
-                            {% endif %}
-                        </p>
-                    {% endfor %}
-                {% else %}
-                    <p>{% blocktrans %}You haven't contacts{% endblocktrans %}</p>
-                {% endif %}
+            <div class="col-md-8">
+                <h3 class="color-header-left">{% blocktrans %}Your contacts{% endblocktrans %}</h3>
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>{% trans 'User' %}</th>
+                            <th>{% trans 'Total messages' %}</th>
+                            <th>{% trans 'New mesages' %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if chats %}
+                            {% for chat in chats %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'chat' chat.id %}" class="chat_link">
+                                            {{ chat.partner.username }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {{ chat.get_message_count }}
+                                    </td>
+                                    <td>
+                                        {% if chat.have_new_message %}
+                                            <span class="new_message"> {% trans 'New' %} </span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3">
+                                    {% blocktrans %}You haven't contacts{% endblocktrans %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

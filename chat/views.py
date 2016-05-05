@@ -30,7 +30,8 @@ def show_contact_list(request):
         for chat in chats:
             # add partner field for chat for chats
             chat.partner = chat.users.exclude(id=request.user.id)[0]
-    return render_to_response('contacts_list.html', {'chats': chats}, context_instance=RequestContext(request))
+    return render_to_response('contacts_list.html', {'chats': chats, 'object': request.user},
+                              context_instance=RequestContext(request))
 
 
 @login_required()

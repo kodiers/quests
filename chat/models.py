@@ -13,6 +13,14 @@ class Chat(models.Model):
     users = models.ManyToManyField(User, verbose_name=_("Users"))
     have_new_message = models.BooleanField(default=False, verbose_name=_("New message"))
 
+    def get_message_count(self):
+        """
+
+        :return:
+        """
+        msg_count = Messages.objects.filter(chat=self).count()
+        return msg_count
+
     class Meta:
         verbose_name = "Chat"
         verbose_name_plural = "Chats"
