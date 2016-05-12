@@ -114,7 +114,8 @@ def show_chat(request, id):
     messages = Messages.objects.filter(chat=chat).order_by('datetime')
     new_messages = messages.filter(new=True)
     set_new_messages_to_old(new_messages)
-    return render_to_response('chat.html', {'messages': messages, 'receiver': receiver, 'chat': chat},
+    return render_to_response('chat.html', {'messages': messages, 'receiver': receiver, 'chat': chat,
+                                            'object': request.user},
                               context_instance=RequestContext(request))
 
 
@@ -139,6 +140,8 @@ def send_message_api(request):
             new_message.text = text
             new_message.new = True
             new_message.save()
+            chat.have_new_message = True
+            chat.save()
             return HttpResponse(json.dumps({
                 'sender': sender.username,
                 'text': text,

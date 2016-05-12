@@ -8,3 +8,39 @@ div.col-md-4.text-center button {
     font-weight: 500;
     font-size: 18px;
 }
+.chat_username {
+    color: #3E0216;
+}
+.chat_image {
+    width: 30px;
+    height: 30px;
+    display: inline;
+}
+.chat_sender {
+    float: right;
+    margin-left: 10px;
+}
+.chat_receiver {
+    float: left;
+    margin-right: 10px;
+}
+.users {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+@media screen and (max-width: 480px) {
+    .username_block {
+        display: none;
+    }
+}
+@media screen and (min-width: 481px) and (max-width: 1080px){
+    .username_block {
+        display: none;
+    }
+    .col-center-block {
+        float: none;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

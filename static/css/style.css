@@ -71,20 +71,31 @@ a:hover {
     font-style: italic;
 }
 .conversation {
+    margin-top: 10px;
+    margin-bottom: 10px;
     overflow: auto;
     border-style: solid;
+    border-color: #3E0216;
     height: 400px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 20px;
 }
 .chat_message {
     color: black;
+    margin-bottom: 20px;
+    border-bottom: dashed;
+    border-bottom-color: rgba(215, 215, 215, 0.48);
 }
 .sender {
     color: navy;
     font-style: italic;
+    margin-bottom: 5px;
 }
 .receiver {
     color: #23527c;
     font-style: italic;
+    margin-bottom: 5px;
 }
 .tooltips {
     color: gray;
