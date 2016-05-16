@@ -132,6 +132,8 @@ def send_message_api(request):
             chat = Chat.objects.get(id=request.POST['chat'])
             text = request.POST['text']
             sender = User.objects.get(username=request.POST['sender'])
+            if sender not in chat.users.all():
+                return HttpResponse(json.dumps({'chat': chat.pk, 'Error': 'incorrect chat user'}))
             messages = Messages.objects.filter(chat=chat).filter(new=True)
             set_new_messages_to_old(messages)
             new_message = Messages()

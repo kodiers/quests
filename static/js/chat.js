@@ -18,6 +18,10 @@ $(document).ready(function () {
     ws.onmessage = function (e) {
         var response = JSON.parse(e.data);
         //console.log(response);
+        if (response['Error']) {
+            console.log(response);
+            return;
+        }
         var html_string = response['text'];
         //console.log(html_string);
         if (response['sender'] === sender) {

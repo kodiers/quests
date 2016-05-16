@@ -47,7 +47,9 @@ class SendMessageHandler(tornado.websocket.WebSocketHandler):
             json_response = json_decode(response.body)
             for listener in LISTENERS:
                 if str(json_response['chat'] == listener.chat_id):
-                    if listener.ws_connection is not None:
+                    if 'Error' in json_response:
+                        listener.write_message({'Error':'Incorrect user o chat'})
+                    elif listener.ws_connection is not None:
                         listener.write_message(response.body)
 
     def on_message(self, message):
