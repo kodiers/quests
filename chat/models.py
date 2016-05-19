@@ -21,6 +21,9 @@ class Chat(models.Model):
         msg_count = Messages.objects.filter(chat=self).count()
         return msg_count
 
+    def __str__(self):
+        return str(self.pk)
+
     class Meta:
         verbose_name = "Chat"
         verbose_name_plural = "Chats"

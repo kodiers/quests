@@ -746,6 +746,7 @@ class Photos(models.Model):
         verbose_name = "Photo"
         verbose_name_plural = "Photos"
 
+
 class EventStatistics(models.Model):
     """
     Model for store event's statistic
