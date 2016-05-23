@@ -187,16 +187,16 @@
       <column name="map_link" sqlType="TEXT" precision="0" scale="-1" nullable="true" jdbcType="12"/>
       <column name="is_team" sqlType="BOOL" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="price" sqlType="REAL" precision="0" scale="-1" nullable="false" jdbcType="6"/>
+      <column name="max_players" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
       <column name="start_date" sqlType="DATETIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <column name="end_date" sqlType="DATETIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <column name="completed" sqlType="BOOL" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="duration" sqlType="BIGINT" precision="0" scale="-1" nullable="true" jdbcType="4"/>
       <column name="organizer_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
-      <column name="place_id" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
       <column name="image" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="true" jdbcType="12"/>
       <column name="started" sqlType="BOOL" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="min_players" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
-      <column name="max_players" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
+      <column name="place_id" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_web_events_1" columns="place_id" ref-table="web_eventsplaces" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
       <foreign-key name="#FAKE_web_events_2" columns="organizer_id" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
